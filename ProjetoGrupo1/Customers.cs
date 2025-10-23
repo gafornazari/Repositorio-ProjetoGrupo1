@@ -6,16 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using ProjetoGrupo1.Models;
 
-namespace ProjetoGrupo1.Models
+namespace ProjetoGrupo1
 {
-    
+
     public class Customer
-    {   
-        public string CPF {  get; private set; }
+    {
+        public string CPF { get; private set; }
         public string Nome { get; private set; }
         public DateOnly DataNascimento { get; private set; }
         public string Telefone { get; private set; }
-        public DateOnly UltimaCompra {  get; private set; }
+        public DateOnly UltimaCompra { get; private set; }
         public DateOnly DataCadastro { get; private set; }
         public char Situacao { get; private set; }
 
@@ -24,12 +24,12 @@ namespace ProjetoGrupo1.Models
 
         }
 
-        public Customer(string cpf, 
-            string nome, 
-            DateOnly dataNascimento, 
-            string telefone, 
+        public Customer(string cpf,
+            string nome,
+            DateOnly dataNascimento,
+            string telefone,
             DateOnly ultimaCompra,
-            DateOnly dataCadastro, 
+            DateOnly dataCadastro,
             char situacao)
         {
             CPF = cpf;
@@ -55,7 +55,7 @@ namespace ProjetoGrupo1.Models
         {
             UltimaCompra = ultimaCompra;
         }
-        
+
 
         public DateOnly GetDataNascimento()
         {

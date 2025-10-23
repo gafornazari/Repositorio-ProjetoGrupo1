@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetoGrupo1.Models
+namespace ProjetoGrupo1
 {
     public class Supplies
     {
-        public string CNPJ {  get; private set; }
+        public string CNPJ { get; private set; }
         public string RazaoSocial { get; private set; }
-        public string Pais {  get; private set; }
+        public string Pais { get; private set; }
         public DateOnly DataAbertura { get; private set; }
         public DateOnly UltimoFornecimento { get; private set; }
         public DateOnly DataCadastro { get; private set; }
@@ -60,7 +60,7 @@ namespace ProjetoGrupo1.Models
                 $"Data Abertura: {this.DataAbertura}\n Ultimo fornecimento: {this.UltimoFornecimento}\n " +
                 $"Data Cadastro: {this.DataCadastro}\n Situação: {this.Situacao}";
         }
-        
+
 
 
     }
