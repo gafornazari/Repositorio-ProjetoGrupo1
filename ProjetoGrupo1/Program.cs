@@ -1,5 +1,4 @@
-
-﻿using ProjetoGrupo1;
+using ProjetoGrupo1;
 using System.Xml;
 
 string CarregarArquivo1()
@@ -97,4 +96,5 @@ List<PurchaseItem> LerArquivo2()
         }
     }
 }
+
 
