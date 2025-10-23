@@ -10,7 +10,7 @@ namespace ProjetoGrupo1.Models
     {
         public int Id { get; private set; }
         public DateOnly DataVenda { get; private set; }
-        public string Cliente { get; private set; }
+        public string ClienteCPF { get; private set; }
         public decimal ValorTotal { get; private set; }
 
         public void SetID (int id)
@@ -36,9 +36,9 @@ namespace ProjetoGrupo1.Models
 
         public Sales(int id, string cliente, decimal valorTotal)
         {
-            Id = id;
+            Id = new Random().Next(10000, 100000);
             DataVenda = DateOnly.FromDateTime(DateTime.Now);
-            Cliente = cliente;
+            ClienteCPF = cliente;
             ValorTotal = valorTotal;
         }
 
