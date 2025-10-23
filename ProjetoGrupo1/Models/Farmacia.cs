@@ -16,24 +16,21 @@ namespace ProjetoGrupo1.Models
         {
             
            
-                Console.WriteLine("Digite o CPF do cliente: ");
-                string cpf = Console.ReadLine();
-                var customer = LocalizarCustomer(cpf);
-                
-                
-               
-                 if(cliente.Cpf == cpf)
-                    {
-                        Console.WriteLine("Cliente encontrado!");
-                        auxcpf = 1;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Cliente não encontrado!");
-                        Console.WriteLine("Necessario fazer um cadastro ou digite o numero novamente!");
-                    }
-                }
-                
+            Console.WriteLine("Digite o CPF do cliente: ");
+            string cpf = Console.ReadLine();
+            var customer = LocalizarCustomer(cpf);
+
+            if (customer == null)
+            {
+                Console.WriteLine("Cliente não cadastrado!");
+
+            }
+            else if (LocalizarClientesRestritos(cpf))
+            {
+                Console.WriteLine("Cliente restrito");
+            }
+            else
+            {
 
             }
 
