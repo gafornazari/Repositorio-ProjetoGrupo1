@@ -1,3 +1,4 @@
+
 ﻿using ProjetoGrupo1;
 using System.Xml;
 
@@ -96,3 +97,4 @@ List<PurchaseItem> LerArquivo2()
         }
     }
 }
+
