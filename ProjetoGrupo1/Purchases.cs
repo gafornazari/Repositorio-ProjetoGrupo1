@@ -16,6 +16,7 @@ namespace ProjetoGrupo1
             /*string fornecedor*/ double valorTotal)
         {
             Id = id;
+
             DataCompra = dataCompra;
             //Fornecedor = fornecedor;
             ValorTotal = valorTotal;
