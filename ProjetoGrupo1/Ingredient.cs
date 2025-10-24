@@ -25,7 +25,7 @@ namespace ProjetoGrupo1
             Nome = nome;
             DataCadastro = DateOnly.FromDateTime(DateTime.Now);
             Situacao = 'A';
-        }3,
+        }
 
 
         public override string ToString()
