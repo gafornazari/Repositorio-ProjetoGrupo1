@@ -23,15 +23,15 @@ namespace ProjetoGrupo1
 
         public List<Ingredient> ListaIngredients { get; set; }
         public List<Medicine> ListaMedicines { get; set; }
-        public List<Purchases> ListaPurchases { get; set; } 
-        public List<PurchaseItem> ListaPurchaseItens { get; set; }
+        public List<Purchases> ListaPurchases { get; set; }
+        public List<PurchaseItem> ListaPurchaseItems { get; set; }
 
         public List<Customer> ListaCustomers { get; set; }
         public List<Supplies> ListaSupplies { get; set; }
         public List<Customer> ListaRestrictedCustomers { get; set; }
         public List<Supplies> ListaRestrictedSupplies { get; set; }
         public List<Sales> ListaSales { get; set; }
-        public List<SalesItems> ListaSalesItems {  get; set; }
+        public List<SalesItems> ListaSalesItems { get; set; }
 
         public Farmacia()
         {
@@ -40,7 +40,7 @@ namespace ProjetoGrupo1
             this.ListaIngredients = new List<Ingredient>();
             this.ListaMedicines = new List<Medicine>();
             this.ListaPurchases = new List<Purchases>();
-            this.ListaPurchaseItens = new List<PurchaseItem>();
+            this.ListaPurchaseItems = new List<PurchaseItem>();
             this.ListaCustomers = new List<Customer>();
             this.ListaSupplies = new List<Supplies>();
             this.ListaRestrictedCustomers = new List<Customer>();
@@ -301,7 +301,7 @@ namespace ProjetoGrupo1
         //giovanna
 
 
-        
+
 
         //método para verificar se já existe algum ingrediente com o mesmo id
         public bool BuscarIngridientId(string id)
@@ -424,7 +424,7 @@ namespace ProjetoGrupo1
 
 
 
-       
+
 
         public Medicine LocalizarMedicine()
         {
@@ -568,128 +568,239 @@ namespace ProjetoGrupo1
         //Felipe
 
 
-        
 
         public void IncluirPurchases()
         {
-            Console.WriteLine("Digite o Id da compra: ");
-            var id = int.Parse(Console.ReadLine());
-            DateOnly data = DateOnly.FromDateTime(DateTime.Now);
-            Console.WriteLine(data.ToString("dd/MM/yyyy"));
-            data = DateOnly.Parse(Console.ReadLine());
-            Console.WriteLine("Digite o CNPJ do fornecedor: ");
-            var fornecedor = Console.ReadLine();
-            Supplies suppliers = new Supplies();
-            suppliers.SetCNPJ(fornecedor);
-            Console.WriteLine("Digite o Id do principio ativo: ");
-            var ingrediente = Console.ReadLine();
-            Ingredient ingridient = new Ingredient();
-            ingridient.Id = ingrediente;
-            Console.WriteLine("Digite a quantidade em gramas do item: ");
-            var quantidade = int.Parse(Console.ReadLine());
-            if (quantidade < 0 || quantidade > 10000)
+            int id;
+            while (true)
             {
-                Console.WriteLine("Quantidade deve estar entre 0 e 10.000");
+                Console.WriteLine("Digite o Id da compra: ");
+                if (int.TryParse(Console.ReadLine(), out id))
+                    break;
+                Console.WriteLine("Id inválido. Digite um número inteiro.");
             }
-            Console.WriteLine("Digite o valor unitário do item: ");
-            var valorUnitario = double.Parse(Console.ReadLine());
-            if (valorUnitario < 0 || valorUnitario > 1000)
+
+            DateOnly data;
+            while (true)
             {
-                Console.WriteLine("Valor unitário deve estar entre 0 e 1.000.");
+                Console.WriteLine($"Digite a data da compra (dd/MM/yyyy)," +
+                    $"vazio para hoje ({DateOnly.FromDateTime(DateTime.Now):dd/MM/yyyy}):");
+                string input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    data = DateOnly.FromDateTime(DateTime.Now);
+                    break;
+                }
+                if (DateOnly.TryParseExact(input, "dd/MM/yyyy", null, 
+                    System.Globalization.DateTimeStyles.None, out data))
+                    break;
+                Console.WriteLine("Data no formato inválido. Tente novamente.");
             }
-            var totalItem = quantidade * valorUnitario;
+
+            string fornecedorCnpj;
+            Supplies fornecedor = null;
+            while (true)
+            {
+                Console.WriteLine("Digite o CNPJ do fornecedor: ");
+                fornecedorCnpj = Console.ReadLine();
+
+                fornecedor = ListaSupplies.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+
+                if (fornecedor == null)
+                {
+                    Console.WriteLine("Fornecedor não encontrado. Tente novamente.");
+                    continue;
+                }
+
+                if (ListaRestrictedSupplies.Any(f => f.CNPJ == fornecedorCnpj))
+                {
+                    Console.WriteLine("Fornecedor está bloqueado e " +
+                        "não pode ser selecionado.");
+                    continue;
+                }
+                break;
+            }
+
+
+            string ingredienteId;
+            Ingredient ingredient = null;
+            while (true)
+            {
+                Console.WriteLine("Digite o Id do princípio ativo: ");
+                ingredienteId = Console.ReadLine();
+
+                ingredient = ListaIngredients.FirstOrDefault(i => i.Id == ingredienteId
+                             && i.Situacao == 'A')!;
+                if (ingredient != null)
+                    break;
+
+                Console.WriteLine("Ingrediente inválido ou inativo. Tente novamente.");
+            }
+
+            int quantidade;
+            while (true)
+            {
+                Console.WriteLine("Digite a quantidade em gramas do item (0 a 10000): ");
+                if (int.TryParse(Console.ReadLine(), out quantidade) 
+                    && quantidade >= 0 && quantidade <= 10000)
+                    break;
+                Console.WriteLine("Quantidade inválida. Deve estar entre 0 e 10.000.");
+            }
+
+            double valorUnitario;
+            while (true)
+            {
+                Console.WriteLine("Digite o valor unitário do item (0 a 1000): ");
+                if (double.TryParse(Console.ReadLine(), out valorUnitario) 
+                    && valorUnitario >= 0 && valorUnitario <= 1000)
+                    break;
+                Console.WriteLine("Valor unitário inválido. Deve estar entre 0 e 1.000.");
+            }
+
+            double totalItem = quantidade * valorUnitario;
             Console.WriteLine($"Total do item: {totalItem}");
+
             double valorTotal = 0;
             valorTotal += totalItem;
-            Console.WriteLine($"{valorTotal}");
-            if (valorTotal < 0 || valorTotal > 100000)
-            {
-                Console.WriteLine("Valor total deve estar entre 0 e 100.000.");
-            }
+            Console.WriteLine($"Valor total: {valorTotal}");
 
-            this.ListaPurchases.Add(new Purchases(id, data, valorTotal));
-            this.ListaPurchaseItens.Add(new PurchaseItem(id, ingridient, quantidade, valorUnitario, totalItem));
+            this.ListaPurchases.Add(new Purchases(id, data, fornecedor.CNPJ, valorTotal));
+            this.ListaPurchaseItems.Add(new PurchaseItem(id, 
+                ingredient.Id, quantidade, valorUnitario, totalItem));
         }
 
-        public void LocalizarPurchases()
+
+        public Purchases LocalizarPurchases(int Id)
         {
-            Console.WriteLine("Digite o Id da compra que deseja localizar: ");
-            var id = int.Parse(Console.ReadLine());
-            var purchase = this.ListaPurchases.Find(p => p.Id == id);
-            if (purchase != null)
+            foreach (var item in ListaPurchases)
             {
-                Console.WriteLine(purchase);
+                if (item.Id == Id)
+                {
+                    return item;
+                }
             }
-            else
+            return null;
+        }
+        public PurchaseItem LocalizarPurchaseItem(int Id)
+        {
+            foreach (var item in ListaPurchaseItems)
             {
-                Console.WriteLine("Compra não encontrada.");
+                if (item.IdCompra == Id)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+        public void AlterarPurchases(int IdCompra)
+        {
+            int quantidade;
+            double valorUnitario;
+            int auxItems = 0;
+            PurchaseItem purchaseItem;
+            Purchases purchases;
+            do
+            {
+                Console.WriteLine("O Id da compra está incorreto");
+                var aux = int.Parse(Console.ReadLine());
+                purchaseItem = LocalizarPurchaseItem(aux);
+            } while (purchaseItem == null);
+
+            PurchaseItem purchaseItem1 = purchaseItem;
+
+            Console.WriteLine("Digite o que deseja alterar:\n1 - Quantidade" +
+                "\n2 - ValorUnitário\n3 - As duas opções ");
+            var opcao = int.Parse(Console.ReadLine());
+
+            switch (opcao)
+            {
+                case 1:
+                    do {
+                        Console.WriteLine("Digite a nova quantidade em gramas do item: ");
+                        quantidade = int.Parse(Console.ReadLine());
+                        if (quantidade > 0 && quantidade < 10000)
+                        {
+                            auxItems = 1;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Quantidade Inválida! A quantidade em grams de " +
+                                "itens deve estar entre 0 e 10.000.");
+                        }
+                    } while (auxItems == 0);
+                    purchaseItem.setQuantidade(quantidade);
+                      
+                    purchaseItem.setTotaItem(quantidade * purchaseItem.ValorUnitario);
+                    var totalItem = quantidade * purchaseItem.ValorUnitario;
+                    purchases = LocalizarPurchases(IdCompra);
+                    purchases.setValorTotal(totalItem);
+
+                    break;
+                case 2:
+                    do
+                    {
+                        Console.WriteLine("Digite o novo Valor Unitário" +
+                            " por gramas do item: ");
+                        valorUnitario = double.Parse(Console.ReadLine());
+                        if (valorUnitario > 0 && valorUnitario < 1000)
+                        {
+                            auxItems = 1;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Quantidade Inválida! A quantidade em grams de " +
+                                "itens deve estar entre 0 e 1.000.");
+                        }
+                    } while (auxItems == 0);
+                    purchaseItem.setValorUnitario(valorUnitario);
+                    purchaseItem.setTotaItem(purchaseItem.Quantidade * valorUnitario);
+                    totalItem = purchaseItem.Quantidade * valorUnitario;
+                    purchases = LocalizarPurchases(IdCompra);
+                    purchases.setValorTotal(totalItem);
+                    break;
+                case 3:
+                    do
+                    {
+                        Console.WriteLine("Digite a nova quantidade em gramas do item: ");
+                        quantidade = int.Parse(Console.ReadLine());
+                        if (quantidade > 0 && quantidade < 10000)
+                        {
+                            auxItems = 1;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Quantidade Inválida! A quantidade em grams de " +
+                                "itens deve estar entre 0 e 10.000.");
+                        }
+                    } while (auxItems == 0);
+                    purchaseItem.setQuantidade(quantidade);
+                    do
+                    {
+                        Console.WriteLine("Digite o novo Valor Unitário" +
+                            " por gramas do item: ");
+                        valorUnitario = double.Parse(Console.ReadLine());
+                        if (valorUnitario > 0 && valorUnitario < 1000)
+                        {
+                            auxItems = 1;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Quantidade Inválida! A quantidade em grams de " +
+                                "itens deve estar entre 0 e 1.000.");
+                        }
+                    } while (auxItems == 0);
+                    purchaseItem.setValorUnitario(valorUnitario);
+                    purchaseItem.setTotaItem(quantidade * valorUnitario);
+                    totalItem = quantidade * valorUnitario;
+                    purchases = LocalizarPurchases(IdCompra);
+                    purchases.setValorTotal(totalItem);
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida.");
+                    break;
             }
         }
-        public void LocalizarPurchaseItem()
-        {
-            Console.WriteLine("Digite o Id da compra que deseja localizar o item: ");
-            var id = int.Parse(Console.ReadLine());
-            var purchaseItem = this.ListaPurchaseItens.Find(pi => pi.IdCompra == id);
-            if (purchaseItem != null)
-            {
-                Console.WriteLine(purchaseItem);
-            }
-            else
-            {
-                Console.WriteLine("Item da compra não encontrado.");
-            }
-        }
-        public void AlterarPurchases()
-        {
-            Console.WriteLine("Digite o Id da compra que deseja alterar: ");
-            var id = int.Parse(Console.ReadLine());
-            var purchase = this.ListaPurchases.Find(p => p.Id == id);
-            if (purchase != null)
-            {
-                DateOnly data = DateOnly.FromDateTime(DateTime.Now);
-                Console.WriteLine(data.ToString("dd/MM/yyyy"));
-                data = DateOnly.Parse(Console.ReadLine());
-                double valorTotal = 0;
-                Console.WriteLine("Digite o novo valor total da compra: ");
-                valorTotal = double.Parse(Console.ReadLine());
-                Console.WriteLine($"Valor Total atualizado: {valorTotal}");
-                // Atualiza a compra na lista
-                this.ListaPurchases.Remove(purchase);
-                this.ListaPurchases.Add(new Purchases(id, data, valorTotal));
-            }
-            else
-            {
-                Console.WriteLine("Compra não encontrada.");
-            }
-        }
-        public void AlterarPurchaseItem()
-        {
-            Console.WriteLine("Digite o Id da compra que deseja alterar o item: ");
-            var id = int.Parse(Console.ReadLine());
-            var purchaseItem = this.ListaPurchaseItens.Find(pi => pi.IdCompra == id);
-            if (purchaseItem != null)
-            {
-                //ingrediente
-                Console.WriteLine("Digite o novo ingrediente do item: ");
-                var ingrediente = Console.ReadLine();
-                Ingredient ingredient = new Ingredient();
-                ingredient.Id = ingrediente;
-                Console.WriteLine("Digite a nova quantidade em gramas do item: ");
-                var quantidade = int.Parse(Console.ReadLine());
-                Console.WriteLine("Digite o novo valor unitário do item: ");
-                var valorUnitario = double.Parse(Console.ReadLine());
-                var totalItem = quantidade * valorUnitario;
-                Console.WriteLine($"Total do item atualizado: {totalItem}");
-                // Atualiza o item na lista
-                this.ListaPurchaseItens.Remove(purchaseItem);
-                this.ListaPurchaseItens.Add(new PurchaseItem(id,
-                    ingredient, quantidade, valorUnitario, totalItem));
-            }
-            else
-            {
-                Console.WriteLine("Item da compra não encontrado.");
-            }
-        }
+        
         public void ImprimirPurchases()
         {
             foreach (var purchase in this.ListaPurchases)
@@ -699,7 +810,7 @@ namespace ProjetoGrupo1
         }
         public void ImprimirPurchaseItens()
         {
-            foreach (var purchaseItem in this.ListaPurchaseItens)
+            foreach (var purchaseItem in this.ListaPurchaseItems)
             {
                 Console.WriteLine(purchaseItem);
             }
@@ -711,7 +822,7 @@ namespace ProjetoGrupo1
         //---------------------------------------------------------------------------------------------------------
         //ANA
 
-        
+
 
         //Métodos para os clientes/customers
         public string VerificarCpf(string cpf)
@@ -1117,7 +1228,7 @@ namespace ProjetoGrupo1
         //-----------------------------------------------------------------------
         //leandro
 
-        
+
 
 
 
@@ -1138,44 +1249,44 @@ namespace ProjetoGrupo1
             //}
             else { }
         }
-    public void LocalizarSales(int id)
-    {
-        foreach (var venda in ListaSales)
+        public void LocalizarSales(int id)
         {
-            if (venda.Id == id)
+            foreach (var venda in ListaSales)
             {
-                Console.WriteLine("Venda encontrada!");
-                Console.WriteLine(venda.ToString());
+                if (venda.Id == id)
+                {
+                    Console.WriteLine("Venda encontrada!");
+                    Console.WriteLine(venda.ToString());
+                }
+                else
+                {
+                    Console.WriteLine("Venda não encontrado!");
+                }
+            }
+        }
+
+
+        public void VerificarItem()
+        {
+            int auxid1 = 0;
+
+            Console.WriteLine("Digite um número inteiro com 5 dígitos:");
+            string entrada = Console.ReadLine();
+            if (entrada.Length == 5 && entrada.All(char.IsDigit))
+            {
+                Console.WriteLine("Entrada válida: contém apenas números e tem 5 dígitos.");
+                auxid1 = 1;
+                int numero = int.Parse(entrada);
+                Console.WriteLine(entrada);
             }
             else
             {
-                Console.WriteLine("Venda não encontrado!");
+                Console.WriteLine("Entrada invalida! ");
+                Console.WriteLine("O Id deve conter apenas 5 numeros inteiros!");
+                Console.WriteLine("Tente novamente!");
             }
-        }
-    }
-        
 
-    public void VerificarItem()
-    {
-        int auxid1 = 0;
-
-        Console.WriteLine("Digite um número inteiro com 5 dígitos:");
-        string entrada = Console.ReadLine();
-        if (entrada.Length == 5 && entrada.All(char.IsDigit))
-        {
-            Console.WriteLine("Entrada válida: contém apenas números e tem 5 dígitos.");
-            auxid1 = 1;
-            int numero = int.Parse(entrada);
-            Console.WriteLine(entrada);
         }
-        else
-        {
-            Console.WriteLine("Entrada invalida! ");
-            Console.WriteLine("O Id deve conter apenas 5 numeros inteiros!");
-            Console.WriteLine("Tente novamente!");
-        }
-
-    }
 
     }
 }

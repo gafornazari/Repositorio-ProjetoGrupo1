@@ -1,13 +1,13 @@
 using ProjetoGrupo1;
 Farmacia farmacia = new Farmacia();
 
-string directoryPath = @"C:\SneezePharma\ProduceDept\"; 
+string directoryPath = @"C:\SneezePharma\";
 
 List<Produce> producoes = new List<Produce>();
 
 void CarregarDoArquivoProduce()
 {
-    string filePath = "Produce.data";
+    string filePath = @"ProduceDept\Produce.data";
     var fullPath = Path.Combine(directoryPath, filePath);
     try
     {
@@ -24,7 +24,7 @@ void CarregarDoArquivoProduce()
             {
                 string content = sr.ReadLine()!;
                 int id = int.Parse(content.Substring(0, 5));
-                DateOnly data = DateOnly.Parse(content.Substring(5, 10)); 
+                DateOnly data = DateOnly.Parse(content.Substring(5, 10));
                 double idMedicamento = double.Parse(content.Substring(15, 13).Trim());
                 int quantidade = int.Parse(content.Substring(28, 3));
 
@@ -42,7 +42,7 @@ void CarregarDoArquivoProduce()
 
 void CarregarDoArquivoProduceItem()
 {
-    string filePath = "ProduceItem.data";
+    string filePath = @"ProduceDept\ProduceItem.data";
     var fullPath = Path.Combine(directoryPath, filePath);
     try
     {
@@ -60,7 +60,7 @@ void CarregarDoArquivoProduceItem()
                 string content = sr.ReadLine()!;
                 int idProduceItem = int.Parse(content.Substring(0, 5));
                 int idProducao = int.Parse(content.Substring(5, 5));
-                string idPrincipio =content.Substring(10, 6);
+                string idPrincipio = content.Substring(10, 6);
                 int quantidade = int.Parse(content.Substring(16, 4));
 
                 temp.Add(new ProduceItem(idProduceItem, idProducao, idPrincipio, quantidade));
@@ -77,7 +77,7 @@ void CarregarDoArquivoProduceItem()
 
 void SalvarNoArquivoProduce()
 {
-    string filePath = "Produce.data";
+    string filePath = @"ProduceDept\Produce.data";
     var fullPath = Path.Combine(directoryPath, filePath);
     StreamWriter sw = new StreamWriter(fullPath);
     List<Produce> produces = farmacia.RetornoListaProduces();
@@ -86,12 +86,12 @@ void SalvarNoArquivoProduce()
     {
         sw.WriteLine(produce.ToFile());
     }
-    
+
     sw.Close();
 }
 void SalvarNoArquivoProduceItem()
 {
-    string filePath = "ProduceItem.data";
+    string filePath = @"ProduceDept\ProduceItem.data";
     var fullPath = Path.Combine(directoryPath, filePath);
     StreamWriter sw = new StreamWriter(fullPath);
     List<ProduceItem> producesItems = farmacia.RetornoListaProduceItem();
@@ -219,239 +219,205 @@ SalvarNoArquivoProduceItem();
 
 //------------------------------------------------------------------------------------------------------
 //FELIPE
-string CarregarArquivo1()
+void CarregarArquivo1()
 {
-    string directory = @"C:\SneezePharma\PurchaseDept\";
-    string file1 = "Purchases.data";
-    if (!Directory.Exists(directory))
+    string filePath = @"PurchasesDept\Purchases.data";
+    var fullPath = Path.Combine(directoryPath, filePath);
+    try
     {
-        Directory.CreateDirectory(directory);
-    }
-    if (!File.Exists(Path.Combine(directory, file1)))
-    {
-        File.Create(Path.Combine(directory, file1));
-    }
-    return Path.Combine(directory, file1);
-}
-string CarregarArquivo2()
-{
-    string directory = @"C:\SneezePharma\PurchaseDept\";
-    string file2 = "PurchaseItems.data";
-    if (!Directory.Exists(directory))
-    {
-        Directory.CreateDirectory(directory);
-    }
-    if (!File.Exists(Path.Combine(directory, file2)))
-    {
-        File.Create(Path.Combine(directory, file2));
-    }
-    return Path.Combine(directory, file2);
-}
+        if (!Directory.Exists(directoryPath))
+            Directory.CreateDirectory(directoryPath);
 
-List<Purchases> LerArquivo1()
-{
-    var fullPath = CarregarArquivo1();
+        if (!File.Exists(fullPath))
+            return;
 
-    StreamReader purchaseSR = new StreamReader(fullPath);
-
-    using (purchaseSR)
-    {
-        if (purchaseSR.ReadToEnd() is "")
+        var temp = new List<Purchases>();
+        Path.Combine(directoryPath, filePath);
+        using (var sr = new StreamReader(fullPath))
         {
-            return new List<Purchases>();
-        }
-        else
-        {
-            List<Purchases> purchases = new List<Purchases>();
+            string line = sr.ReadLine();
+            int id = int.Parse(line.Substring(0, 5));
+            DateOnly data = DateOnly.Parse(line.Substring(5, 10));
+            Supplies suplier = new Supplies();
+            string suplierCNPJ = line.Substring(15, 14);
+            double totalValue = double.Parse(line.Substring(29, 10));
 
-            while(purchaseSR.ReadLine() is not null)
-            {
-                string line = purchaseSR.ReadLine();
-                var id = line.Substring(0, 5);
-                var date = line.Substring(5, 10);
-                var suplierCNPJ = line.Substring(14, 14);
-                var TotalValue = line.Substring(29, 8);
-                Purchases purchase = new Purchases(int.Parse(id), 
-                    DateOnly.Parse(date), /*suplierCNPJ,*/
-                    double.Parse(TotalValue));
-                purchases.Add(purchase);
-            }
-            purchaseSR.Close();
-            return purchases;
+            temp.Add(new Purchases(id, data, suplierCNPJ, totalValue));
         }
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e.Message);
+        Console.WriteLine(e.StackTrace);
     }
 }
-List<PurchaseItem> LerArquivo2()
+void CarregarArquivo2()
 {
-    var fullPath = CarregarArquivo2();
-
-    StreamReader purchaseItensSR = new StreamReader(fullPath);
-
-    using (purchaseItensSR)
+    string filePath = @"PurchasesDept\PurchaseItems.data";
+    var fullPath = Path.Combine(directoryPath, filePath);
+    try
     {
-        if (purchaseItensSR.ReadToEnd() is "")
+        if (!Directory.Exists(directoryPath))
+            Directory.CreateDirectory(directoryPath);
+
+        if (!File.Exists(fullPath))
+            return;
+
+        var temp = new List<PurchaseItem>();
+        Path.Combine(directoryPath, filePath);
+        using (var sr = new StreamReader(fullPath))
         {
-            return new List<PurchaseItem>();
-        }
-        else
-        {
-            List<PurchaseItem> purchaseItens = new List<PurchaseItem>();
+            string line = sr.ReadLine();
+            int id = int.Parse(line.Substring(0, 5));
+            Ingredient ingrediente = new Ingredient();
+            string ingredienteId = line.Substring(5, 6);
+            int quantidade = int.Parse(line.Substring(10, 14));
+            double valorUnitario = double.Parse(line.Substring(24, 6));
+            double totalItem = double.Parse(line.Substring(30, 10));
 
-            //while(purchaseItensSR.ReadLine() is not null)
-            //{
-            //    string line = purchaseItensSR.ReadLine();
-            //    var idCompra = line.Substring(0, 5);
-            //    var ingredient = line.Substring(5, 6);
-            //    var quantity = line.Substring(15, 14);
-            //    var TotalItem = line.Substring(29, 8);
-            //    PurchaseItem purchaseItem = new PurchaseItem(int.Parse(idCompra), 
-            //        int.Parse(ingredient), int.Parse(quantity),
-            //        double.Parse(TotalItem));
-            //    purchaseItens.Add(purchaseItem);
-            //}
-            purchaseItensSR.Close();
-            return purchaseItens;
-        }
-
-    }
-
-    //Leandro ====================================================================
-
-    string CarregarArquivoSales()
-    {
-        string directory = @"C:\SneezePharma\Sales\";
-        string file = "Sales.data";
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
-
-        var path = Path.Combine(directory, file);
-        if (!File.Exists(path))
-        {
-            File.Create(path);
-        }
-        return path;
-    }
-
-    string CarregarArquivoSaleItems()
-    {
-        string directory1 = @"C:\SneezePharma\SaleItems\";
-        string file1 = "SaleItems.data";
-        if (!Directory.Exists(directory1))
-        {
-            Directory.CreateDirectory(directory1);
-        }
-
-        var path1 = Path.Combine(directory1, file1);
-        if (!File.Exists(path1))
-        {
-            File.Create(path1);
-        }
-        return path1;
-    }
-
-    List<Sales> LerArquivoSales()
-    {
-        var fullPath = CarregarArquivoSales();
-
-        StreamReader salesSR = new StreamReader(fullPath);
-
-        using (salesSR)
-        {
-            List<Sales> sales = new List<Sales>();
-
-            string line;
-
-            while ((line = salesSR.ReadLine()) != null)
-            {
-                var id = line.Substring(0, 5);
-                var date = line.Substring(5, 8);
-                var cpf = line.Substring(13, 11);
-                var TotalValue = line.Substring(24, 7);
-
-                Sales sale = new Sales();
-                sale.SetId(int.Parse(id));
-
-                DateOnly data = DateOnly.ParseExact(date, "ddMMyyyy");
-                sale.SetDataVenda(data);
-
-                sale.SetCliente(cpf);
-
-                sale.SetValorTotal(decimal.Parse(TotalValue));
-
-                sales.Add(sale);
-            }
-
-            salesSR.Close();
-            return sales;
+            temp.Add(new PurchaseItem(id, ingredienteId, quantidade,
+                valorUnitario, totalItem));
         }
     }
-
-    List<SalesItems> LerArquivosSaleItems()
+    catch (Exception e)
     {
-        var fullPath1 = CarregarArquivoSaleItems();
-
-        StreamReader saleItemsSR = new StreamReader(fullPath1);
-
-        using (saleItemsSR)
-        {
-            List<SalesItems> saleItems = new List<SalesItems>();
-
-            string line;
-
-            while ((line = saleItemsSR.ReadLine()) != null)
-            {
-                var id = line.Substring(0, 5);
-                var codigoDeBarras = line.Substring(5, 13);
-                var quantidade = line.Substring(18, 3);
-                var valorUnitario = line.Substring(21, 6);
-                var totalItem = line.Substring(27, 7);
-
-                SalesItems saleItems1 = new SalesItems();
-                //saleItems1.SetIdVenda(int.Parse(id)); 
-
-                // fazer o codigo de barras===========
-                
-                //sale.SetCliente(cpf);
-
-                //sale.SetValorTotal(decimal.Parse(TotalValue));
-
-                //sales.Add(sale);
-            }
-
-            //salesSR.Close();
-            return null /*sales*/;
-        }
+        Console.WriteLine(e.Message);
+        Console.WriteLine(e.StackTrace);
     }
-
 }
 
 void GravarArquivo1(List<Purchases> purchases)
 {
-    var fullPath = CarregarArquivo1();
-    StreamWriter purchaseSW = new StreamWriter(fullPath);
-    using (purchaseSW)
+    string fullPath = @"C:\SneezePharma\PurchasesDept\Purchases.data";
+
+    using (StreamWriter writer = new StreamWriter(fullPath))
     {
-        foreach (Purchases purchase in purchases)
+        foreach (var purchase in purchases)
         {
-            purchaseSW.WriteLine(purchase.ToFile());
+            writer.WriteLine(purchase.ToFile());
         }
-        purchaseSW.Close();
+        writer.Close();
     }
 }
 
 void GravarArquivo2(List<PurchaseItem> purchaseItems)
 {
-    var fullPath = CarregarArquivo2();
-    StreamWriter purchaseItemSW = new StreamWriter(fullPath);
-    using (purchaseItemSW)
+    string fullPath = @"C:\SneezePharma\PurchasesDept\PurchaseItems.data";
+
+    using (StreamWriter writer = new StreamWriter(fullPath))
     {
-        foreach (PurchaseItem purchaseItem in purchaseItems)
+        foreach (var purchase in purchaseItems)
         {
-            purchaseItemSW.WriteLine(purchaseItem.ToFile());
+            writer.WriteLine(purchase.ToFile());
         }
-        purchaseItemSW.Close();
+        writer.Close();
     }
 }
 
+//Leandro ====================================================================
+
+string CarregarArquivoSales()
+{
+    string file = @"SalesDept\Sales.data";
+    if (!Directory.Exists(directoryPath))
+    {
+        Directory.CreateDirectory(directoryPath);
+    }
+
+    var path = Path.Combine(directoryPath, file);
+    if (!File.Exists(path))
+    {
+        File.Create(path);
+    }
+    return path;
+}
+
+string CarregarArquivoSaleItems()
+{
+    string file1 = @"SalesDept\SaleItems.data";
+    if (!Directory.Exists(directoryPath))
+    {
+        Directory.CreateDirectory(directoryPath);
+    }
+
+    var path1 = Path.Combine(directoryPath, file1);
+    if (!File.Exists(path1))
+    {
+        File.Create(path1);
+    }
+    return path1;
+}
+
+List<Sales> LerArquivoSales()
+{
+    var fullPath = CarregarArquivoSales();
+
+    StreamReader salesSR = new StreamReader(fullPath);
+
+    using (salesSR)
+    {
+        List<Sales> sales = new List<Sales>();
+
+        string line;
+
+        while ((line = salesSR.ReadLine()) != null)
+        {
+            var id = line.Substring(0, 5);
+            var date = line.Substring(5, 8);
+            var cpf = line.Substring(13, 11);
+            var TotalValue = line.Substring(24, 7);
+
+            Sales sale = new Sales();
+            sale.SetId(int.Parse(id));
+
+            DateOnly data = DateOnly.ParseExact(date, "ddMMyyyy");
+            sale.SetDataVenda(data);
+
+            sale.SetCliente(cpf);
+
+            sale.SetValorTotal(decimal.Parse(TotalValue));
+
+            sales.Add(sale);
+        }
+
+        salesSR.Close();
+        return sales;
+    }
+}
+
+List<SalesItems> LerArquivosSaleItems()
+{
+    var fullPath1 = CarregarArquivoSaleItems();
+
+    StreamReader saleItemsSR = new StreamReader(fullPath1);
+
+    using (saleItemsSR)
+    {
+        List<SalesItems> saleItems = new List<SalesItems>();
+
+        string line;
+
+        while ((line = saleItemsSR.ReadLine()) != null)
+        {
+            var id = line.Substring(0, 5);
+            var codigoDeBarras = line.Substring(5, 13);
+            var quantidade = line.Substring(18, 3);
+            var valorUnitario = line.Substring(21, 6);
+            var totalItem = line.Substring(27, 7);
+
+            SalesItems saleItems1 = new SalesItems();
+            //saleItems1.SetIdVenda(int.Parse(id)); 
+
+            // fazer o codigo de barras===========
+
+            //sale.SetCliente(cpf);
+
+            //sale.setValorTotal(decimal.Parse(TotalValue));
+
+            //sales.Add(sale);
+        }
+
+        //salesSR.Close();
+        return null /*sales*/;
+    }
+}

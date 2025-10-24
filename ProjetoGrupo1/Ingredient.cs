@@ -15,10 +15,6 @@ namespace ProjetoGrupo1
         public DateOnly DataCadastro { get; set; }
         public char Situacao { get; set; }
 
-        public Ingredient()
-        {
-            
-        }
         public Ingredient(string id, string nome)
         {
             Id = id;
@@ -26,7 +22,18 @@ namespace ProjetoGrupo1
             DataCadastro = DateOnly.FromDateTime(DateTime.Now);
             Situacao = 'A';
         }
-
+        public Ingredient(string id)
+        {
+            this.Id = id;
+        }
+        public Ingredient()
+        {
+            
+        }
+        public void SetId(string id)
+        {
+            this.Id = id;
+        }
 
         public override string ToString()
         {

@@ -16,10 +16,6 @@ namespace ProjetoGrupo1
         public DateOnly DataCadastro { get; private set; }
         public char Situacao { get; private set; }
 
-        public Supplies()
-        {
-
-        }
 
         public Supplies(string cNPJ,
             string razaoSocial,
@@ -36,6 +32,14 @@ namespace ProjetoGrupo1
             UltimoFornecimento = ultimoFornecimento;
             DataCadastro = dataCadastro;
             Situacao = situacao;
+        }
+        public Supplies(string cNPJ)
+        {
+            SetCNPJ(cNPJ);
+        }
+        public Supplies()
+        {
+
         }
 
 

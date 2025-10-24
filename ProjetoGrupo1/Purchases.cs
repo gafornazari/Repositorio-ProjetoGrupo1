@@ -10,15 +10,14 @@ namespace ProjetoGrupo1
     {
         public int Id { get; private set; }
         public DateOnly DataCompra { get; private set; } 
-        public string Fornecedor { get; private set; }
+        public Supplies Fornecedor { get; private set; }
         public double ValorTotal { get; private set; }
         public Purchases(int id, DateOnly dataCompra, 
-            /*string fornecedor*/ double valorTotal)
+            string fornecedor, double valorTotal)
         {
             Id = id;
-
             DataCompra = dataCompra;
-            //Fornecedor = fornecedor;
+            Fornecedor = new Supplies(fornecedor);
             ValorTotal = valorTotal;
         }
         public string DataFormatada()
@@ -37,5 +36,12 @@ namespace ProjetoGrupo1
             return $"{Id}{DataFormatada()}" +//$"{Fornecedor}" +
                 $"{ValorTotal}";
         }
+
+        public void setValorTotal(double valorTotal)
+        {
+            this.ValorTotal = valorTotal;
+        }
+
+      
     }
 }
