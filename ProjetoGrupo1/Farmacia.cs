@@ -1,9 +1,7 @@
-=======
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ProjetoGrupo1.Models;
 using System.ComponentModel.Design;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
