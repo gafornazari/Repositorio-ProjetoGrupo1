@@ -10,14 +10,14 @@ namespace ProjetoGrupo1
     {
         public int Id {  get; private set; }
         public DateOnly DataProducao { get; private set; }
-        public double IdMedicamento { get; private set; }
+        public string IdMedicamento { get; private set; }
         public int Quantidade { get; private set; }
 
 
         public Produce(
            int id,
            DateOnly dataProducao,
-           double idMedicamento,
+           string idMedicamento,
            int quantidade
        )
         {
@@ -28,7 +28,7 @@ namespace ProjetoGrupo1
         }
         public Produce( 
             int id, 
-            double idMedicamento, 
+            string idMedicamento, 
             int quantidade
         )
         {
@@ -43,7 +43,7 @@ namespace ProjetoGrupo1
             this.Quantidade = quantidade;
         }
 
-        public void SetMedicamento(double idMedicamento)
+        public void SetMedicamento(string idMedicamento)
         {
             this.IdMedicamento = idMedicamento;
         }

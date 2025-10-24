@@ -100,9 +100,9 @@ namespace ProjetoGrupo1
             Console.WriteLine("Digite o id da Produção(5 digitos): ");
             int id = int.Parse(Console.ReadLine()!);
 
-            Console.WriteLine("Digite o Id do Medicamento: ");
-            double idMedicamento = Convert.ToDouble(Console.ReadLine()!);
-            Medicine medicine = LocalizarMedicine();
+            Console.WriteLine("Digite o código de barra do Medicamento: ");
+            string idMedicamento = Console.ReadLine();
+            Medicine medicine = LocalizarMedicine(idMedicamento);
             if (medicine == null)
             {
                 Console.WriteLine("Medicamento não encontrado!");
@@ -152,7 +152,7 @@ namespace ProjetoGrupo1
             else
             {
                 Console.WriteLine("Digite o id do novo medicamento: ");
-                int idMedicamento = int.Parse(Console.ReadLine()!);
+                string idMedicamento = Console.ReadLine();
                 Console.WriteLine("Digite a nova quantidade: ");
                 int quantidade = int.Parse(Console.ReadLine()!);
 
@@ -388,12 +388,12 @@ namespace ProjetoGrupo1
                     if (ing.Situacao == 'I')
                     {
                         Console.WriteLine("Situação do ingrediente alterada com sucesso! De inativo para ativo!");
-                        ing.Situacao = 'A';
+                        ing.SetSituacao('A');
                     }
                     else if (ing.Situacao == 'A')
                     {
                         Console.WriteLine("Situação do ingrediente alterada com sucesso! De ativo para inativo!");
-                        ing.Situacao = 'I';
+                        ing.SetSituacao('I');
                     }
                     else
                         Console.WriteLine("Ingrediente não localizado!");
@@ -408,7 +408,7 @@ namespace ProjetoGrupo1
             {
                 if (ing.Id == id)
                 {
-                    ing.UltimaCompra = ultimacompra;
+                    ing.SetUltimaCompra(ultimacompra);
                 }
             }
         }
@@ -424,10 +424,17 @@ namespace ProjetoGrupo1
 
 
 
-       
 
-        public Medicine LocalizarMedicine()
+        //começo medicine
+
+        //Mostra uma mensagem com as informações do medicamento, caso não ache o Id mostra uma mensagem que não achou
+        public Medicine LocalizarMedicine(string cdb)
         {
+            foreach(var med in ListaMedicines)
+            {
+                if(med.CDB == cdb)
+                    return med;
+            }
             return null;
         }
         public bool VerificacaoCDB(string cdb)
@@ -527,21 +534,20 @@ namespace ProjetoGrupo1
         }
 
 
-        public decimal VerificacaoValor()
-        {
-            Console.WriteLine("Qual o novo valor da venda do medicamento?");
-            decimal valorVenda = decimal.Parse(Console.ReadLine());
-            if (valorVenda > 0 && valorVenda < 10000)
-                return valorVenda;
-            else
-            {
-                Console.WriteLine("Valor inválido! Deve ser > 0 e < 10.000");
-                return 0;
-            }
-        }
         public void AlterarMedicine(string cdb)
         {
-            decimal resp;
+            decimal valorVenda;
+            int auxVenda = 0;
+            Medicine medicine;
+            do
+            {
+                Console.WriteLine("O código de barras não está cadastrado, digite novamente:");
+                string aux = Console.ReadLine();
+                medicine = LocalizarMedicine(aux);
+            } while (medicine == null);
+
+            Medicine medicine1 = medicine;
+
             Console.WriteLine("O que deseja alterar?\n1 - Valor da Venda\n2 - Situação do medicamento\n3 - As duas opções");
             int op = int.Parse(Console.ReadLine());
 
@@ -550,18 +556,85 @@ namespace ProjetoGrupo1
                 case 1:
                     do
                     {
-                        decimal valorVenda = VerificacaoValor();
-                    } while (op != 0);
+                        Console.WriteLine("Qual o novo valor da venda do medicamento?");
+                        valorVenda = decimal.Parse(Console.ReadLine());
+                        if (valorVenda > 0 && valorVenda < 10000)
+                            auxVenda = 1;
+                        else
+                            Console.WriteLine("Valor inválido! Deve ser > 0 e < 10.000");
+                    } while (auxVenda == 0);
+                    medicine.SetValorVenda(valorVenda);
                     break;
                 case 2:
+                    foreach (var med in ListaMedicines)
+                    {
+                        if (med.CDB == cdb)
+                        {
+                            if (med.Situacao == 'I')
+                            {
+                                Console.WriteLine("Situação do medicamento alterada com sucesso! De inativo para ativo!");
+                                med.SetSituacao('A');
+                            }
+                            else if (med.Situacao == 'A')
+                            {
+                                Console.WriteLine("Situação do medicamento alterada com sucesso! De ativo para inativo!");
+                                med.SetSituacao('I');
+                            }
+                            else
+                                Console.WriteLine("Medicamento não localizado!");
+                        }
+                    }
                     break;
                 case 3:
+                    do
+                    {
+                        Console.WriteLine("Qual o novo valor da venda do medicamento?");
+                        valorVenda = decimal.Parse(Console.ReadLine());
+                        if (valorVenda > 0 && valorVenda < 10000)
+                            auxVenda = 1;
+                        else
+                            Console.WriteLine("Valor inválido! Deve ser > 0 e < 10.000");
+                    } while (auxVenda == 0);
+                    medicine1.SetValorVenda(valorVenda);
+
+                    foreach (var med in ListaMedicines)
+                    {
+                        if (med.CDB == cdb)
+                        {
+                            if (med.Situacao == 'I')
+                            {
+                                Console.WriteLine("Situação do medicamento alterada com sucesso! De inativo para ativo!");
+                                med.SetSituacao('A');
+                            }
+                            else if (med.Situacao == 'A')
+                            {
+                                Console.WriteLine("Situação do medicamento alterada com sucesso! De ativo para inativo!");
+                                med.SetSituacao('I');
+                            }
+                            else
+                                Console.WriteLine("Medicamento não localizado!");
+                        }
+                    }
                     break;
                 default:
+                    Console.WriteLine("Opção inválida!");
                     break;
             }
-
         }
+
+        public void ImprimirMedicines()
+        {
+            foreach (var med in ListaMedicines)
+            {
+                Console.WriteLine(med.ToString());
+            }
+        }
+
+
+
+
+
+
         //-----------------------------------------------------------------------------------------
         //-----------------------------------------------------------------------------------------
         //-----------------------------------------------------------------------------------------
@@ -584,7 +657,7 @@ namespace ProjetoGrupo1
             Console.WriteLine("Digite o Id do principio ativo: ");
             var ingrediente = Console.ReadLine();
             Ingredient ingridient = new Ingredient();
-            ingridient.Id = ingrediente;
+            //ingridient.Id = ingrediente;
             Console.WriteLine("Digite a quantidade em gramas do item: ");
             var quantidade = int.Parse(Console.ReadLine());
             if (quantidade < 0 || quantidade > 10000)
@@ -673,7 +746,7 @@ namespace ProjetoGrupo1
                 Console.WriteLine("Digite o novo ingrediente do item: ");
                 var ingrediente = Console.ReadLine();
                 Ingredient ingredient = new Ingredient();
-                ingredient.Id = ingrediente;
+                //ingredient.Id = ingrediente;
                 Console.WriteLine("Digite a nova quantidade em gramas do item: ");
                 var quantidade = int.Parse(Console.ReadLine());
                 Console.WriteLine("Digite o novo valor unitário do item: ");

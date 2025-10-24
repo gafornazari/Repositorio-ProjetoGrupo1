@@ -9,11 +9,11 @@ namespace ProjetoGrupo1
 {
     public class Ingredient
     {
-        public string Id { get; set; }
-        public string Nome { get; set; }
-        public DateOnly UltimaCompra { get; set; }
-        public DateOnly DataCadastro { get; set; }
-        public char Situacao { get; set; }
+        public string Id { get; private set; }
+        public string Nome { get; private set; }
+        public DateOnly UltimaCompra { get; private set; }
+        public DateOnly DataCadastro { get; private set; }
+        public char Situacao { get; private set; }
 
         public Ingredient()
         {
@@ -27,6 +27,15 @@ namespace ProjetoGrupo1
             Situacao = 'A';
         }
 
+        public void SetSituacao(char situacao)
+        {
+            Situacao = situacao;
+        }
+
+        public void SetUltimaCompra(DateOnly ultimacompra)
+        {
+            UltimaCompra = ultimacompra;
+        }
 
         public override string ToString()
         {
