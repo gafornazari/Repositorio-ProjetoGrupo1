@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoGrupo1
 {
-    internal class PurchaseItem
+    public class PurchaseItem
     {
         Ingredient ingredient = new Ingredient();
         public PurchaseItem(int idCompra, Ingredient ingrediente, int quantidade,
