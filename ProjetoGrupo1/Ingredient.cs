@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoGrupo1
 {
-    public class Ingridient
+    public class Ingredient
     {
         public string Id { get; set; }
         public string Nome { get; set; }
@@ -15,7 +15,11 @@ namespace ProjetoGrupo1
         public DateOnly DataCadastro { get; set; }
         public char Situacao { get; set; }
 
-        public Ingridient(string id, string nome)
+        public Ingredient()
+        {
+            
+        }
+        public Ingredient(string id, string nome)
         {
             Id = id;
             Nome = nome;
