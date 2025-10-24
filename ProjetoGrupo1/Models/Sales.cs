@@ -12,8 +12,9 @@ namespace ProjetoGrupo1.Models
         public DateOnly DataVenda { get; private set; }
         public string ClienteCPF { get; private set; }
         public decimal ValorTotal { get; private set; }
+        public List<SaleItems>;
 
-        public void SetID (int id)
+        public void SetId (int id)
         {
             this.Id = id;
         }
@@ -34,12 +35,12 @@ namespace ProjetoGrupo1.Models
         {
         }
 
-        public Sales(int id, string cliente, decimal valorTotal)
+        public Sales(string cliente)
         {
             Id = new Random().Next(10000, 100000);
             DataVenda = DateOnly.FromDateTime(DateTime.Now);
             ClienteCPF = cliente;
-            ValorTotal = valorTotal;
+            ValorTotal = 0;
         }
 
         public override string ToString()
