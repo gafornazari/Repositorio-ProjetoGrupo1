@@ -6,19 +6,47 @@ using System.ComponentModel.Design;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ProjetoGrupo1;
+
 
 namespace ProjetoGrupo1
 {
     public class Farmacia
     {
 
+        //-----------------------------------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
+        //lucas
         public List<Produce> ListaProduces { get; set; }
         public List<ProduceItem> ListaProducesItems { get; set; }
+
+        public List<Ingredient> ListaIngredients { get; set; }
+        public List<Medicine> ListaMedicines { get; set; }
+        public List<Purchases> ListaPurchases { get; set; } 
+        public List<PurchaseItem> ListaPurchaseItens { get; set; }
+
+        public List<Customer> ListaCustomers { get; set; }
+        public List<Supplies> ListaSupplies { get; set; }
+        public List<Customer> ListaRestrictedCustomers { get; set; }
+        public List<Supplies> ListaRestrictedSupplies { get; set; }
+        public List<Sales> ListaSales { get; set; }
+        public List<SalesItems> ListaSalesItems {  get; set; }
 
         public Farmacia()
         {
             this.ListaProduces = new List<Produce>();
             this.ListaProducesItems = new List<ProduceItem>();
+            this.ListaIngredients = new List<Ingredient>();
+            this.ListaMedicines = new List<Medicine>();
+            this.ListaPurchases = new List<Purchases>();
+            this.ListaPurchaseItens = new List<PurchaseItem>();
+            this.ListaCustomers = new List<Customer>();
+            this.ListaSupplies = new List<Supplies>();
+            this.ListaRestrictedCustomers = new List<Customer>();
+            this.ListaRestrictedSupplies = new List<Supplies>();
+            this.ListaSales = new List<Sales>();
+            this.ListaSalesItems = new List<SalesItems>();
 
         }
 
@@ -32,7 +60,7 @@ namespace ProjetoGrupo1
         }
         public void ImprimirListaProduces()
         {
-           
+
             Console.Clear();
             foreach (var produce in this.ListaProduces)
             {
@@ -58,7 +86,7 @@ namespace ProjetoGrupo1
         {
             foreach (Produce produce in ListaProduces)
             {
-                if(produce.Id == idProduce)
+                if (produce.Id == idProduce)
                 {
                     return true;
                 }
@@ -74,12 +102,12 @@ namespace ProjetoGrupo1
 
             Console.WriteLine("Digite o Id do Medicamento: ");
             double idMedicamento = Convert.ToDouble(Console.ReadLine()!);
-            //Medicine medicene = LocalizarMedicine();
+            Medicine medicine = LocalizarMedicine();
             if (medicine == null)
             {
                 Console.WriteLine("Medicamento não encontrado!");
             }
-            else if (medicine.Situacao == "I")
+            else if (medicine.Situacao == 'I')
             {
 
                 Console.WriteLine("Medicamento não está ativo!");
@@ -106,7 +134,7 @@ namespace ProjetoGrupo1
 
             }
 
-            
+
         }
 
 
@@ -135,7 +163,7 @@ namespace ProjetoGrupo1
                 Console.WriteLine("Produce atualizada com sucesso!");
                 Console.ReadKey();
             }
-               
+
         }
 
 
@@ -146,7 +174,7 @@ namespace ProjetoGrupo1
             Console.WriteLine("Digite o id da produção: ");
             int idProduce = int.Parse(Console.ReadLine()!);
             var produce = LocalizarProduce(idProduce);
-            if(produce == null)
+            if (produce == null)
             {
                 Console.WriteLine("Produção não encontrada");
             }
@@ -154,8 +182,16 @@ namespace ProjetoGrupo1
             {
                 Console.WriteLine("Digite o id do Princípio Ativo");
                 string idPrincipio = Console.ReadLine()!;
-                var Ingredient = LocalizarIngredient(idPrincipio);
-                if(Ingredient != null && Ingredient.Situacao == "A")
+                Ingredient Ingredient = null;
+                foreach (var ing in ListaIngredients)
+                {
+                    if (ing.Id == idPrincipio)
+                    {
+                        Ingredient = ing;
+                        break;
+                    }
+                }
+                if (Ingredient != null && Ingredient.Situacao == 'A')
                 {
                     Console.WriteLine("Digite a quantidade do Princípio Ativo: ");
                     int quantidade = int.Parse(Console.ReadLine()!);
@@ -166,7 +202,7 @@ namespace ProjetoGrupo1
                 }
                 else
                 {
-                    if(Ingredient == null)
+                    if (Ingredient == null)
                     {
                         Console.WriteLine("Princípio não encontrado");
                     }
@@ -180,8 +216,9 @@ namespace ProjetoGrupo1
 
         public ProduceItem LocalizarProduceItem(int id)
         {
-            foreach(var produceItem in this.ListaProducesItems){
-                if(produceItem.IdProduceItem == id)
+            foreach (var produceItem in this.ListaProducesItems)
+            {
+                if (produceItem.IdProduceItem == id)
                 {
                     return produceItem;
                 }
@@ -197,8 +234,16 @@ namespace ProjetoGrupo1
             {
                 Console.WriteLine("Digite o id do novo Princípio Ativo");
                 string idPrincipio = Console.ReadLine()!;
-                var Ingredient = LocalizarIngredient(idPrincipio);
-                if (Ingredient != null && Ingredient.Situacao == "A")
+                Ingredient Ingredient = null;
+                foreach (var ing in ListaIngredients)
+                {
+                    if (ing.Id == idPrincipio)
+                    {
+                        Ingredient = ing;
+                        break;
+                    }
+                }
+                if (Ingredient != null && Ingredient.Situacao == 'A')
                 {
                     Console.WriteLine("Digite a quantidade do novo Princípio Ativo: ");
                     int quantidade = int.Parse(Console.ReadLine()!);
@@ -225,7 +270,7 @@ namespace ProjetoGrupo1
                 Console.WriteLine("Item de produção não encontrado");
             }
         }
-       
+
 
 
         public void ImprimirListaProduceItem()
@@ -248,21 +293,25 @@ namespace ProjetoGrupo1
         {
             return this.ListaProducesItems.ToList();
         }
-    }
 
 
-}
-        public List<Ingridient> ListaIngridients = new List<Ingridient>();
+        //-----------------------------------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------------------------
+        //giovanna
+
+
+        
 
         //método para verificar se já existe algum ingrediente com o mesmo id
         public bool BuscarIngridientId(string id)
         {
-            return ListaIngridients.Any(aux => aux.Id == id);// true - existe | false - não existe
+            return ListaIngredients.Any(aux => aux.Id == id);// true - existe | false - não existe
         }
 
 
         //Retorna um ingrediente novo para ser inserido na lista
-        public Ingridient IncluirIngredient()
+        public Ingredient IncluirIngredient()
         {
             int auxId = 0, auxNome = 0;
             string nome, id;
@@ -311,13 +360,13 @@ namespace ProjetoGrupo1
             //DataCadstro será atribuída no próprio construtor com a data atual
             //Situação será atribuída no prórpio construtor como Ativa
 
-            return new Ingridient(id, nome);
+            return new Ingredient(id, nome);
         }
 
         //Mostra uma mensagem com as informações do ingrediente, caso não ache o Id mostra uma mensagem que não achou
         public void LocalizarIngridient(string id)
         {
-            foreach (var ing in ListaIngridients)
+            foreach (var ing in ListaIngredients)
             {
                 if (ing.Id == id)
                 {
@@ -332,7 +381,7 @@ namespace ProjetoGrupo1
         //Altera a situação do ingrediente de Ativo para Inativo
         public void AlterarIngridient(string id)
         {
-            foreach (var ing in ListaIngridients)
+            foreach (var ing in ListaIngredients)
             {
                 if (ing.Id == id)
                 {
@@ -355,7 +404,7 @@ namespace ProjetoGrupo1
         //É chamada quando há uma nova compra, alterando a data da última compra
         public void AlterarIngridientUltimaCompra(DateOnly ultimacompra, string id)
         {
-            foreach (var ing in ListaIngridients)
+            foreach (var ing in ListaIngredients)
             {
                 if (ing.Id == id)
                 {
@@ -367,21 +416,20 @@ namespace ProjetoGrupo1
         //Imprime a lista de ingredientes
         public void ImprimirIngridient()
         {
-            foreach (var ing in ListaIngridients)
+            foreach (var ing in ListaIngredients)
             {
                 Console.WriteLine(ing.ToString());
             }
         }
 
 
-        //-----------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------
-        //-----------------------------------------------------------------------------------------------------------------------------------
 
+       
 
-        public List<Medicine> ListaMedicines = new List<Medicine>();
-
-
+        public Medicine LocalizarMedicine()
+        {
+            return null;
+        }
         public bool VerificacaoCDB(string cdb)
         {
             char[] vetoraux = cdb.ToCharArray();
@@ -502,8 +550,8 @@ namespace ProjetoGrupo1
                 case 1:
                     do
                     {
-                        decimal = VerificacaoValor();
-                    } while (!resp);
+                        decimal valorVenda = VerificacaoValor();
+                    } while (op != 0);
                     break;
                 case 2:
                     break;
@@ -514,11 +562,13 @@ namespace ProjetoGrupo1
             }
 
         }
-    }
+        //-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
+        //Felipe
 
-    
-        List<Purchases> ListaPurchases { get; set; } = new List<Purchases>();
-        List<PurchaseItem> ListaPurchaseItens { get; set; } = new List<PurchaseItem>();
+
+        
 
         public void IncluirPurchases()
         {
@@ -527,12 +577,14 @@ namespace ProjetoGrupo1
             DateOnly data = DateOnly.FromDateTime(DateTime.Now);
             Console.WriteLine(data.ToString("dd/MM/yyyy"));
             data = DateOnly.Parse(Console.ReadLine());
-            //Console.WriteLine("Digite o CNPJ do fornecedor: ");
-            //var fornecedor = Console.ReadLine();
-            //suppliers.CNPJ = fornecedor;
-            //Console.WriteLine("Digite o Id do principio ativo: ");
-            //var ingrediente = Console.ReadLine();
-            //ingredient.Id = ingrediente;
+            Console.WriteLine("Digite o CNPJ do fornecedor: ");
+            var fornecedor = Console.ReadLine();
+            Supplies suppliers = new Supplies();
+            suppliers.SetCNPJ(fornecedor);
+            Console.WriteLine("Digite o Id do principio ativo: ");
+            var ingrediente = Console.ReadLine();
+            Ingredient ingridient = new Ingredient();
+            ingridient.Id = ingrediente;
             Console.WriteLine("Digite a quantidade em gramas do item: ");
             var quantidade = int.Parse(Console.ReadLine());
             if (quantidade < 0 || quantidade > 10000)
@@ -556,7 +608,7 @@ namespace ProjetoGrupo1
             }
 
             this.ListaPurchases.Add(new Purchases(id, data, valorTotal));
-            this.ListaPurchaseItens.Add(new PurchaseItem(id, quantidade, valorUnitario, totalItem));
+            this.ListaPurchaseItens.Add(new PurchaseItem(id, ingridient, quantidade, valorUnitario, totalItem));
         }
 
         public void LocalizarPurchases()
@@ -618,8 +670,10 @@ namespace ProjetoGrupo1
             if (purchaseItem != null)
             {
                 //ingrediente
-                //Console.WriteLine("Digite o novo ingrediente do item: ");
-                //var ingrediente = int.Parse(Console.ReadLine());
+                Console.WriteLine("Digite o novo ingrediente do item: ");
+                var ingrediente = Console.ReadLine();
+                Ingredient ingredient = new Ingredient();
+                ingredient.Id = ingrediente;
                 Console.WriteLine("Digite a nova quantidade em gramas do item: ");
                 var quantidade = int.Parse(Console.ReadLine());
                 Console.WriteLine("Digite o novo valor unitário do item: ");
@@ -628,8 +682,8 @@ namespace ProjetoGrupo1
                 Console.WriteLine($"Total do item atualizado: {totalItem}");
                 // Atualiza o item na lista
                 this.ListaPurchaseItens.Remove(purchaseItem);
-                this.ListaPurchaseItens.Add(new PurchaseItem(id 
-                    /*purchaseItem.Ingrediente*/, quantidade, valorUnitario, totalItem));
+                this.ListaPurchaseItens.Add(new PurchaseItem(id,
+                    ingredient, quantidade, valorUnitario, totalItem));
             }
             else
             {
@@ -657,10 +711,7 @@ namespace ProjetoGrupo1
         //---------------------------------------------------------------------------------------------------------
         //ANA
 
-        public List<Customer> ListaCustomers = new List<Customer>();
-        public List<Supplies> ListaSupplies = new List<Supplies>();
-        public List<Customer> ListaRestrictedCustomers = new List<Customer>();
-        public List<Supplies> ListaRestrictedSupplies = new List<Supplies>();
+        
 
         //Métodos para os clientes/customers
         public string VerificarCpf(string cpf)
@@ -759,7 +810,7 @@ namespace ProjetoGrupo1
         public void AlterarCliente()
         {
             Console.WriteLine("Qual o cpf do cliente? ");
-            string cpf = Console.ReadLine()!);
+            string cpf = Console.ReadLine()!;
             var cliente = LocalizarCliente(cpf);
 
             if (cliente == null)
@@ -876,7 +927,7 @@ namespace ProjetoGrupo1
 
             foreach (var fornecedor in ListaSupplies)
             {
-                if (fornecedor.CNPJ == cnpj)
+                if (fornecedor.GetCNPJ() == cnpj)
                 {
                     Console.WriteLine("Empresa já cadastrada.");
                 }
@@ -906,7 +957,7 @@ namespace ProjetoGrupo1
 
         public Supplies LocalizarFornecedor(string cnpj)
         {
-            return ListaSupplies.Find(s => s.CNPJ == cnpj);
+            return ListaSupplies.Find(s => s.GetCNPJ() == cnpj);
 
         }
         public void ListarFornecedores()
@@ -924,7 +975,7 @@ namespace ProjetoGrupo1
         public void AlterarFornecedores()
         {
             Console.WriteLine("Qual o cnpj da empresa? ");
-            string cnpj = Console.ReadLine()!);
+            string cnpj = Console.ReadLine()!;
             var fornecedor = LocalizarFornecedor(cnpj);
 
             if (fornecedor == null)
@@ -1019,7 +1070,7 @@ namespace ProjetoGrupo1
             string cnpj = Console.ReadLine()!;
             foreach (var fornecedor in ListaSupplies)
             {
-                if (fornecedor.CNPJ == cnpj)
+                if (fornecedor.GetCNPJ() == cnpj)
                 {
                     Console.WriteLine("Empresa adicionada a lista de Empresas Restritas.");
                     ListaRestrictedSupplies.Add(fornecedor);
@@ -1033,7 +1084,7 @@ namespace ProjetoGrupo1
 
         public Supplies LocalizarFornecedoresRestritos(string cnpj)
         {
-            return ListaRestrictedSupplies.Find(s => s.CNPJ == cnpj);
+            return ListaRestrictedSupplies.Find(s => s.GetCNPJ() == cnpj);
         }
 
         public void AlterarFornecedoresRestritos()
@@ -1060,5 +1111,71 @@ namespace ProjetoGrupo1
             }
 
         }
+
+        //-----------------------------------------------------------------------
+        //-----------------------------------------------------------------------
+        //-----------------------------------------------------------------------
+        //leandro
+
+        
+
+
+
+
+
+        public void IncluirSales()
+        {
+            Console.WriteLine("Digite o CPF do cliente: ");
+            string cpf = Console.ReadLine();
+            var customer = 0; //= LocalizarCustomer(cpf);
+
+            if (customer == 0)
+                Console.WriteLine("Cliente não cadastrado!");
+
+            //else if (/*LocalizarClientesRestritos(cpf)*/)
+            //{
+            //    Console.WriteLine("Cliente restrito");
+            //}
+            else { }
+        }
+    public void LocalizarSales(int id)
+    {
+        foreach (var venda in ListaSales)
+        {
+            if (venda.Id == id)
+            {
+                Console.WriteLine("Venda encontrada!");
+                Console.WriteLine(venda.ToString());
+            }
+            else
+            {
+                Console.WriteLine("Venda não encontrado!");
+            }
+        }
+    }
+        
+
+    public void VerificarItem()
+    {
+        int auxid1 = 0;
+
+        Console.WriteLine("Digite um número inteiro com 5 dígitos:");
+        string entrada = Console.ReadLine();
+        if (entrada.Length == 5 && entrada.All(char.IsDigit))
+        {
+            Console.WriteLine("Entrada válida: contém apenas números e tem 5 dígitos.");
+            auxid1 = 1;
+            int numero = int.Parse(entrada);
+            Console.WriteLine(entrada);
+        }
+        else
+        {
+            Console.WriteLine("Entrada invalida! ");
+            Console.WriteLine("O Id deve conter apenas 5 numeros inteiros!");
+            Console.WriteLine("Tente novamente!");
+        }
+
+    }
+
     }
 }

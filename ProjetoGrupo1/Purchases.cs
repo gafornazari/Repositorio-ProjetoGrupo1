@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoGrupo1
 {
-    internal class Purchases
+    public class Purchases
     {
         public int Id { get; private set; }
         public DateOnly DataCompra { get; private set; } 
@@ -16,6 +16,7 @@ namespace ProjetoGrupo1
             /*string fornecedor*/ double valorTotal)
         {
             Id = id;
+
             DataCompra = dataCompra;
             //Fornecedor = fornecedor;
             ValorTotal = valorTotal;

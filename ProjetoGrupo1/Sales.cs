@@ -14,10 +14,12 @@ namespace ProjetoGrupo1
         public decimal ValorTotal { get; private set; }
         public List<SaleItems>;
 
-        public void SetId(int id)
+        public void SetId (int id)
         {
-            this.Id = id;
+            Id = id;
         }
+
+        
         public void SetDataVenda(DateOnly dataVenda)
         {
             this.DataVenda = dataVenda;
@@ -37,7 +39,7 @@ namespace ProjetoGrupo1
 
         public Sales(string cliente)
         {
-            Id = new Random().Next(10000, 100000);
+            SetId(new Random().Next(10000, 100000));
             DataVenda = DateOnly.FromDateTime(DateTime.Now);
             ClienteCPF = cliente;
             ValorTotal = 0;
@@ -45,7 +47,7 @@ namespace ProjetoGrupo1
 
         public override string ToString()
         {
-            return $"Id: {Id}";
+            return $"Id: {this.Id}";
         }
 
     }
