@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetoGrupo1.Models
+namespace ProjetoGrupo1
 {
     public class Sales
     {
@@ -14,7 +14,7 @@ namespace ProjetoGrupo1.Models
         public decimal ValorTotal { get; private set; }
         public List<SaleItems>;
 
-        public void SetId (int id)
+        public void SetId(int id)
         {
             this.Id = id;
         }
