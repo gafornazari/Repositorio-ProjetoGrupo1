@@ -1,4 +1,6 @@
 using ProjetoGrupo1;
+using ProjetoGrupo1.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 Farmacia farmacia = new Farmacia();
 
 string directoryPath = @"\Users\Lucas\source\repos\Repositorio-ProjetoGrupo1\Arquivos"; 
@@ -312,6 +314,118 @@ List<PurchaseItem> LerArquivo2()
             purchaseItensSR.Close();
             return purchaseItens;
         }
+
     }
+
+    //Leandro ====================================================================
+
+    string CarregarArquivoSales()
+    {
+        string directory = @"C:\SneezePharma\Sales\";
+        string file = "Sales.data";
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        var path = Path.Combine(directory, file);
+        if (!File.Exists(path))
+        {
+            File.Create(path);
+        }
+        return path;
+    }
+
+    string CarregarArquivoSaleItems()
+    {
+        string directory1 = @"C:\SneezePharma\SaleItems\";
+        string file1 = "SaleItems.data";
+        if (!Directory.Exists(directory1))
+        {
+            Directory.CreateDirectory(directory1);
+        }
+
+        var path1 = Path.Combine(directory1, file1);
+        if (!File.Exists(path1))
+        {
+            File.Create(path1);
+        }
+        return path1;
+    }
+
+    List<Sales> LerArquivoSales()
+    {
+        var fullPath = CarregarArquivoSales();
+
+        StreamReader salesSR = new StreamReader(fullPath);
+
+        using (salesSR)
+        {
+            List<Sales> sales = new List<Sales>();
+
+            string line;
+
+            while ((line = salesSR.ReadLine()) != null)
+            {
+                var id = line.Substring(0, 5);
+                var date = line.Substring(5, 8);
+                var cpf = line.Substring(13, 11);
+                var TotalValue = line.Substring(24, 7);
+
+                Sales sale = new Sales();
+                sale.SetID(int.Parse(id));
+
+                DateOnly data = DateOnly.ParseExact(date, "ddMMyyyy");
+                sale.SetDataVenda(data);
+
+                sale.SetCliente(cpf);
+
+                sale.SetValorTotal(decimal.Parse(TotalValue));
+
+                sales.Add(sale);
+            }
+
+            salesSR.Close();
+            return sales;
+        }
+    }
+
+    List<SaleItems> LerArquivosSaleItems()
+    {
+        var fullPath1 = CarregarArquivoSaleItems();
+
+        StreamReader saleItemsSR = new StreamReader(fullPath1);
+
+        using (saleItemsSR)
+        {
+            List<SaleItems> saleItems = new List<SaleItems>();
+
+            string line;
+
+            while ((line = saleItemsSR.ReadLine()) != null)
+            {
+                var id = line.Substring(0, 5);
+                var codigoDeBarras = line.Substring(5, 13);
+                var quantidade = line.Substring(18, 3);
+                var valorUnitario = line.Substring(21, 6);
+                var totalItem = line.Substring(27, 7);
+
+                SaleItems saleItems1 = new SaleItems();
+                saleItems1.SetIdVenda(int.Parse(id)); 
+
+                // fazer o codigo de barras===========
+                
+                sale.SetCliente(cpf);
+
+                sale.SetValorTotal(decimal.Parse(TotalValue));
+
+                sales.Add(sale);
+            }
+
+            salesSR.Close();
+            return sales;
+        }
+    }
+
 }
 

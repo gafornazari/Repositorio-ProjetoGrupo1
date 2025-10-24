@@ -14,10 +14,9 @@ namespace ProjetoGrupo1.Models
         public decimal ValorUnitario { get; private set; }
         public decimal TotalItem { get; private set; }
 
-
-
-
-
+        public SaleItems()
+        {
+        }
 
         public SaleItems(int idVenda, string medicamento, int quantidade, decimal valorUnitario, decimal totalItem)
         {
@@ -27,5 +26,28 @@ namespace ProjetoGrupo1.Models
             ValorUnitario = valorUnitario;
             TotalItem = totalItem;
         }
+
+        public void SetIdVenda(int idVenda)
+        {
+            IdVenda = idVenda;
+        }
+        public void SetMedicamento(string medicamento)
+        {
+            Medicamento = medicamento;
+        }
+        public void SetQuantidade(int  quantidade)
+        {
+            Quantidade = quantidade;
+        }
+        public void SetvalorUnitario(decimal valorUnitario)
+        {
+            ValorUnitario = valorUnitario;
+        }
+        public void SettotalItem(decimal totalItem)
+        {
+            TotalItem = totalItem;
+        }
     }
+
+
 }
