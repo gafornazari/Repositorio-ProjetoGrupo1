@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetoGrupo1.Models
+namespace ProjetoGrupo1
 {
     public class Sales
     {
@@ -16,19 +16,19 @@ namespace ProjetoGrupo1.Models
 
         public void SetId (int id)
         {
-            this.Id = id;
+            Id = id;
         }
         public void SetDataVenda(DateOnly dataVenda)
         {
-            this.DataVenda = dataVenda;
+            DataVenda = dataVenda;
         }
         public void SetCliente(string cliente)
         {
-            this.ClienteCPF = cliente;
+            ClienteCPF = cliente;
         }
         public void SetValorTotal(decimal valorTotal)
         {
-            this.ValorTotal = valorTotal;
+            ValorTotal = valorTotal;
         }
 
         public Sales()
