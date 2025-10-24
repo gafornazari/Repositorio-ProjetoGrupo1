@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProjetoGrupo1.Models;
+using ProjetoGrupo1;
 
 namespace ProjetoGrupo1.Models
 {
@@ -18,17 +20,17 @@ namespace ProjetoGrupo1.Models
            
             Console.WriteLine("Digite o CPF do cliente: ");
             string cpf = Console.ReadLine();
-            var customer = LocalizarCustomer(cpf);
+            var customer = 0; //= LocalizarCustomer(cpf);
 
-            if (customer == null)
+            if (customer == 0)
             {
                 Console.WriteLine("Cliente não cadastrado!");
 
             }
-            else if (LocalizarClientesRestritos(cpf))
-            {
-                Console.WriteLine("Cliente restrito");
-            }
+            //else if (/*LocalizarClientesRestritos(cpf)*/)
+            //{
+            //    Console.WriteLine("Cliente restrito");
+            //}
             else
             {
 
