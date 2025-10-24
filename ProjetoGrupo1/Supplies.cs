@@ -29,7 +29,7 @@ namespace ProjetoGrupo1
             DateOnly dataCadastro,
             char situacao)
         {
-            CNPJ = cNPJ;
+            SetCNPJ(cNPJ);
             RazaoSocial = razaoSocial;
             Pais = pais;
             DataAbertura = dataAbertura;
@@ -53,10 +53,18 @@ namespace ProjetoGrupo1
         {
             Pais = pais;
         }
+        public string GetCNPJ()
+        {
+            return CNPJ;
+        }
+        public void SetCNPJ(string cnpj)
+        {
+            this.CNPJ = cnpj;
+        }
 
         public override string ToString()
         {
-            return $"CNPJ: {this.CNPJ}\n Razão social: {this.RazaoSocial}\n País: {this.Pais}\n " +
+            return $"CNPJ: {this.GetCNPJ()}\n Razão social: {this.RazaoSocial}\n País: {this.Pais}\n " +
                 $"Data Abertura: {this.DataAbertura}\n Ultimo fornecimento: {this.UltimoFornecimento}\n " +
                 $"Data Cadastro: {this.DataCadastro}\n Situação: {this.Situacao}";
         }
