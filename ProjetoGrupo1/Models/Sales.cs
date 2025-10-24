@@ -23,7 +23,7 @@ namespace ProjetoGrupo1.Models
         }
         public void SetCliente(string cliente)
         {
-            this.Cliente = cliente;
+            this.ClienteCPF = cliente;
         }
         public void SetValorTotal(decimal valorTotal)
         {

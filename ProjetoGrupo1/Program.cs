@@ -1,7 +1,7 @@
 using ProjetoGrupo1;
 Farmacia farmacia = new Farmacia();
 
-string directoryPath = @"\Users\Lucas\source\repos\Repositorio-ProjetoGrupo1\Arquivos"; 
+string directoryPath = @"C:\SneezePharma\ProduceDept\"; 
 
 List<Produce> producoes = new List<Produce>();
 
@@ -269,7 +269,7 @@ List<Purchases> LerArquivo1()
                 string line = purchaseSR.ReadLine();
                 var id = line.Substring(0, 5);
                 var date = line.Substring(5, 10);
-                var suplierCNPJ = line.Substring(15, 14);
+                var suplierCNPJ = line.Substring(14, 14);
                 var TotalValue = line.Substring(29, 8);
                 Purchases purchase = new Purchases(int.Parse(id), 
                     DateOnly.Parse(date), /*suplierCNPJ,*/
@@ -303,15 +303,43 @@ List<PurchaseItem> LerArquivo2()
                 var idCompra = line.Substring(0, 5);
                 var ingredient = line.Substring(5, 6);
                 var quantity = line.Substring(15, 14);
-                var TotalValue = line.Substring(29, 8);
+                var TotalItem = line.Substring(29, 8);
                 PurchaseItem purchaseItem = new PurchaseItem(int.Parse(idCompra), 
-                    DateOnly.Parse(date), /*suplierCNPJ,*/
-                    double.Parse(TotalValue));
+                    int.Parse(ingredient), int.Parse(quantity),
+                    double.Parse(TotalItem));
                 purchaseItens.Add(purchaseItem);
             }
             purchaseItensSR.Close();
             return purchaseItens;
         }
+    }
+}
+
+void GravarArquivo1(List<Purchases> purchases)
+{
+    var fullPath = CarregarArquivo1();
+    StreamWriter purchaseSW = new StreamWriter(fullPath);
+    using (purchaseSW)
+    {
+        foreach (Purchases purchase in purchases)
+        {
+            purchaseSW.WriteLine(purchase.ToFile());
+        }
+        purchaseSW.Close();
+    }
+}
+
+void GravarArquivo2(List<PurchaseItem> purchaseItems)
+{
+    var fullPath = CarregarArquivo2();
+    StreamWriter purchaseItemSW = new StreamWriter(fullPath);
+    using (purchaseItemSW)
+    {
+        foreach (PurchaseItem purchaseItem in purchaseItems)
+        {
+            purchaseItemSW.WriteLine(purchaseItem.ToFile());
+        }
+        purchaseItemSW.Close();
     }
 }
 
