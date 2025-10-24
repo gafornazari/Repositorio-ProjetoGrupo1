@@ -269,7 +269,7 @@ List<Purchases> LerArquivo1()
                 string line = purchaseSR.ReadLine();
                 var id = line.Substring(0, 5);
                 var date = line.Substring(5, 10);
-                var suplierCNPJ = line.Substring(15, 14);
+                var suplierCNPJ = line.Substring(14, 14);
                 var TotalValue = line.Substring(29, 8);
                 Purchases purchase = new Purchases(int.Parse(id), 
                     DateOnly.Parse(date), /*suplierCNPJ,*/
