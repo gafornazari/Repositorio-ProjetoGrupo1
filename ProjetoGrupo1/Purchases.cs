@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoGrupo1
 {
-    internal class Purchases
+    public class Purchases
     {
         public int Id { get; private set; }
         public DateOnly DataCompra { get; private set; } 
