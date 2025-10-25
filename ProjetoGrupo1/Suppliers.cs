@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoGrupo1;
 
-public class Supplies
+public class Suppliers
 {
     public string CNPJ { get; private set; }
     public string RazaoSocial { get; private set; }
@@ -16,12 +16,12 @@ public class Supplies
     public DateOnly DataCadastro { get; private set; }
     public char Situacao { get; private set; }
 
-    public Supplies()
+    public Suppliers()
     {
 
     }
 
-    public Supplies(string cNPJ,
+    public Suppliers(string cNPJ,
         string razaoSocial,
         string pais,
         DateOnly dataAbertura

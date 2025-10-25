@@ -18,9 +18,9 @@ namespace ProjetoGrupo1
         public List<PurchaseItem> ListaPurchaseItems { get; set; }
 
         public List<Customer> ListaCustomers { get; set; }
-        public List<Supplies> ListaSupplies { get; set; }
+        public List<Suppliers> ListaSupplies { get; set; }
         public List<Customer> ListaRestrictedCustomers { get; set; }
-        public List<Supplies> ListaRestrictedSupplies { get; set; }
+        public List<Suppliers> ListaRestrictedSupplies { get; set; }
         public List<Sales> ListaSales { get; set; }
         public List<SalesItems> ListaSalesItems { get; set; }
 
@@ -33,9 +33,9 @@ namespace ProjetoGrupo1
             this.ListaPurchases = new List<Purchases>();
             this.ListaPurchaseItems = new List<PurchaseItem>();
             this.ListaCustomers = new List<Customer>();
-            this.ListaSupplies = new List<Supplies>();
+            this.ListaSupplies = new List<Suppliers>();
             this.ListaRestrictedCustomers = new List<Customer>();
-            this.ListaRestrictedSupplies = new List<Supplies>();
+            this.ListaRestrictedSupplies = new List<Suppliers>();
             this.ListaSales = new List<Sales>();
             this.ListaSalesItems = new List<SalesItems>();
 
@@ -906,10 +906,10 @@ namespace ProjetoGrupo1
             DateOnly dataFundacao = DateOnly.Parse(Console.ReadLine());
             VerificarDataAbertura(dataFundacao);
 
-            ListaSupplies.Add(new Supplies(cnpj, razaoSocial, pais, dataFundacao));
+            ListaSupplies.Add(new Suppliers(cnpj, razaoSocial, pais, dataFundacao));
         }
 
-        public Supplies LocalizarFornecedor(string cnpj)
+        public Suppliers LocalizarFornecedor(string cnpj)
         {
             return ListaSupplies.Find(s => s.GetCNPJ() == cnpj);
 
@@ -1140,6 +1140,7 @@ namespace ProjetoGrupo1
 
         public void IncluirPurchases()
         {
+            double valorTotal = 0;
             int id;
             while (true)
             {
@@ -1166,8 +1167,9 @@ namespace ProjetoGrupo1
                 string formatadoData = data.ToString().PadLeft(8);
                 Console.WriteLine("Data no formato inválido. Tente novamente.");
             }
+
             string fornecedorCnpj;
-            Supplies fornecedor = null;
+            Suppliers fornecedor = null;
             while (true)
             {
                 Console.WriteLine("Digite o CNPJ do fornecedor: ");
@@ -1187,63 +1189,75 @@ namespace ProjetoGrupo1
                 }
                 break;
             }
-            int idCompra;
-            while (true)
+            int contadorItens = 0;
+            while (contadorItens <= 3)
             {
-                Console.WriteLine("Digite o Id do item comprado: ");
-                if (int.TryParse(Console.ReadLine(), out idCompra))
-                    break;
-                string formatadoIdCompra = idCompra.ToString().PadLeft(5, '0');
-                Console.WriteLine("Id inválido. Digite um número inteiro.");
+                int idCompra;
+                while (true)
+                {
+                    Console.WriteLine("Digite o Id do item comprado: ");
+                    if (int.TryParse(Console.ReadLine(), out idCompra))
+                        break;
+                    Console.WriteLine("Id inválido. Digite um número inteiro.");
+                }
+                string ingredienteId;
+                Ingredient ingredient = null;
+                while (true)
+                {
+                    Console.WriteLine("Digite o Id do princípio ativo: ");
+                    ingredienteId = Console.ReadLine();
+                    ingredient = ListaIngredients.FirstOrDefault(i => i.Id ==
+                    ingredienteId && i.Situacao == 'A');
+                    if (ingredient != null)
+                        break;
+                    Console.WriteLine("Ingrediente inválido ou inativo. " +
+                        "Tente novamente.");
+                }
+                int quantidade;
+                while (true)
+                {
+                    Console.WriteLine("Digite a quantidade em gramas do item " +
+                        "(0 a 10000):");
+                    if (int.TryParse(Console.ReadLine(), out quantidade) &&
+                        quantidade >= 0 && quantidade <= 10000)
+                        break;
+                    Console.WriteLine("Quantidade inválida. Deve estar entre " +
+                        "0 e 10.000.");
+                }
+                double valorUnitario;
+                while (true)
+                {
+                    Console.WriteLine("Digite o valor unitário do item (0 a 1000): ");
+                    if (double.TryParse(Console.ReadLine(), out valorUnitario)
+                        && valorUnitario >= 0 && valorUnitario <= 1000)
+                        break;
+                    Console.WriteLine("Valor unitário inválido. Deve estar entre" +
+                        " 0 e 1.000.");
+                }
+                double totalItem = quantidade * valorUnitario;
+                Console.WriteLine($"Total do item: {totalItem:F2}");
+
+                valorTotal += totalItem;
+
+                this.ListaPurchaseItems.Add(new PurchaseItem(idCompra,
+                    ingredient.Id, quantidade, valorUnitario, totalItem));
+                contadorItens++;
+
+                if (contadorItens <= 3)
+                {
+                    Console.WriteLine("Deseja adicionar mais um item? (S/N)");
+                    var resposta = Console.ReadLine();
+                    if (resposta == null || !resposta.Trim().ToUpper().StartsWith("S"))
+                        break;
+                }
+                AlterarIngridientUltimaCompra(data, ingredienteId);
             }
-            string ingredienteId;
-            Ingredient ingredient = null;
-            while (true)
-            {
-                Console.WriteLine("Digite o Id do princípio ativo: ");
-                ingredienteId = Console.ReadLine();
-                string formatadoIdIngrediente = ingredienteId.ToString().PadLeft(6, '0');
-                ingredient = ListaIngredients.FirstOrDefault(i => i.Id == ingredienteId
-                             && i.Situacao == 'A')!;
-                if (ingredient != null)
-                    break;
-                Console.WriteLine("Ingrediente inválido ou inativo. Tente novamente.");
-            }
-            int quantidade;
-            while (true)
-            {
-                Console.WriteLine("Digite a quantidade em gramas do item (0 a 10000):");
-                if (int.TryParse(Console.ReadLine(), out quantidade)
-                    && quantidade >= 0 && quantidade <= 10000)
-                    break;
-                string formatadoQuantidade = quantidade.ToString().PadLeft(4, '0');
-                Console.WriteLine("Quantidade inválida. Deve estar entre 0 e 10.000.");
-            }
-            double valorUnitario;
-            while (true)
-            {
-                Console.WriteLine("Digite o valor unitário do item (0 a 1000): ");
-                if (double.TryParse(Console.ReadLine(), out valorUnitario)
-                    && valorUnitario >= 0 && valorUnitario <= 1000)
-                    break;
-                string formatadoValorUnitario = valorUnitario.
-                    ToString("F2").PadLeft(6, '0');
-                Console.WriteLine("Valor unitário inválido. " +
-                    "Deve estar entre 0 e 1.000.");
-            }
-            double totalItem = quantidade * valorUnitario;
-            string formatadoTotalItem = totalItem.ToString("F2").PadLeft(10, '0');
-            Console.WriteLine($"Total do item: {totalItem}");
-            double valorTotal = 0;
-            valorTotal += totalItem;
-            string formatadoValorTotal = valorTotal.ToString("F2").PadLeft(10, '0');
-            Console.WriteLine($"Valor total: {valorTotal}");
-            this.ListaPurchases.Add(new Purchases(id, data, fornecedor.CNPJ, valorTotal));
-            this.ListaPurchaseItems.Add(new PurchaseItem(id,
-                ingredient.Id, quantidade, valorUnitario, totalItem));
+            Console.WriteLine($"Valor total dos itens: {valorTotal:F2}");
+            this.ListaPurchases.Add(new Purchases(id, data, fornecedor.CNPJ,
+                valorTotal));
         }
-      
-        public Purchases LocalizarPurchases(int Id)
+
+        public Purchases RetornarPurchases(int Id)
         {
             foreach (var item in ListaPurchases)
             {
@@ -1254,7 +1268,7 @@ namespace ProjetoGrupo1
             }
             return null;
         }
-        public PurchaseItem LocalizarPurchaseItem(int Id)
+        public PurchaseItem RetornarPurchaseItem(int Id)
         {
             foreach (var item in ListaPurchaseItems)
             {
@@ -1264,6 +1278,44 @@ namespace ProjetoGrupo1
                 }
             }
             return null;
+        }
+        public void LocalizarPurchases()
+        {
+            Console.WriteLine("Digite o id da compra: ");
+            int id = int.Parse(Console.ReadLine()!);
+            Purchases purchase = RetornarPurchases(id);
+            if (purchase != null)
+            {
+                Console.Clear();
+                Console.WriteLine("Compra encontrada!");
+                Console.WriteLine(purchase);
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Compra não encontrada!");
+                Console.ReadKey();
+            }
+        }
+        public void LocalizarPurchaseItem()
+        {
+            Console.WriteLine("Digite o id do item da compra: ");
+            int id = int.Parse(Console.ReadLine()!);
+            PurchaseItem item = RetornarPurchaseItem(id);
+            if (item != null)
+            {
+                Console.Clear();
+                Console.WriteLine("Item da compra encontrado!");
+                Console.WriteLine(item);
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Item da compra não encontrado!");
+                Console.ReadKey();
+            }
         }
         public void AlterarPurchases(int IdCompra)
         {
@@ -1276,38 +1328,45 @@ namespace ProjetoGrupo1
             {
                 Console.WriteLine("O Id da compra está incorreto");
                 var aux = int.Parse(Console.ReadLine());
-                purchaseItem = LocalizarPurchaseItem(aux);
+                purchaseItem = RetornarPurchaseItem(aux);
             } while (purchaseItem == null);
-            PurchaseItem purchaseItem1 = purchaseItem;
+
+            purchases = RetornarPurchases(IdCompra);
+
             Console.WriteLine("Digite o que deseja alterar:\n1 - Quantidade" +
                 "\n2 - ValorUnitário\n3 - As duas opções ");
             var opcao = int.Parse(Console.ReadLine());
+
             switch (opcao)
             {
                 case 1:
+                    auxItems = 0;
                     do
                     {
                         Console.WriteLine("Digite a nova quantidade em gramas do item:");
                         quantidade = int.Parse(Console.ReadLine());
                         string formatadoQuantidade =
                             quantidade.ToString().PadLeft(4, '0');
-                        if (quantidade > 0 && quantidade < 10000)
-                        {
-                            auxItems = 1;
-                        }
-                        else
+                        if (quantidade < 0 && quantidade > 10000)
                         {
                             Console.WriteLine("Quantidade Inválida! A quantidade " +
                                 "em gramas de itens deve estar entre 0 e 10.000.");
                         }
+                        var totalItem = quantidade * purchaseItem.ValorUnitario;
+                        if (totalItem <= 0 || totalItem >= 9999999.00)
+                        {
+                            Console.WriteLine("Valor total inválido! " +
+                                "Deve estar entre 0 e 10.000.000,00.");
+                            continue;
+                        }
+                        auxItems = 1;
+                        purchaseItem.setQuantidade(quantidade);
+                        purchaseItem.setTotaItem(totalItem);
+                        purchases.setValorTotal(totalItem);
                     } while (auxItems == 0);
-                    purchaseItem.setQuantidade(quantidade);
-                    purchaseItem.setTotaItem(quantidade * purchaseItem.ValorUnitario);
-                    var totalItem = quantidade * purchaseItem.ValorUnitario;
-                    purchases = LocalizarPurchases(IdCompra);
-                    purchases.setValorTotal(totalItem);
                     break;
                 case 2:
+                    auxItems = 0;
                     do
                     {
                         Console.WriteLine("Digite o novo Valor Unitário" +
@@ -1315,61 +1374,66 @@ namespace ProjetoGrupo1
                         valorUnitario = double.Parse(Console.ReadLine());
                         string formatadoValorUnitario = valorUnitario.
                             ToString("F2").PadLeft(6, '0');
-                        if (valorUnitario > 0 && valorUnitario < 1000)
-                        {
-                            auxItems = 1;
-                        }
-                        else
+                        if (valorUnitario < 0 && valorUnitario > 1000)
                         {
                             Console.WriteLine("Quantidade Inválida! " +
                                 "A quantidade em grams de " +
                                 "itens deve estar entre 0 e 1.000.");
+                            continue;
                         }
+                        var totalItem = purchaseItem.Quantidade * valorUnitario;
+                        if (totalItem <= 0 || totalItem >= 9999999.00)
+                        {
+                            Console.WriteLine("Valor total inválido! " +
+                                "Deve estar entre 0 e 10.000.000,00.");
+                            continue;
+                        }
+                        auxItems = 1;
+                        purchaseItem.setValorUnitario(valorUnitario);
+                        purchaseItem.setTotaItem(purchaseItem.Quantidade * valorUnitario);
+                        purchases.setValorTotal(totalItem);
                     } while (auxItems == 0);
-                    purchaseItem.setValorUnitario(valorUnitario);
-                    purchaseItem.setTotaItem(purchaseItem.Quantidade * valorUnitario);
-                    totalItem = purchaseItem.Quantidade * valorUnitario;
-                    purchases = LocalizarPurchases(IdCompra);
-                    purchases.setValorTotal(totalItem);
                     break;
                 case 3:
+                    auxItems = 0;
                     do
                     {
                         Console.WriteLine("Digite a nova quantidade em gramas do item:");
                         quantidade = int.Parse(Console.ReadLine());
-                        if (quantidade > 0 && quantidade < 10000)
-                        {
-                            auxItems = 1;
-                        }
-                        else
+                        string formatadoQuantidade =
+                            quantidade.ToString().PadLeft(4, '0');
+                        if (quantidade < 0 && quantidade > 10000)
                         {
                             Console.WriteLine("Quantidade Inválida! " +
                                 "A quantidade em gramas de " +
                                 "itens deve estar entre 0 e 10.000.");
+                            continue;
                         }
-                    } while (auxItems == 0);
-                    purchaseItem.setQuantidade(quantidade);
-                    do
-                    {
                         Console.WriteLine("Digite o novo Valor Unitário" +
                             " por gramas do item: ");
                         valorUnitario = double.Parse(Console.ReadLine());
-                        if (valorUnitario > 0 && valorUnitario < 1000)
-                        {
-                            auxItems = 1;
-                        }
-                        else
+                        string formatadoValorUnitario = valorUnitario.
+                            ToString("F2").PadLeft(6, '0');
+                        if (valorUnitario < 0 && valorUnitario > 1000)
                         {
                             Console.WriteLine("Quantidade Inválida! " +
                                 "A quantidade em gramas de " +
                                 "itens deve estar entre 0 e 1.000.");
+                            continue;
                         }
+                        var totalItem = purchaseItem.Quantidade * valorUnitario;
+                        if (totalItem <= 0 || totalItem >= 9999999.00)
+                        {
+                            Console.WriteLine("Valor total inválido! " +
+                                "Deve estar entre 0 e 10.000.000,00.");
+                            continue;
+                        }
+                        auxItems = 1;
+                        purchaseItem.setQuantidade(quantidade);
+                        purchaseItem.setValorUnitario(valorUnitario);
+                        purchaseItem.setTotaItem(totalItem);
+                        purchases.setValorTotal(totalItem);
                     } while (auxItems == 0);
-                    purchaseItem.setValorUnitario(valorUnitario);
-                    purchaseItem.setTotaItem(quantidade * valorUnitario);
-                    totalItem = quantidade * valorUnitario;
-                    purchases = LocalizarPurchases(IdCompra);
-                    purchases.setValorTotal(totalItem);
                     break;
                 default:
                     Console.WriteLine("Opção inválida.");
@@ -1442,7 +1506,7 @@ namespace ProjetoGrupo1
             }
             Console.ReadKey();
         }
-        public void incluirItemsSales()
+        public void IncluirSaleItems()
         {
             int aux = 0;
             int id = 0;
@@ -1637,7 +1701,7 @@ namespace ProjetoGrupo1
             }
             return null;
         }
-        public void LocalizarSalesITems()
+        public void LocalizarSalesItems()
         {
             int id = 0;
             int aux = 0;
@@ -1679,3 +1743,10 @@ namespace ProjetoGrupo1
 
 
 
+
+
+
+
+
+    }
+}
