@@ -11,13 +11,15 @@ namespace ProjetoGrupo1
         public DateOnly DataCompra { get; private set; }
         public string Fornecedor { get; private set; }
         public double ValorTotal { get; private set; }
+        public List<PurchaseItem> purchaseItems;
         public Purchases(int id, DateOnly dataCompra,
-            string fornecedor, double valorTotal)
+            string fornecedor)
         {
-            Id = id;
-            DataCompra = dataCompra;
-            Fornecedor = fornecedor;
-            ValorTotal = valorTotal;
+            this.Id = id;
+            this.DataCompra = dataCompra;
+            this.Fornecedor = fornecedor;
+            this.purchaseItems = new List<PurchaseItem>();
+            CalcularTotal();
         }
         public string DataFormatada()
         {
@@ -29,11 +31,19 @@ namespace ProjetoGrupo1
                 $"Fornecedor: {Fornecedor}, " +
                 $"Valor Total: {ValorTotal}";
         }
-        public void setValorTotal(double valorTotal)
+        public void setValorTotal()
         {
-            this.ValorTotal = valorTotal;
+            CalcularTotal();
         }
 
+        private void  CalcularTotal()
+        {
+            this.ValorTotal = 0;
+            foreach(var item in this.purchaseItems)
+            {
+                this.ValorTotal += item.TotalItem;
+            }
+        }
         public static List<Purchases> LerArquivoPurchases(string diretorio, string nomeArquivo)
         {
             var fullPath = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
