@@ -93,10 +93,8 @@ namespace ProjetoGrupo1
 
         }
 
-        public void GravarMedicine(List<Medicine> lista)
+        public static void GravarMedicine(List<Medicine> lista, string fullPath)
         {
-            string fullPath = @"";
-
             StreamWriter writer = new StreamWriter(fullPath);
             using (writer)
             {

@@ -67,8 +67,8 @@ namespace ProjetoGrupo1
 
         public static List<ProduceItem> LerArquivoProduceItem(string diretorio, string nomeArquivo)
         {
-            var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
-            StreamReader produceItemSR = new StreamReader(fullNomeArquivo);
+            var fullProduceItem = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+            StreamReader produceItemSR = new StreamReader(fullProduceItem);
             using (produceItemSR)
             {
                 if (produceItemSR.ReadToEnd() is "")
@@ -94,9 +94,8 @@ namespace ProjetoGrupo1
             }
         }
 
-        public void GravarProduceItem(List<ProduceItem> lista)
+        public static void GravarProduceItem(List<ProduceItem> lista, string fullPath)
         {
-            string fullPath = @"";
             StreamWriter writer = new StreamWriter(fullPath);
             using (writer)
             {

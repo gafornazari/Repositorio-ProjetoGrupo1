@@ -87,8 +87,8 @@ public class Suppliers
 
     public static List<Suppliers> LerArquivoSuppliers(string diretorio, string nomeArquivo)
     {
-        var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
-        StreamReader suppliersSR = new StreamReader(fullNomeArquivo);
+        var fullSuppliers = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+        StreamReader suppliersSR = new StreamReader(fullSuppliers);
         using (suppliersSR)
         {
             if (suppliersSR.ReadToEnd() is "")
@@ -118,9 +118,8 @@ public class Suppliers
         }
     }
 
-    public void GravarCustomer(List<Customer> lista)
+    public static void GravarSupplier(List<Suppliers> lista, string fullPath)
     {
-        string fullPath = @"";
         StreamWriter writer = new StreamWriter(fullPath);
         using (writer)
         {
@@ -163,19 +162,23 @@ public class Suppliers
         }
     }
 
-    public void GravarSupplierRestricted(List<Suppliers> lista)
+    public static void GravarSupplierRestricted(List<Suppliers> lista, string fullPath)
     {
-        string fullPath = @"";
         StreamWriter writer = new StreamWriter(fullPath);
         using (writer)
         {
-            foreach (var customer in lista)
+            foreach (var supplierRest in lista)
             {
-                writer.WriteLine(customer.ToFile());
+                writer.WriteLine(supplierRest.ToFileRest());
             }
             writer.Close();
         }
     }
 
+    public string ToFileRest()
+    {
+        //lógica para gravar o cnpj
+        return $"";
+    }
 
 }

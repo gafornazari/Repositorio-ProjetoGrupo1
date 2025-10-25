@@ -92,9 +92,8 @@ namespace ProjetoGrupo1
             }
         }
 
-        public void GravarProduce(List<Produce> lista)
+        public static void GravarProduce(List<Produce> lista, string fullPath)
         {
-            string fullPath = @"";
             StreamWriter writer = new StreamWriter(fullPath);
             using (writer)
             {

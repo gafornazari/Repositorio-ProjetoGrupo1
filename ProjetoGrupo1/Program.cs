@@ -32,8 +32,10 @@ farmacia.ListaPurchaseItems = PurchaseItem.LerArquivoPurchasesItem(diretorio, pa
 farmacia.ListaPurchases = Purchases.LerArquivoPurchases(diretorio, pathPurchases);
 farmacia.ListaSales = Sales.LerArquivoSales(diretorio, pathSales);
 farmacia.ListaSalesItems = SalesItems.LerArquivoSalesItems(diretorio, pathSalesItems);
-//farmacia.ListaRestrictedSupplies = Suppliers.LerArquivoRestrictecSupplies(diretorio, pathRestrictedSupplies);
-//farmacia.ListaRestrictedCustomers = Customer.LerArquivoRestrictedCustomer(diretorio, pathRestrictedCustomer);
+farmacia.ListaRestrictedSupplies = Suppliers.LerArquivoRestrictecSupplies(diretorio, pathRestrictedSupplies);
+farmacia.ListaRestrictedCustomers = Customer.LerArquivoRestrictedCustomer(diretorio, pathRestrictedCustomer);
+
+
 
 
 int menuprincipal = 0, cadastro = 0, cliente, fornecedor, principio,
@@ -82,6 +84,7 @@ void CadastrosBasicos()
                             farmacia.LocalizarCliente(cpf);
                             break;
                         case 5:
+                            Customer.GravarCustomer(farmacia.ListaCustomers, pathCustomer);
                             Console.WriteLine("Saindo");
                             break;
                         default:
@@ -120,6 +123,7 @@ void CadastrosBasicos()
                             Console.WriteLine(cnpj);
                             break;
                         case 5:
+                            Suppliers.GravarSupplier(farmacia.ListaSupplies, pathSuppliers);
                             Console.WriteLine("Saindo");
                             break;
                         default:
@@ -158,6 +162,7 @@ void CadastrosBasicos()
                             farmacia.ImprimirIngridient();
                             break;
                         case 5:
+                            Ingredient.GravarIngredient(farmacia.ListaIngredients, pathIngredient);
                             Console.WriteLine("Saindo");
                             break;
                         default:
@@ -199,12 +204,12 @@ void CadastrosBasicos()
                                 farmacia.AlterarMedicine(idalt);
                             else
                                 Console.WriteLine("CDB não encontrado!");
-
                             break;
                         case 4:
                             farmacia.ImprimirMedicines();
                             break;
                         case 5:
+                            Medicine.GravarMedicine(farmacia.ListaMedicines, pathMedicine);
                             Console.WriteLine("Saindo");
                             break;
                         default:
@@ -263,6 +268,8 @@ void VendasMedicamentos()
                 farmacia.ImprimirListaSalesItems();
                 break;
             case 8:
+                Sales.GravarSales(farmacia.ListaSales, pathSales);
+                SalesItems.GravarSalesItems(farmacia.ListaSalesItems, pathSalesItems);
                 Console.WriteLine("Saindo");
                 break;
             default:
@@ -313,6 +320,8 @@ void ComprasPrincipiosAtivos()
                 farmacia.ImprimirPurchaseItens();
                 break;
             case 7:
+                Purchases.GravarPurchases(farmacia.ListaPurchases, pathPurchases);
+                PurchaseItem.GravarPurchaseItem(farmacia.ListaPurchaseItems, pathPurchaseItem);
                 Console.WriteLine("Saindo");
                 break;
             default:
@@ -371,6 +380,8 @@ void ManipulacaoMedicamentos()
                 farmacia.ImprimirListaProduceItems();
                 break;
             case 9:
+                Produce.GravarProduce(farmacia.ListaProduces, pathProduce);
+                ProduceItem.GravarProduceItem(farmacia.ListaProducesItems, pathProduceItem);
                 Console.WriteLine("Saindo");
                 break;
             default:
@@ -411,5 +422,4 @@ do
             Console.WriteLine("Opção inválida!");
             break;
     }
-
 } while (menuprincipal != 5);

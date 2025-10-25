@@ -113,10 +113,8 @@ namespace ProjetoGrupo1
             }
         }
 
-        //ESQUELETO GRAVAR ARQUIVO
-        public void GravarSales(List<Sales> lista)
+        public static void GravarSales(List<Sales> lista, string fullPath)
         {
-            string fullPath = @"";
             StreamWriter writer = new StreamWriter(fullPath);
             using (writer)
             {

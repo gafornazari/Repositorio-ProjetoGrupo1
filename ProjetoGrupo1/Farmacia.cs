@@ -13,12 +13,10 @@ namespace ProjetoGrupo1
     {
         public List<Produce> ListaProduces { get; set; }
         public List<ProduceItem> ListaProducesItems { get; set; }
-
         public List<Ingredient> ListaIngredients { get; set; }
         public List<Medicine> ListaMedicines { get; set; }
         public List<Purchases> ListaPurchases { get; set; }
         public List<PurchaseItem> ListaPurchaseItems { get; set; }
-
         public List<Customer> ListaCustomers { get; set; }
         public List<Suppliers> ListaSupplies { get; set; }
         public List<Customer> ListaRestrictedCustomers { get; set; }
