@@ -16,9 +16,9 @@ namespace ProjetoGrupo1
         public List<Purchases> ListaPurchases { get; set; }
         public List<PurchaseItem> ListaPurchaseItems { get; set; }
         public List<Customer> ListaCustomers { get; set; }
-        public List<Suppliers> ListaSupplies { get; set; }
+        public List<Suppliers> ListaSuppliers { get; set; }
         public List<Customer> ListaRestrictedCustomers { get; set; }
-        public List<Suppliers> ListaRestrictedSupplies { get; set; }
+        public List<Suppliers> ListaRestrictedSuppliers { get; set; }
         public List<Sales> ListaSales { get; set; }
         public List<SalesItems> ListaSalesItems { get; set; }
 
@@ -31,9 +31,9 @@ namespace ProjetoGrupo1
             this.ListaPurchases = new List<Purchases>();
             this.ListaPurchaseItems = new List<PurchaseItem>();
             this.ListaCustomers = new List<Customer>();
-            this.ListaSupplies = new List<Suppliers>();
+            this.ListaSuppliers = new List<Suppliers>();
             this.ListaRestrictedCustomers = new List<Customer>();
-            this.ListaRestrictedSupplies = new List<Suppliers>();
+            this.ListaRestrictedSuppliers = new List<Suppliers>();
             this.ListaSales = new List<Sales>();
             this.ListaSalesItems = new List<SalesItems>();
 
@@ -665,6 +665,11 @@ namespace ProjetoGrupo1
         //---------------------------------------------------------------------------------------------------------------
         //Ana
 
+
+
+        //Métodos para clientes
+
+        //Método para verificar se o cpf é válido
         public string VerificarCpf(string cpf)
         {
             // Remove caracteres não numéricos
@@ -701,8 +706,10 @@ namespace ProjetoGrupo1
                 return "CPF inválido!";
         }
 
+        //Método para verificar maioridade do cliente
         public void VerificarMaioridade(DateOnly dataNascimento)
         {
+
             DateTime dataAtual = DateTime.Now;
             int idade = dataAtual.Year - dataNascimento.Year;
 
@@ -712,12 +719,14 @@ namespace ProjetoGrupo1
                 Console.WriteLine("Cadastro Concluído.");
             }
 
-
             else
+            {
                 Console.WriteLine("Não é possível concluir o cadastro. Cliente menor de idade");
-
+                return;
+            }
         }
-        public void AdicionarCliente()
+        //Método para adicionar cliente
+        public void IncluirCliente()
         {
             Console.Write("Informe CPF do cliente: ");
             string cpf = (Console.ReadLine()!);
@@ -737,38 +746,37 @@ namespace ProjetoGrupo1
             Console.Write("Informe o telefone: DDD + Número ");
             string telefone = Console.ReadLine();
 
-            Console.Write("Informe a data da última compra: ");
-            DateOnly ultimaCompra = DateOnly.Parse(Console.ReadLine());
-
-            Console.Write("Informe a data do cadastro do cliente: ");
-            DateOnly dataCadastro = DateOnly.Parse(Console.ReadLine());
-
-            Console.WriteLine("Informa a situação do cliente: [I] para Inativo - [A] para Ativo");
-            char situacao = char.Parse(Console.ReadLine());
-
             Console.Write("Informe a data de nascimento do cliente: ");
             DateOnly dataNascimento = DateOnly.Parse(Console.ReadLine());
             VerificarMaioridade(dataNascimento);
 
-            ListaCustomers.Add(new Customer());
+            ListaCustomers.Add(new Customer(cpf, nome, dataNascimento, telefone));
         }
-
+        //Método para alterar a ultima compra do cliente
         public void AlterarCustomerUltimaCompra(DateOnly ultimaCompra, string cpf)
         {
-            foreach(var cliente in ListaCustomers)
+            foreach (var cliente in ListaCustomers)
             {
-                if(cliente.CPF == cpf)
+                if (cliente.CPF == cpf)
                 {
                     cliente.SetUltimaCompra(ultimaCompra);
                 }
             }
         }
-
+        //Método para buscar cliente pelo cpf
         public Customer LocalizarCliente(string cpf)
         {
-            return ListaCustomers.Find(c => c.CPF == cpf);
-        }
+            var cliente = ListaCustomers.Find(c => c.CPF == cpf);
 
+            if (cliente == null)
+            {
+                Console.WriteLine("Cliente não encontrado.");
+                return null;
+            }
+
+            return cliente;
+        }
+        //Método para alterar dados do cliente
         public void AlterarCliente()
         {
             Console.WriteLine("Qual o cpf do cliente? ");
@@ -809,7 +817,8 @@ namespace ProjetoGrupo1
             }
 
         }
-        public void ExibirClientes()
+        //Método para imprimir lista de clientes
+        public void ImprimirClientes()
         {
             Console.WriteLine("LISTA DE CLIENTES");
             foreach (var cliente in ListaCustomers)
@@ -827,9 +836,15 @@ namespace ProjetoGrupo1
             }
         }
 
+
         //Métodos para os fornecedores/supplies
+        
+        //Métodos para verificar se cnpj é válido
         public string VerificarCnpj(string cnpj)
         {
+            // Tira pontos, barras e traços
+            cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+
             // Verifica se tem 14 dígitos
             if (cnpj.Length != 14)
                 return "CNPJ inválido! (deve conter 14 dígitos)";
@@ -870,7 +885,7 @@ namespace ProjetoGrupo1
                 return "CNPJ inválido!";
 
         }
-
+        //Verificar se a empresa tem mais de dois anos
         public void VerificarDataAbertura(DateOnly dataAbertura)
         {
             DateTime dataAtual = DateTime.Now;
@@ -884,17 +899,19 @@ namespace ProjetoGrupo1
 
 
             else
+            {
                 Console.WriteLine("Não é possível concluir o cadastro. Empresa com menos de 2 anos.");
-
+                return;
+            }
         }
-
-        public void AdicionarFornecedor()
+        //Incluir fornecedores 
+        public void IncluirFornecedor()
         {
             Console.Write("Informe CNPJ: ");
             string cnpj = (Console.ReadLine()!);
             VerificarCnpj(cnpj);
 
-            foreach (var fornecedor in ListaSupplies)
+            foreach (var fornecedor in ListaSuppliers)
             {
                 if (fornecedor.GetCNPJ() == cnpj)
                 {
@@ -909,21 +926,30 @@ namespace ProjetoGrupo1
             string pais = Console.ReadLine();
 
             Console.Write("Informe a data de fundação da empresa: ");
-            DateOnly dataFundacao = DateOnly.Parse(Console.ReadLine());
-            VerificarDataAbertura(dataFundacao);
+            DateOnly dataAbertura = DateOnly.Parse(Console.ReadLine());
+            VerificarDataAbertura(dataAbertura);
 
-            ListaSupplies.Add(new Supplies());
+            ListaSuppliers.Add(new Suppliers(cnpj,razaoSocial, pais, dataAbertura));
         }
-
+        //Buscar fornecedores pelo cnpj
         public Suppliers LocalizarFornecedor(string cnpj)
         {
-            return ListaSupplies.Find(s => s.GetCNPJ() == cnpj);
+            var fornecedor = ListaSuppliers.Find(f => f.CNPJ == cnpj);
+
+            if (fornecedor == null)
+            {
+                Console.WriteLine("Empresa não encontrada.");
+                return null;
+            }
+
+            return fornecedor;
 
         }
-        public void ExibirFornecedores()
+        //Imprimir lista de fornecedores
+        public void ImprimirFornecedores()
         {
             Console.WriteLine("LISTA DE FORNECEDORES");
-            foreach (var fornecedor in ListaSupplies)
+            foreach (var fornecedor in ListaSuppliers)
             {
                 if (fornecedor == null)
                 {
@@ -935,12 +961,12 @@ namespace ProjetoGrupo1
                     Console.WriteLine(fornecedor + "\n");
                     Console.WriteLine("-------------------------------------");
                 }
-
+            }
         }
-
-        public void AlterarSuppliesUltimoFornecimento(DateOnly ultimoFornecimento, string cnpj)
+        //Alterar a data de ultimo fornecimento do fornecedor
+        public void AlterarSuppliersUltimoFornecimento(DateOnly ultimoFornecimento, string cnpj)
         {
-            foreach (var fornecedor in ListaSupplies)
+            foreach (var fornecedor in ListaSuppliers)
             {
                 if (fornecedor.CNPJ == cnpj)
                 {
@@ -948,7 +974,7 @@ namespace ProjetoGrupo1
                 }
             }
         }
-
+        //Alterar informações fornecedores
         public void AlterarFornecedores()
         {
             Console.WriteLine("Qual o cnpj da empresa? ");
@@ -991,8 +1017,8 @@ namespace ProjetoGrupo1
         }
 
         //Clientes Restritos
-
-        public void AdicionarClientesRestritos()
+        //Adicionar clientes a lista de restritos
+        public void IncluirClientesRestritos()
         {
             Console.WriteLine("Qual o cpf do cliente que deseja cadastrar?");
             string cpf = Console.ReadLine()!;
@@ -1005,17 +1031,28 @@ namespace ProjetoGrupo1
                 }
                 else
                 {
-                    Console.WriteLine("O cliente não está cadastrado.");
+                    ListaRestrictedCustomers.Add(cliente);
+                    ListaCustomers.Add(cliente);
+                    Console.WriteLine("Cliente adicionado a lista de Clientes Restritos.");
                 }
-                Console.WriteLine(ListaRestrictedCustomers);
+                
             }
         }
-
-        public Customer LocalizarClientesRestritos(string cpf)
+        //Localizar cliente restrito
+        public bool LocalizarClientesRestritos(string cpf)
         {
-            return ListaRestrictedCustomers.Find(c => c.CPF == cpf);
-        }
+            foreach (var cliente in ListaRestrictedCustomers)
+            {
+                if (cliente.CPF == cpf)
+                {
+                    return true;
+                }
 
+            }
+            return false;
+
+        }
+        //Alterar clientes restritos
         public void AlterarClientesRestritos()
         {
             Console.WriteLine("Qual o cpf do cliente que deseja excluir da lista de restritos?");
@@ -1024,69 +1061,10 @@ namespace ProjetoGrupo1
             Console.WriteLine("Tem certeza que deseja excluir da lista de restritos? [1] SIM / [2] NÃO");
             int op = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Digite a nova situação: [I] para Inativo - [A] para Ativo");
-            char novaSituacao = char.Parse(Console.ReadLine());
-
-            cliente.SetSituacao(novaSituacao);
-            Console.WriteLine("Nova situação" + novaSituacao);
-        }
-
-        public void ExibirClientesRestritos()
-        {
-            Console.WriteLine("LISTA DE CLIENTES RESTRITOS");
-            foreach (var cliente in ListaRestrictedCustomers)
-            {
-                Console.WriteLine("------------------------------------");
-                Console.WriteLine(cliente + "\n");
-                Console.WriteLine("-------------------------------------");
-            }
-        }
-
-        //Fornecedores Restritos
-        public void AdicionarFornecedoresRestritos()
-        {
-            Console.WriteLine("Qual o cnpj da empresa que deseja cadastrar?");
-            string cnpj = Console.ReadLine()!;
-            foreach (var fornecedor in ListaSupplies)
-            {
-                if (fornecedor.GetCNPJ() == cnpj)
-                {
-                    ListaRestrictedSupplies.Add(fornecedor);
-                    Console.WriteLine("Empresa adicionada a lista de Empresas Restritas.");
-                    ListaRestrictedSupplies.Add(fornecedor);
-                }
-                else
-                {
-                    Console.WriteLine("A empresa não está cadastrada.");
-                }
-            }
-        }
-
-        public bool LocalizarFornecedoresRestritos(string cnpj)
-        {
-            foreach (var fornecedor in ListaRestrictedSupplies)
-            {
-                if (fornecedor.CNPJ == cnpj)
-                {
-                    return true;
-                }
-
-            }
-            return false;
-        }
-
-        public void AlterarFornecedoresRestritos()
-        {
-            Console.WriteLine("Qual o cnpj da empresa que deseja excluir da lista de restritos?");
-            string cnpj = Console.ReadLine()!;
-            var fornecedor = LocalizarFornecedor(cnpj);
-            Console.WriteLine("Tem certeza que deseja excluir da lista de restritos? [1] SIM / [2] NÃO");
-            int op = int.Parse(Console.ReadLine());
-
             if (op == 1)
             {
-                ListaSupplies.Add((fornecedor));
-                ListaRestrictedSupplies.Remove(fornecedor);
+                ListaCustomers.Add((cliente));
+                ListaRestrictedCustomers.Remove(cliente);
             }
             else if (op == 2)
             {
@@ -1097,14 +1075,84 @@ namespace ProjetoGrupo1
                 Console.WriteLine("Opção inválida");
             }
         }
-
-        public void ExibirFornecedoresRestritos()
+        //Imprimir cpfs dos clientes restritos
+        public void ImprimirClientesRestritos()
         {
-            Console.WriteLine("LISTA DE FORNECEDORES RESTRITOS");
-            foreach (var fornecedor in ListaRestrictedSupplies)
+            Console.WriteLine("LISTA DE CLIENTES RESTRITOS");
+            foreach (var cliente in ListaRestrictedCustomers)
             {
                 Console.WriteLine("------------------------------------");
-                Console.WriteLine(fornecedor + "\n");
+                Console.WriteLine(cliente.CPF + "\n");
+                Console.WriteLine("-------------------------------------");
+            }
+        }
+
+        //Fornecedores Restritos
+        public void IncluirFornecedoresRestritos()
+        {
+            Console.WriteLine("Qual o cnpj da empresa que deseja cadastrar?");
+            string cnpj = Console.ReadLine()!;
+            foreach (var fornecedor in ListaSuppliers)
+            {
+                if (fornecedor.GetCNPJ() == cnpj)
+                {
+                    ListaRestrictedSuppliers.Add(fornecedor);
+                    Console.WriteLine("Empresa adicionada a lista de Empresas Restritas.");
+                    
+                }
+                else
+                {
+                    ListaRestrictedSuppliers.Add(fornecedor);
+                    ListaSuppliers.Add(fornecedor);
+                    Console.WriteLine("Empresa adicionada a lista de Empresas Restritas.");
+
+                }
+            }
+        }
+        //Localizar fornecedores restritos
+        public bool LocalizarFornecedoresRestritos(string cnpj)
+        {
+            foreach (var fornecedor in ListaRestrictedSuppliers)
+            {
+                if (fornecedor.CNPJ == cnpj)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
+        //Alterar informações fornecedores restritos
+        public void AlterarFornecedoresRestritos()
+        {
+            Console.WriteLine("Qual o cnpj da empresa que deseja excluir da lista de restritos?");
+            string cnpj = Console.ReadLine()!;
+            var fornecedor = LocalizarFornecedor(cnpj);
+            Console.WriteLine("Tem certeza que deseja excluir da lista de restritos? [1] SIM / [2] NÃO");
+            int op = int.Parse(Console.ReadLine());
+
+            if (op == 1)
+            {
+                ListaSuppliers.Add((fornecedor));
+                ListaRestrictedSuppliers.Remove(fornecedor);
+            }
+            else if (op == 2)
+            {
+                Console.WriteLine("Sem alterações");
+            }
+            else
+            {
+                Console.WriteLine("Opção inválida");
+            }
+        }
+        //Imprimir lista de cnpjs restritos
+        public void ImprimirFornecedoresRestritos()
+        {
+            Console.WriteLine("LISTA DE FORNECEDORES RESTRITOS");
+            foreach (var fornecedor in ListaRestrictedSuppliers)
+            {
+                Console.WriteLine("------------------------------------");
+                Console.WriteLine(fornecedor.CNPJ + "\n");
                 Console.WriteLine("-------------------------------------");
             }
 
@@ -1151,13 +1199,13 @@ namespace ProjetoGrupo1
                 Console.WriteLine("Digite o CNPJ do fornecedor: ");
                 fornecedorCnpj = Console.ReadLine();
                 string formatadoCnpj = fornecedorCnpj.ToString().PadLeft(14);
-                fornecedor = ListaSupplies.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
                 if (fornecedor == null)
                 {
                     Console.WriteLine("Fornecedor não encontrado. Tente novamente.");
                     continue;
                 }
-                if (ListaRestrictedSupplies.Any(f => f.CNPJ == fornecedorCnpj))
+                if (ListaRestrictedSuppliers.Any(f => f.CNPJ == fornecedorCnpj))
                 {
                     Console.WriteLine("Fornecedor está bloqueado e " +
                         "não pode ser selecionado.");
@@ -1729,14 +1777,14 @@ namespace ProjetoGrupo1
                 }
             }
 
-            if(encontrou == false)
+            if (encontrou == false)
             {
                 Console.WriteLine("Nenhuma venda encontrada nesse periodo");
             }
 
             Console.ReadKey();
         }
-       
+
         public void RelatorioMedicamentosMaisVendidos()
         {
             if (this.ListaSales.Count == 0)
@@ -1747,7 +1795,7 @@ namespace ProjetoGrupo1
             }
 
             var todosItens = this.ListaSales.SelectMany(venda => venda.ListaSalesItems).ToList();
-            var top10 = todosItens.GroupBy(item => new {item.Medicamento}).Select(g => new {Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade)})
+            var top10 = todosItens.GroupBy(item => new { item.Medicamento }).Select(g => new { Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade) })
                 .OrderByDescending(x => x.TotalVendido).Take(10).ToList();
 
             Console.Clear();
@@ -1768,7 +1816,7 @@ namespace ProjetoGrupo1
 
         public void RelatorioCompraPorFornecedor()
         {
-            if(this.ListaPurchases.Count == 0)
+            if (this.ListaPurchases.Count == 0)
             {
                 Console.Clear();
                 Console.WriteLine("Nenhuma compra registrada!");
@@ -1804,5 +1852,5 @@ namespace ProjetoGrupo1
 
 
 
-    
+
 

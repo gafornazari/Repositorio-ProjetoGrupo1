@@ -154,7 +154,7 @@ public class Suppliers
                 while ((line = suppliersRestrictedSR.ReadLine()) is not null)
                 {
                     //lógica para adicionar na lista de suplier restrito
-                    //suppliersRest.Add(supplierRest);
+                    suppliersRest.Add(new Suppliers());
                 }
                 suppliersRestrictedSR.Close();
                 return suppliersRest;
@@ -177,8 +177,8 @@ public class Suppliers
 
     public string ToFileRest()
     {
-        //lógica para gravar o cnpj
-        return $"";
+        
+        return $"{this.CNPJ}";
     }
 
 }

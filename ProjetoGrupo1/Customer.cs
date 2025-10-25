@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using ProjetoGrupo1;
 
 
 namespace ProjetoGrupo1;
@@ -161,6 +163,7 @@ public class Customer
                 {
                     //lógica para adicionar na lista de customer restrito
                     //customersRest.Add(customerRest);
+                    customersRest.Add(new Customer());
                 }
                 customerRestrictedSR.Close();
                 return customersRest;
@@ -183,8 +186,8 @@ public class Customer
 
     public string ToFileRest()
     {
-        //lógica para gravar o cpf
-        return $"";
+        
+        return $"{this.CPF}";
     }
 
 }
