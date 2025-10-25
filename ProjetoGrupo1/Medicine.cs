@@ -59,7 +59,7 @@ namespace ProjetoGrupo1
                 $" Ultima Venda: {UltimaVenda}, Data Cadastro: {DataCadastro}, Situação: {Situacao}";
         }
 
-        public List<Medicine> LerArquivoMedicine(string diretorio, string nomeArquivo)
+        public static List<Medicine> LerArquivoMedicine(string diretorio, string nomeArquivo)
         {
             var fullMedicine = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
             StreamReader medicineSR = new StreamReader(fullMedicine);

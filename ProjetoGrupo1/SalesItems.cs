@@ -28,6 +28,17 @@ namespace ProjetoGrupo1
             CalcularTotalItem();
         }
 
+        public SalesItems(int idVenda, int chave, 
+            string medicamento, int quantidade,
+            decimal valorUnitario, decimal totalItem)
+        {
+            IdVenda = idVenda;
+            Chave = chave;
+            Medicamento = medicamento;
+            Quantidade = quantidade;
+            ValorUnitario = valorUnitario;
+            TotalItem = totalItem;
+        }
         public void SetQuantidade(int quantidade)
         {
             this.Quantidade = quantidade;
@@ -51,6 +62,53 @@ namespace ProjetoGrupo1
                    $"Valor unitário: {this.ValorUnitario}\n" +
                    $"Total: {this.TotalItem}\n";
         }
+
+        public static List<SalesItems> LerArquivoSalesItems(string diretorio, string salesItemsArquivo)
+        {
+            var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, salesItemsArquivo);
+            StreamReader SalesItemsSR = new StreamReader(fullNomeArquivo);
+            using (SalesItemsSR)
+            {
+                if (SalesItemsSR.ReadToEnd() is "")
+                {
+                    return new List<SalesItems>();
+                }
+                else
+                {
+                    List<SalesItems> salesItems = new List<SalesItems>();
+                    string line;
+                    while ((line = SalesItemsSR.ReadLine()) is not null)
+                    {
+                        var idVenda = int.Parse(line.Substring(0, 5));
+                        var chave = int.Parse(line.Substring(5, 5));
+                        var codigoDeBarras = line.Substring(10, 13);
+                        var quantidade = int.Parse(line.Substring(23, 3));
+                        var valorUnitario = decimal.Parse(line.Substring(26, 6));
+                        var totalItem = decimal.Parse(line.Substring(32, 7));
+                        SalesItems salesItem = new SalesItems(idVenda, chave, codigoDeBarras, quantidade,
+                            valorUnitario, totalItem);
+                        salesItems.Add(salesItem);
+                    }
+                    SalesItemsSR.Close();
+                    return salesItems;
+                }
+            }
+        }
+
+        public void GravarSalesItems(List<SalesItems> lista)
+        {
+            string fullPath = @"";
+            StreamWriter writer = new StreamWriter(fullPath);
+            using (writer)
+            {
+                foreach (var salesItems in lista)
+                {
+                    writer.WriteLine(salesItems.ToFile());
+                }
+                writer.Close();
+            }
+        }
+
         public string ToFile()
         {
             return $"{this.IdVenda}{this.Medicamento}{this.Quantidade}{this.ValorUnitario}{TotalItem}";
