@@ -38,6 +38,18 @@ public class Customer
         Situacao = 'A';
     }
 
+    public Customer(string cpf, string nome, DateOnly dataNascimento, string telefone,
+                      DateOnly ultimaCompra, DateOnly dataCadastro, char situacao)
+    {
+        CPF = cpf;
+        Nome = nome;
+        DataNascimento = dataNascimento;
+        Telefone = telefone;
+        UltimaCompra = ultimaCompra;
+        DataCadastro = dataCadastro;
+        Situacao = situacao;
+    }
+
     public void SetSituacao(char situacao)
     {
         Situacao = situacao;
@@ -76,9 +88,60 @@ public class Customer
     {
         return nome.PadRight(50, ' ');
     }
+
+    public List<Customer> LerArquivoCustomer(string diretorio, string nomeArquivo)
+    {
+        var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+        StreamReader customerSR = new StreamReader(fullNomeArquivo);
+        using (customerSR)
+        {
+            if (customerSR.ReadToEnd() is "")
+            {
+                return new List<Customer>();
+            }
+            else
+            {
+                List<Customer> customers = new List<Customer>();
+                string line;
+                while ((line = customerSR.ReadLine()) is not null)
+                {
+                    string cpf = line.Substring(0, 11);
+                    string nome = line.Substring(11, 50);
+                    DateOnly dataNascimento = DateOnly.Parse(line.Substring(61, 8));
+                    string telefone = line.Substring(69, 11);
+                    DateOnly ultimaCompra = DateOnly.Parse(line.Substring(80, 8));
+                    DateOnly dataCadastro = DateOnly.Parse(line.Substring(88, 8));
+                    char situacao = char.Parse(line.Substring(96, 1));
+                    Customer customer = new Customer(cpf, nome, dataNascimento, telefone,
+                        ultimaCompra, dataCadastro, situacao);
+                    //aqui na linha de cima, se algo nn for do tipo string, tem que fazer o Parse
+                    customers.Add(customer);
+                }
+                customerSR.Close();
+                return customers;
+            }
+        }
+    }
+
+    public void GravarCustomer(List<Customer> lista)
+    {
+        string fullPath = @"";
+        StreamWriter writer = new StreamWriter(fullPath);
+        using (writer)
+        {
+            foreach (var customer in lista)
+            {
+                writer.WriteLine(customer.ToFile());
+            }
+            writer.Close();
+        }
+    }
+
+
     public string ToFile()
     {
-        return $"{this.CPF}{this.Nome}{this.DataNascimento.ToString("ddMMyyyy")}{this.Telefone}{this.UltimaCompra.ToString("ddMMyyyy")}{this.DataCadastro.ToString("ddMMyyyy")}{this.Situacao}";
+        return $"{this.CPF}{this.Nome}{this.DataNascimento.ToString("ddMMyyyy")}{this.Telefone}" +
+            $"{this.UltimaCompra.ToString("ddMMyyyy")}{this.DataCadastro.ToString("ddMMyyyy")}{this.Situacao}";
     }
 
 }

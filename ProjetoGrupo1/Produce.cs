@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,10 +63,19 @@ namespace ProjetoGrupo1
             return resultado;
         }
 
-        private string FormatarData(DateOnly data)
+
+        public void GravarProduce(List<Produce> lista)
         {
-             string dataFormatada = data.ToString("yyyyMMdd");
-            return dataFormatada;
+            string fullPath = @"";
+            StreamWriter writer = new StreamWriter(fullPath);
+            using (writer)
+            {
+                foreach (var produce in lista)
+                {
+                    writer.WriteLine(produce.ToFile());
+                }
+                writer.Close();
+            }
         }
 
         public string ToFile()

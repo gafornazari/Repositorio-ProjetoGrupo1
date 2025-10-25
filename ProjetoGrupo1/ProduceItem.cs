@@ -51,6 +51,49 @@ namespace ProjetoGrupo1
             return resultado;
         }
 
+        public List<ProduceItem> LerArquivoProduceItem(string diretorio, string nomeArquivo)
+        {
+            var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+            StreamReader produceItemSR = new StreamReader(fullNomeArquivo);
+            using (produceItemSR)
+            {
+                if (produceItemSR.ReadToEnd() is "")
+                {
+                    return new List<ProduceItem>();
+                }
+                else
+                {
+                    List<ProduceItem> produceItems = new List<ProduceItem>();
+                    string line;
+                    while ((line = produceItemSR.ReadLine()) is not null)
+                    {
+                        int idProduceItem = int.Parse(line.Substring(0, 5));
+                        int idProducao = int.Parse(line.Substring(5, 5));
+                        string idPrincipio = line.Substring(10, 6);
+                        int quantidade = int.Parse(line.Substring(16, 4));
+                        ProduceItem produceItem = new ProduceItem(idProduceItem, idProducao, idPrincipio, quantidade);
+                    produceItems.Add(produceItem);
+                    }
+                    produceItemSR.Close();
+                    return produceItems;
+                }
+            }
+        }
+
+        public void GravarProduceItem(List<ProduceItem> lista)
+        {
+            string fullPath = @"";
+            StreamWriter writer = new StreamWriter(fullPath);
+            using (writer)
+            {
+                foreach (var produceItem in lista)
+                {
+                    writer.WriteLine(produceItem.ToFile());
+                }
+                writer.Close();
+            }
+        }
+
         public string ToFile()
         {
             return $"{this.IdProduceItem}{this.IdProducao}{this.IdPrincipio}{FormatarInt()}";
