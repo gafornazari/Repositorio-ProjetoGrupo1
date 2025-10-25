@@ -87,8 +87,8 @@ public class Suppliers
 
     public static List<Suppliers> LerArquivoSuppliers(string diretorio, string nomeArquivo)
     {
-        var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
-        StreamReader suppliersSR = new StreamReader(fullNomeArquivo);
+        var fullSuppliers = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+        StreamReader suppliersSR = new StreamReader(fullSuppliers);
         using (suppliersSR)
         {
             if (suppliersSR.ReadToEnd() is "")

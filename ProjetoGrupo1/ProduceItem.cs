@@ -53,8 +53,8 @@ namespace ProjetoGrupo1
 
         public static List<ProduceItem> LerArquivoProduceItem(string diretorio, string nomeArquivo)
         {
-            var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
-            StreamReader produceItemSR = new StreamReader(fullNomeArquivo);
+            var fullProduceItem = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+            StreamReader produceItemSR = new StreamReader(fullProduceItem);
             using (produceItemSR)
             {
                 if (produceItemSR.ReadToEnd() is "")
