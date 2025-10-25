@@ -123,9 +123,8 @@ public class Customer
         }
     }
 
-    public void GravarCustomer(List<Customer> lista)
+    public static void GravarCustomer(List<Customer> lista, string fullPath)
     {
-        string fullPath = @"";
         StreamWriter writer = new StreamWriter(fullPath);
         using (writer)
         {
@@ -142,6 +141,50 @@ public class Customer
     {
         return $"{this.CPF}{this.Nome}{this.DataNascimento.ToString("ddMMyyyy")}{this.Telefone}" +
             $"{this.UltimaCompra.ToString("ddMMyyyy")}{this.DataCadastro.ToString("ddMMyyyy")}{this.Situacao}";
+    }
+
+    public static List<Customer> LerArquivoRestrictedCustomer(string diretorio, string nomeArquivo)
+    {
+        var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+        StreamReader customerRestrictedSR = new StreamReader(fullNomeArquivo);
+        using (customerRestrictedSR)
+        {
+            if (customerRestrictedSR.ReadToEnd() is "")
+            {
+                return new List<Customer>();
+            }
+            else
+            {
+                List<Customer> customersRest = new List<Customer>();
+                string line;
+                while ((line = customerRestrictedSR.ReadLine()) is not null)
+                {
+                    //lógica para adicionar na lista de customer restrito
+                    //customersRest.Add(customerRest);
+                }
+                customerRestrictedSR.Close();
+                return customersRest;
+            }
+        }
+    }
+
+    public static void GravarCustomerRestricted(List<Customer> lista, string fullPath)
+    {
+        StreamWriter writer = new StreamWriter(fullPath);
+        using (writer)
+        {
+            foreach (var customerRest in lista)
+            {
+                writer.WriteLine(customerRest.ToFileRest());
+            }
+            writer.Close();
+        }
+    }
+
+    public string ToFileRest()
+    {
+        //lógica para gravar o cpf
+        return $"";
     }
 
 }

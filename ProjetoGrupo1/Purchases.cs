@@ -65,9 +65,8 @@ namespace ProjetoGrupo1
             }
         }
 
-        public void GravarPurchases(List<Purchases> lista)
+        public static void GravarPurchases(List<Purchases> lista, string fullPath)
         {
-            string fullPath = @"";
             StreamWriter writer = new StreamWriter(fullPath);
             using (writer)
             {

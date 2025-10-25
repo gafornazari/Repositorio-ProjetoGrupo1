@@ -118,9 +118,8 @@ public class Suppliers
         }
     }
 
-    public void GravarCustomer(List<Customer> lista)
+    public static void GravarSupplier(List<Suppliers> lista, string fullPath)
     {
-        string fullPath = @"";
         StreamWriter writer = new StreamWriter(fullPath);
         using (writer)
         {
@@ -163,15 +162,14 @@ public class Suppliers
         }
     }
 
-    public void GravarSupplierRestricted(List<Suppliers> lista)
+    public static void GravarSupplierRestricted(List<Suppliers> lista, string fullPath)
     {
-        string fullPath = @"";
         StreamWriter writer = new StreamWriter(fullPath);
         using (writer)
         {
-            foreach (var customer in lista)
+            foreach (var supplierRest in lista)
             {
-                writer.WriteLine(customer.ToFile());
+                writer.WriteLine(supplierRest.ToFile());
             }
             writer.Close();
         }

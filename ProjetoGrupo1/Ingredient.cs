@@ -82,9 +82,8 @@ namespace ProjetoGrupo1
             }
         }
 
-        public void GravarIngredient(List<Ingredient> lista)
+        public static void GravarIngredient(List<Ingredient> lista,string fullPath)
         {
-            string fullPath = @"";
 
             StreamWriter writer = new StreamWriter(fullPath);
             using (writer)
