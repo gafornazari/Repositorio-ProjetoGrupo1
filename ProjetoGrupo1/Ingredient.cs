@@ -52,7 +52,7 @@ namespace ProjetoGrupo1
                 $" Data cadastro: {DataCadastro}, Situação: {Situacao}";
         }
 
-        public List<Ingredient> LerArquivoIngredient(string diretorio, string nomeArquivo)
+        public static List<Ingredient> LerArquivoIngredient(string diretorio, string nomeArquivo)
         {
             var fullIngridient = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
             StreamReader ingridientSR = new StreamReader(fullIngridient);

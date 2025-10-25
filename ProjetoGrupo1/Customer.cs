@@ -89,7 +89,7 @@ public class Customer
         return nome.PadRight(50, ' ');
     }
 
-    public List<Customer> LerArquivoCustomer(string diretorio, string nomeArquivo)
+    public static List<Customer> LerArquivoCustomer(string diretorio, string nomeArquivo)
     {
         var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
         StreamReader customerSR = new StreamReader(fullNomeArquivo);

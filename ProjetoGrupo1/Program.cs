@@ -1,23 +1,40 @@
 ﻿using ProjetoGrupo1;
 
-string diretorio = @"";
+string diretorio = @"C:\SneezePharma\";
 
 
 Farmacia farmacia = new Farmacia();
+Console.WriteLine("teste");
+
+////guardando o fullPath de todos
+string pathCustomer = "Customers.data";
+string pathSuppliers = "Suppliers.data";
+string pathIngredient = "Ingredient.data";
+string pathMedicine = "Medicine.data";
+string pathProduce = "Produce.data";
+string pathProduceItem = "ProduceItem.data";
+string pathPurchaseItem = "PurchaseItem.data";
+string pathPurchases = "Purchases.data";
+string pathSales = "Sales.data";
+string pathSalesItems = "SalesItems.data";
+string pathRestrictedSupplies = "RestrictedSuppliers.data";
+string pathRestrictedCustomer = "RestrictedCustomers.data";
+
 
 //lendo todos os arquivos
-//farmacia.ListaCustomers = Customer.LerArquivoCustomer(diretorio, pathCustomer);
-//farmacia.ListaSupplies = Supplies.LerArquivoSuppliers(diretorio, pathSuppliers);
-//farmacia.ListaIngredients = Ingredient.LerArquivoIngredient(diretorio, pathIngredient);
-//farmacia.ListaMedicines = Medicine.LerArquivoMedicine(diretorio, pathMedicine);
-//farmacia.ListaProduces = Produce.LerArquivoProduce(diretorio, pathProduce);
-//farmacia.ListaProducesItems = ProduceItem.LerArquivoProduceItem(diretorio, pathProduceItem);
-//farmacia.ListaPurchaseItems = PurchaseItem.LerArquivoPurchaseItem(diretorio, pathPurchaseItem);
-//farmacia.ListaPurchases = Purchases.LerArquivoPurchases(diretorio, pathPurchases);
-//farmacia.ListaSales = Sales.LerAquivoSales(diretorio, pathSales);
-//farmacia.ListaSalesItems = SalesItems.LerArquivoSalesItems(diretorio, pathSalesItems);
-//farmacia.ListaRestrictedSupplies = Supplies.LerArquivoRestrictecSupplies(diretorio, pathRestrictedSupplies);
+farmacia.ListaCustomers = Customer.LerArquivoCustomer(diretorio, pathCustomer);
+farmacia.ListaSupplies = Suppliers.LerArquivoSuppliers(diretorio, pathSuppliers);
+farmacia.ListaIngredients = Ingredient.LerArquivoIngredient(diretorio, pathIngredient);
+farmacia.ListaMedicines = Medicine.LerArquivoMedicine(diretorio, pathMedicine);
+farmacia.ListaProduces = Produce.LerArquivoProduce(diretorio, pathProduce);
+farmacia.ListaProducesItems = ProduceItem.LerArquivoProduceItem(diretorio, pathProduceItem);
+farmacia.ListaPurchaseItems = PurchaseItem.LerArquivoPurchasesItem(diretorio, pathPurchaseItem);
+farmacia.ListaPurchases = Purchases.LerArquivoPurchases(diretorio, pathPurchases);
+farmacia.ListaSales = Sales.LerArquivoSales(diretorio, pathSales);
+farmacia.ListaSalesItems = SalesItems.LerArquivoSalesItems(diretorio, pathSalesItems);
+//farmacia.ListaRestrictedSupplies = Suppliers.LerArquivoRestrictecSupplies(diretorio, pathRestrictedSupplies);
 //farmacia.ListaRestrictedCustomers = Customer.LerArquivoRestrictedCustomer(diretorio, pathRestrictedCustomer);
+
 
 int menuprincipal = 0, cadastro = 0, cliente, fornecedor, principio,
     manipulacao, vendas, compras, producoes;

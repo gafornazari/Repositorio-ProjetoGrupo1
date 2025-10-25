@@ -85,7 +85,7 @@ public class Suppliers
         return pais.PadRight(20, ' ');
     }
 
-    public List<Suppliers> LerArquivoSuppliers(string diretorio, string nomeArquivo)
+    public static List<Suppliers> LerArquivoSuppliers(string diretorio, string nomeArquivo)
     {
         var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
         StreamReader suppliersSR = new StreamReader(fullNomeArquivo);
