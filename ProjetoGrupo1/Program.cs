@@ -140,6 +140,34 @@ void CadastrosBasicos()
     }
 }
 
+void VendasMedicamentos()
+{
+    Console.WriteLine("---- VENDAS DE MEDICAMENTOS ----");
+    Console.WriteLine("1 - Clientes");
+    Console.WriteLine("2 - Fornecedores");
+    Console.WriteLine("3 - Princípios ativos");
+    Console.WriteLine("4 - Medicamentos");
+
+}
+
+void ComprasPrincipiosAtivos()
+{
+    Console.WriteLine("---- COMPRAS DE PRINCÍPIOS ATIVOS ----");
+    Console.WriteLine("1 - Registrar compra");
+    Console.WriteLine("2 - Localizar compras");
+    Console.WriteLine("3 - Localizar os itens comprados");
+    Console.WriteLine("4 - Alterar");
+}
+
+void ManipulacaoMedicamentos()
+{
+    Console.WriteLine("---- MANIPULAÇÃO DE MEDICAMENTOS ----");
+    Console.WriteLine("1 - Clientes");
+    Console.WriteLine("2 - Fornecedores");
+    Console.WriteLine("3 - Princípios ativos");
+    Console.WriteLine("4 - Medicamentos");
+}
+
 do
 {
     Console.WriteLine("---- MENU PRINCIPAL ----");
@@ -154,6 +182,15 @@ do
     {
         case 1:
             CadastrosBasicos();
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        default:
+             Console.WriteLine("Opção inválida!");
             break;
     }
 
