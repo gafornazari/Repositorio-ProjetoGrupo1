@@ -9,7 +9,7 @@ namespace ProjetoGrupo1
     public class PurchaseItem
     {
         public int IdCompra { get; private set; }
-        public Ingredient Ingrediente { get; private set; }
+        public string Ingrediente { get; private set; }
         public int Quantidade { get; private set; }
         public double ValorUnitario { get; private set; }
         public double TotaItem { get; private set; }
@@ -17,7 +17,7 @@ namespace ProjetoGrupo1
             double valorUnitario, double totaItem)
         {
             IdCompra = idCompra;
-            Ingrediente = new Ingredient(ingrediente);
+            Ingrediente = ingrediente;
             Quantidade = quantidade;
             ValorUnitario = valorUnitario;
             TotaItem = totaItem;
