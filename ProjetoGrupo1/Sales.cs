@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoGrupo1
 {
-    internal class Sales
+    public class Sales
     {
     }
 }
