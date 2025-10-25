@@ -1,12 +1,13 @@
+using ProjetoGrupo1;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.Design;
+using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using ProjetoGrupo1;
 
 
 namespace ProjetoGrupo1
@@ -424,10 +425,15 @@ namespace ProjetoGrupo1
 
 
 
-       
 
-        public Medicine LocalizarMedicine()
+
+        public Medicine LocalizarMedicine(string cdb)
         {
+            foreach (var med in ListaMedicines)
+            {
+                if (med.CDB == cdb)
+                    return med;
+            }
             return null;
         }
         public bool VerificacaoCDB(string cdb)
@@ -1034,9 +1040,16 @@ namespace ProjetoGrupo1
             }
         }
 
-        public Customer LocalizarClientesRestritos(string cpf)
+        public bool LocalizarClientesRestritos(string cpf)
         {
-            return ListaRestrictedCustomers.Find(c => c.CPF == cpf);
+            foreach (var cliente in ListaRestrictedCustomers)
+            {
+                if(cliente.CPF == cpf)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void AlterarClientesRestritos()
@@ -1082,9 +1095,16 @@ namespace ProjetoGrupo1
             }
         }
 
-        public Supplies LocalizarFornecedoresRestritos(string cnpj)
+        public bool LocalizarFornecedoresRestritos(string cnpj)
         {
-            return ListaRestrictedSupplies.Find(s => s.GetCNPJ() == cnpj);
+            foreach (var fornecedor in ListaRestrictedSupplies)
+            {
+                if (fornecedor.CNPJ == cnpj)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void AlterarFornecedoresRestritos()
@@ -1117,65 +1137,328 @@ namespace ProjetoGrupo1
         //-----------------------------------------------------------------------
         //leandro
 
+
+
+
+
         
-
-
-
-
 
         public void IncluirSales()
         {
             Console.WriteLine("Digite o CPF do cliente: ");
-            string cpf = Console.ReadLine();
-            var customer = 0; //= LocalizarCustomer(cpf);
-
-            if (customer == 0)
-                Console.WriteLine("Cliente não cadastrado!");
-
-            //else if (/*LocalizarClientesRestritos(cpf)*/)
-            //{
-            //    Console.WriteLine("Cliente restrito");
-            //}
-            else { }
+            string cpf = Console.ReadLine()!;
+                       
+                Sales sal = new Sales(cpf);
+                this.ListaSales.Add(sal);
+                Console.Clear();
+                Console.WriteLine("Venda realizada com Sucesso!");
+                Console.ReadKey();
+            
         }
-    public void LocalizarSales(int id)
-    {
-        foreach (var venda in ListaSales)
+
+        public Sales RetornarSales(int id)
         {
-            if (venda.Id == id)
+            foreach(var sales in this.ListaSales)
             {
+                if(sales.Id == id)
+                {
+                    return sales;
+                }
+            }
+
+            return null;
+        }
+        public void LocalizarSales()
+        {
+            Console.WriteLine("Digite o id da venda: ");
+            int id = int.Parse(Console.ReadLine()!);
+
+            Sales sal = RetornarSales(id);
+
+            if (sal != null)
+            {
+                Console.Clear();
                 Console.WriteLine("Venda encontrada!");
-                Console.WriteLine(venda.ToString());
+                Console.WriteLine(sal);
+                Console.ReadKey();
             }
             else
             {
+                Console.Clear();
                 Console.WriteLine("Venda não encontrado!");
+                Console.ReadKey();
             }
         }
-    }
-        
 
-    public void VerificarItem()
-    {
-        int auxid1 = 0;
-
-        Console.WriteLine("Digite um número inteiro com 5 dígitos:");
-        string entrada = Console.ReadLine();
-        if (entrada.Length == 5 && entrada.All(char.IsDigit))
+        public void ImprimirListaSales()
         {
-            Console.WriteLine("Entrada válida: contém apenas números e tem 5 dígitos.");
-            auxid1 = 1;
-            int numero = int.Parse(entrada);
-            Console.WriteLine(entrada);
-        }
-        else
-        {
-            Console.WriteLine("Entrada invalida! ");
-            Console.WriteLine("O Id deve conter apenas 5 numeros inteiros!");
-            Console.WriteLine("Tente novamente!");
+            Console.Clear();
+            foreach(var venda in ListaSales)
+            {
+                
+                Console.WriteLine(venda);
+                Console.WriteLine("---------//---------");
+               
+            }
+            Console.ReadKey();
         }
 
-    }
+        public void incluirItemsSales()
+        {
+            int aux = 0;
+            int id = 0;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Digite o Id da Venda: ");
+                var idVenda = Console.ReadLine()!;
+                if (idVenda.Length == 5 && idVenda.All(char.IsDigit))
+                {
+                    id = int.Parse(idVenda);
+                    aux = 1;
+                }
+                else
+                {
+                    Console.WriteLine("Id no formato inválido!");
+                    Console.ReadKey();
+                }
+            } while (aux == 0);
+
+            var sales = RetornarSales(id);
+
+            if (sales == null)
+            {
+                Console.Clear();
+                Console.WriteLine("Venda não encontrada");
+                Console.ReadLine();
+            }
+            else if (sales.ItemsFull())
+            {
+                Console.Clear();
+                Console.WriteLine("Venda ja possui três itens!");
+                Console.ReadLine();
+            }
+            else
+            {
+                aux = 0;
+                string cdb;
+                do
+                {
+
+                    Console.Clear();
+                    Console.WriteLine("Digite o código de barras do medicamento");
+                    cdb = Console.ReadLine()!;
+                    if (cdb.Length == 13 && cdb.All(char.IsDigit))
+                    {
+
+                        aux = 1;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Código de barra no formato inválido!");
+                        Console.ReadKey();
+                    }
+                } while (aux == 0);
+
+
+                aux = 0;
+                int quantidade = 0;
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine("Digite a quantidade vendida: ");
+                    string stringQuantidade = Console.ReadLine()!;
+                    if (stringQuantidade.Length <= 3 && stringQuantidade.All(char.IsDigit))
+                    {
+                        quantidade = int.Parse(stringQuantidade);
+                        aux = 1;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Número inválido!");
+                        Console.ReadKey();
+                    }
+                } while (aux == 0);
+
+                aux = 0;
+                decimal valorUnit = 0.0m;
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine("Digite o valor unitario: ");
+                    string stringvalorUnit = Console.ReadLine()!;
+                    if (stringvalorUnit.Length <= 6 && stringvalorUnit.All(char.IsDigit))
+                    {
+                        valorUnit = decimal.Parse(stringvalorUnit);
+                        aux = 1;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Número inválido!");
+                        Console.ReadKey();
+                    }
+                } while (aux == 0);
+
+                var salesItems = new SalesItems(id, cdb, quantidade, valorUnit);
+
+                this.ListaSalesItems.Add(salesItems);
+                sales.IncluirListaSalesItems(salesItems);
+                Console.Clear();
+                Console.WriteLine("Item de venda inserido com sucesso!");
+                Console.ReadKey();
+            }
+
+
+        }
+
+
+        public void ImprimirListaSalesItems()
+        {
+            Console.Clear ();
+            foreach (var item in ListaSalesItems)
+            {
+               
+                Console.WriteLine(item);
+                Console.WriteLine("---------//---------");
+
+            }
+            Console.ReadKey ();
+        }
+
+        public void AlterarSalesItems()
+        {
+            
+            int id = 0;
+            int aux = 0; 
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Digite o Id do item: ");
+                var idItem = Console.ReadLine()!;
+                if (idItem.Length == 5 && idItem.All(char.IsDigit))
+                {
+                    id = int.Parse(idItem);
+                    aux = 1;
+                }
+                else
+                {
+                    Console.WriteLine("Id no formato inválido!");
+                    Console.ReadKey();
+                }
+            } while (aux == 0);
+
+            var salesItems = RetornaSalesItems(id);
+            if(salesItems is null)
+            {
+                Console.Clear();
+                Console.WriteLine("O item buscado não existe!");
+                Console.ReadKey();
+            }
+            else
+            {
+                aux = 0;
+                int quantidade = 0;
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine("Digite a nova quantidade vendida: ");
+                    string stringQuantidade = Console.ReadLine()!;
+                    if (stringQuantidade.Length <= 3 && stringQuantidade.All(char.IsDigit))
+                    {
+                        quantidade = int.Parse(stringQuantidade);
+                        aux = 1;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Número inválido!");
+                        Console.ReadKey();
+                    }
+                } while (aux == 0);
+
+                aux = 0;
+                decimal valorUnit = 0;
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine("Digite o novo valor unitario: ");
+                    string stringvalorUnit = Console.ReadLine()!;
+                    if (stringvalorUnit.Length <= 6 && stringvalorUnit.All(char.IsDigit))
+                    {
+                        valorUnit = decimal.Parse(stringvalorUnit);
+                        aux = 1;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Número inválido!");
+                        Console.ReadKey();
+                    }
+                } while (aux == 0);
+
+                salesItems.SetQuantidade(quantidade);
+                salesItems.SetValorUnitario(valorUnit);
+                Sales sales = RetornarSales(salesItems.IdVenda);
+                sales.SetValorTotal();
+                Console.Clear();
+                Console.WriteLine("Item de venda alterado com sucesso!");
+                Console.ReadKey();
+
+            }
+        }
+
+
+        public SalesItems RetornaSalesItems(int codigo)
+        {
+            foreach(var item in ListaSalesItems)
+            {
+                if(item.Chave == codigo)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        public void LocalizarSalesITems()
+        {
+            int id = 0;
+            int aux = 0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Digite o Id do item: ");
+                var idItem = Console.ReadLine()!;
+                if (idItem.Length == 5 && idItem.All(char.IsDigit))
+                {
+                    id = int.Parse(idItem);
+                    aux = 1;
+                }
+                else
+                {
+                    Console.WriteLine("Id no formato inválido!");
+                    Console.ReadKey();
+                }
+            } while (aux == 0);
+
+            var salesItems = RetornaSalesItems(id);
+            if (salesItems is null)
+            {
+                Console.Clear();
+                Console.WriteLine("O item buscado não existe!");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine(salesItems);
+                Console.ReadKey();
+
+            }
+        }
 
     }
 }
