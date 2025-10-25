@@ -13,15 +13,29 @@ namespace ProjetoGrupo1
         public string IdPrincipio { get; private set; }
         public int QuantidadePrincipio { get; private set; }
 
+
+        public ProduceItem
+       (
+            int idProduceItem,
+           int idProducao,
+           string idPrincipio,
+           int quantidadePrincipio
+       )
+        {
+            this.IdProduceItem = idProduceItem;
+            this.IdProducao = idProducao;
+            this.IdPrincipio = idPrincipio;
+            this.QuantidadePrincipio = quantidadePrincipio;
+        }
+
         public ProduceItem
         (
-            int idProduceItem,
             int idProducao,
             string idPrincipio,
             int quantidadePrincipio
         )
         {
-            this.IdProduceItem = idProduceItem;
+            this.IdProduceItem = new Random().Next(10000, 100000);
             this.IdProducao = idProducao;
             this.IdPrincipio = idPrincipio;
             this.QuantidadePrincipio = quantidadePrincipio;

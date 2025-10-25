@@ -11,33 +11,40 @@ namespace ProjetoGrupo1
         public string Ingrediente { get; private set; }
         public int Quantidade { get; private set; }
         public double ValorUnitario { get; private set; }
-        public double TotaItem { get; private set; }
+        public double TotalItem { get; private set; }
         public PurchaseItem(int idCompra, string ingrediente, int quantidade,
-            double valorUnitario, double totaItem)
+            double valorUnitario)
         {
             IdCompra = idCompra;
             Ingrediente = ingrediente;
             Quantidade = quantidade;
             ValorUnitario = valorUnitario;
-            TotaItem = totaItem;
+            CalcularTotalItem();
         }
         public void setValorUnitario(double valorUnitario)
         {
             this.ValorUnitario = valorUnitario;
+            CalcularTotalItem();
         }
         public void setQuantidade(int quantidade)
         {
             this.Quantidade = quantidade;
+            CalcularTotalItem();
+            
         }
-        public void setTotaItem(double totaItem)
+
+        private void CalcularTotalItem()
         {
-            this.TotaItem = totaItem;
+            this.TotalItem = this.Quantidade * this.ValorUnitario;
         }
+      
         public override string ToString()
         {
-            return $"Id da Compra: {IdCompra}, Ingrediente: {Ingrediente}," +
-                $"Quantidade: {Quantidade}, Valor Unitário: {ValorUnitario}, " +
-                $"Total do Item: {TotaItem}";
+            return $"Id da Compra: {IdCompra}\n" +
+                $" Ingrediente: {Ingrediente}\n"+
+                $"Quantidade: {Quantidade}\n" +
+                $" Valor Unitário: {ValorUnitario}\n" +
+                $"Total do Item: {TotalItem}\n";
         }
 
         public static List<PurchaseItem> LerArquivoPurchasesItem(string diretorio, string nomeArquivo)
@@ -88,7 +95,7 @@ namespace ProjetoGrupo1
         public string ToFile()
         {
             return $"{IdCompra}{Ingrediente}{Quantidade}" +
-                $"{ValorUnitario}{TotaItem}";
+                $"{ValorUnitario}{TotalItem}";
         }
     }
 }
