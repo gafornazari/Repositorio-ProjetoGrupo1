@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -105,6 +106,12 @@ namespace ProjetoGrupo1
                 }
                 writer.Close();
             }
+        }
+
+        public string FormatarData(DateOnly data)
+        {
+            string dataFormatada = data.ToString("dd/mm/yyyy");
+            return dataFormatada; 
         }
 
         public string ToFile()
