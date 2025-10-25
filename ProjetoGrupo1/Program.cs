@@ -224,10 +224,13 @@ do
             CadastrosBasicos();
             break;
         case 2:
+            VendasMedicamentos();
             break;
         case 3:
+            ComprasPrincipiosAtivos();
             break;
         case 4:
+            ManipulacaoMedicamentos();
             break;
         default:
              Console.WriteLine("Opção inválida!");
