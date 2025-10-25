@@ -64,7 +64,7 @@ namespace ProjetoGrupo1
             return resultado;
         }
 
-        public List<Produce> LerArquivoProduce(string diretorio, string nomeArquivo)
+        public static List<Produce> LerArquivoProduce(string diretorio, string nomeArquivo)
         {
             var fullProduce = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
             StreamReader produceSR = new StreamReader(fullProduce);

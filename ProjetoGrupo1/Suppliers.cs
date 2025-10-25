@@ -138,4 +138,44 @@ public class Suppliers
     }
 
 
+    public static List<Suppliers> LerArquivoRestrictecSupplies(string diretorio, string nomeArquivo)
+    {
+        var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+        StreamReader suppliersRestrictedSR = new StreamReader(fullNomeArquivo);
+        using (suppliersRestrictedSR)
+        {
+            if (suppliersRestrictedSR.ReadToEnd() is "")
+            {
+                return new List<Suppliers>();
+            }
+            else
+            {
+                List<Suppliers> suppliersRest = new List<Suppliers>();
+                string line;
+                while ((line = suppliersRestrictedSR.ReadLine()) is not null)
+                {
+                    //lógica para adicionar na lista de suplier restrito
+                    //suppliersRest.Add(supplierRest);
+                }
+                suppliersRestrictedSR.Close();
+                return suppliersRest;
+            }
+        }
+    }
+
+    public void GravarSupplierRestricted(List<Suppliers> lista)
+    {
+        string fullPath = @"";
+        StreamWriter writer = new StreamWriter(fullPath);
+        using (writer)
+        {
+            foreach (var customer in lista)
+            {
+                writer.WriteLine(customer.ToFile());
+            }
+            writer.Close();
+        }
+    }
+
+
 }
