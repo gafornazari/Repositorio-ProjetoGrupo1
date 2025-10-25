@@ -355,15 +355,11 @@ void ManipulacaoMedicamentos()
                 farmacia.IncluirProduceItem();
                 break;
             case 3:
-                Console.WriteLine("Digite o id da produção que deseja localizar:");
-                int idProd = int.Parse(Console.ReadLine());
-                farmacia.LocalizarProduce(idProd);
+              
+                farmacia.LocalizarProduce();
                 break;
             case 4:
-                Console.WriteLine("Digite o id do item a ser produzido" +
-                    " que deseja localizar:");
-                int idProdItem = int.Parse(Console.ReadLine());
-                farmacia.LocalizarProduceItem(idProdItem);
+                farmacia.LocalizarProduceItem();
                 break;
             case 5:
                 farmacia.AlterarProduce();

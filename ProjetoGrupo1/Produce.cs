@@ -28,12 +28,13 @@ namespace ProjetoGrupo1
         }
         public Produce(
             int id,
+            DateOnly data,
             string cdbMedicamento,
             int quantidade
         )
         {
             this.Id = id;
-            this.DataProducao = DateOnly.FromDateTime(DateTime.Now);
+            this.DataProducao = data;
             this.CdbMedicamento = cdbMedicamento;
             this.Quantidade = quantidade;
         }
