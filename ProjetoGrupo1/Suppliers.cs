@@ -169,11 +169,16 @@ public class Suppliers
         {
             foreach (var supplierRest in lista)
             {
-                writer.WriteLine(supplierRest.ToFile());
+                writer.WriteLine(supplierRest.ToFileRest());
             }
             writer.Close();
         }
     }
 
+    public string ToFileRest()
+    {
+        //lógica para gravar o cnpj
+        return $"";
+    }
 
 }
