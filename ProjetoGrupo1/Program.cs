@@ -191,13 +191,11 @@ void CadastrosBasicos()
 
 void VendasMedicamentos()
 {
-    Console.WriteLine("---- VENDAS DE MEDICAMENTOS ----");
-    Console.WriteLine("1 - Clientes");
-    Console.WriteLine("2 - Fornecedores");
-    Console.WriteLine("3 - Princípios ativos");
-    Console.WriteLine("4 - Medicamentos");
-    Console.WriteLine("5 - Sair");
-
+    do
+    {
+        
+    }
+    while (true);
 }
 
 void ComprasPrincipiosAtivos()
@@ -235,8 +233,12 @@ void ComprasPrincipiosAtivos()
                 farmacia.AlterarPurchases(IdAlt);
                 break;
             case 5:
+                Console.WriteLine("Imprimindo lista de compras");
+                farmacia.ImprimirPurchases();
                 break;
             case 6:
+                Console.WriteLine("Imprimindo lista de itens comprados");
+                farmacia.ImprimirPurchaseItens();
                 break;
             case 7:
                 Console.WriteLine("Saindo");
