@@ -1,4 +1,7 @@
 ﻿using ProjetoGrupo1;
+using ProjetoGrupo1.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+Farmacia farmacia = new Farmacia();
 
 string diretorio = @"C:\SneezePharma\";
 

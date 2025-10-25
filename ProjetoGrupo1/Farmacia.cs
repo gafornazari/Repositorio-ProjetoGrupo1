@@ -737,19 +737,27 @@ namespace ProjetoGrupo1
             Console.Write("Informe o telefone: DDD + Número ");
             string telefone = Console.ReadLine();
 
+            Console.Write("Informe a data da última compra: ");
+            DateOnly ultimaCompra = DateOnly.Parse(Console.ReadLine());
+
+            Console.Write("Informe a data do cadastro do cliente: ");
+            DateOnly dataCadastro = DateOnly.Parse(Console.ReadLine());
+
+            Console.WriteLine("Informa a situação do cliente: [I] para Inativo - [A] para Ativo");
+            char situacao = char.Parse(Console.ReadLine());
 
             Console.Write("Informe a data de nascimento do cliente: ");
             DateOnly dataNascimento = DateOnly.Parse(Console.ReadLine());
             VerificarMaioridade(dataNascimento);
 
-            ListaCustomers.Add(new Customer(cpf, nome, dataNascimento, telefone));
+            ListaCustomers.Add(new Customer());
         }
 
         public void AlterarCustomerUltimaCompra(DateOnly ultimaCompra, string cpf)
         {
-            foreach (var cliente in ListaCustomers)
+            foreach(var cliente in ListaCustomers)
             {
-                if (cliente.CPF == cpf)
+                if(cliente.CPF == cpf)
                 {
                     cliente.SetUltimaCompra(ultimaCompra);
                 }
@@ -904,7 +912,7 @@ namespace ProjetoGrupo1
             DateOnly dataFundacao = DateOnly.Parse(Console.ReadLine());
             VerificarDataAbertura(dataFundacao);
 
-            ListaSupplies.Add(new Suppliers(cnpj, razaoSocial, pais, dataFundacao));
+            ListaSupplies.Add(new Supplies());
         }
 
         public Suppliers LocalizarFornecedor(string cnpj)
@@ -928,7 +936,6 @@ namespace ProjetoGrupo1
                     Console.WriteLine("-------------------------------------");
                 }
 
-            }
         }
 
         public void AlterarSuppliesUltimoFornecimento(DateOnly ultimoFornecimento, string cnpj)
@@ -993,29 +1000,20 @@ namespace ProjetoGrupo1
             {
                 if (cliente.CPF == cpf)
                 {
-                    ListaRestrictedCustomers.Add(cliente);
                     Console.WriteLine("Cliente adicionado a lista de Clientes Restritos.");
-
+                    ListaRestrictedCustomers.Add(cliente);
                 }
                 else
                 {
                     Console.WriteLine("O cliente não está cadastrado.");
                 }
-
+                Console.WriteLine(ListaRestrictedCustomers);
             }
         }
 
-        public bool LocalizarClientesRestritos(string cpf)
+        public Customer LocalizarClientesRestritos(string cpf)
         {
-            foreach (var cliente in ListaRestrictedCustomers)
-            {
-                if (cliente.CPF == cpf)
-                {
-                    return true;
-                }
-
-            }
-            return false;
+            return ListaRestrictedCustomers.Find(c => c.CPF == cpf);
         }
 
         public void AlterarClientesRestritos()
@@ -1026,20 +1024,11 @@ namespace ProjetoGrupo1
             Console.WriteLine("Tem certeza que deseja excluir da lista de restritos? [1] SIM / [2] NÃO");
             int op = int.Parse(Console.ReadLine());
 
-            if (op == 1)
-            {
-                ListaCustomers.Add((cliente));
-                ListaRestrictedCustomers.Remove(cliente);
-            }
-            else if (op == 2)
-            {
-                Console.WriteLine("Sem alterações");
-            }
-            else
-            {
-                Console.WriteLine("Opção inválida");
-            }
+            Console.WriteLine("Digite a nova situação: [I] para Inativo - [A] para Ativo");
+            char novaSituacao = char.Parse(Console.ReadLine());
 
+            cliente.SetSituacao(novaSituacao);
+            Console.WriteLine("Nova situação" + novaSituacao);
         }
 
         public void ExibirClientesRestritos()
@@ -1047,13 +1036,8 @@ namespace ProjetoGrupo1
             Console.WriteLine("LISTA DE CLIENTES RESTRITOS");
             foreach (var cliente in ListaRestrictedCustomers)
             {
-                if (cliente == null)
-                {
-                    Console.WriteLine("Lista vazia");
-                }
-                else
-                    Console.WriteLine("------------------------------------");
-                Console.WriteLine(cliente.CPF + "\n");
+                Console.WriteLine("------------------------------------");
+                Console.WriteLine(cliente + "\n");
                 Console.WriteLine("-------------------------------------");
             }
         }
@@ -1069,7 +1053,7 @@ namespace ProjetoGrupo1
                 {
                     ListaRestrictedSupplies.Add(fornecedor);
                     Console.WriteLine("Empresa adicionada a lista de Empresas Restritas.");
-
+                    ListaRestrictedSupplies.Add(fornecedor);
                 }
                 else
                 {
@@ -1119,13 +1103,8 @@ namespace ProjetoGrupo1
             Console.WriteLine("LISTA DE FORNECEDORES RESTRITOS");
             foreach (var fornecedor in ListaRestrictedSupplies)
             {
-                if (fornecedor == null)
-                {
-                    Console.WriteLine("Lista vazia");
-                }
-                else
-                    Console.WriteLine("------------------------------------");
-                Console.WriteLine(fornecedor.CNPJ + "\n");
+                Console.WriteLine("------------------------------------");
+                Console.WriteLine(fornecedor + "\n");
                 Console.WriteLine("-------------------------------------");
             }
 
