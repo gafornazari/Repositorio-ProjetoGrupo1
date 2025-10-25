@@ -77,6 +77,8 @@ public class Supplies
     {
         return pais.PadRight(20, ' ');
     }
+
+
     public string ToFile()
     {
         return $"{this.CNPJ}{this.RazaoSocial}{this.Pais}{this.DataAbertura.ToString("ddMMyyyy")}{this.UltimoFornecimento.ToString("ddMMyyyy")}{this.DataCadastro.ToString("ddMMyyyy")}{this.Situacao}";

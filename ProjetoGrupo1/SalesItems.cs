@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace ProjetoGrupo1
             this.ValorUnitario = valorUnitario;
             CalcularTotalItem();
         }
+
         public void SetQuantidade(int quantidade)
         {
             this.Quantidade = quantidade;
@@ -53,5 +55,8 @@ namespace ProjetoGrupo1
         {
             return $"{this.IdVenda}{this.Medicamento}{this.Quantidade}{this.ValorUnitario}{TotalItem}";
         }
+
+
+
     }
 }

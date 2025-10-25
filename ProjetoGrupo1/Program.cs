@@ -1,5 +1,23 @@
 ﻿using ProjetoGrupo1;
+
+string diretorio = @"";
+
+
 Farmacia farmacia = new Farmacia();
+
+//lendo todos os arquivos
+farmacia.ListaCustomers = Customer.LerArquivoCustomer(diretorio, pathCustomer);
+farmacia.ListaSupplies = Supplies.LerArquivoSuppliers(diretorio, pathSuppliers);
+farmacia.ListaIngredients = Ingredient.LerArquivoIngredient(diretorio, pathIngredient);
+farmacia.ListaMedicines = Medicine.LerArquivoMedicine(diretorio, pathMedicine);
+farmacia.ListaProduces = Produce.LerArquivoProduce(diretorio, pathProduce);
+farmacia.ListaProducesItems = ProduceItem.LerArquivoProduceItem(diretorio, pathProduceItem);
+farmacia.ListaPurchaseItems = PurchaseItem.LerArquivoPurchaseItem(diretorio, pathPurchaseItem);
+farmacia.ListaPurchases = Purchases.LerArquivoPurchases(diretorio, pathPurchases);
+farmacia.ListaSales = Sales.LerAquivoSales(diretorio, pathSales);
+farmacia.ListaSalesItems = SalesItems.LerArquivoSalesItems(diretorio, pathSalesItems);
+farmacia.ListaRestrictedSupplies = Supplies.LerArquivoRestrictecSupplies(diretorio, pathRestrictedSupplies);
+farmacia.ListaRestrictedCustomers = Customer.LerArquivoRestrictedCustomer(diretorio, pathRestrictedCustomer);
 
 int menuprincipal = 0, cadastro = 0, cliente, fornecedor, principio, manipulacao;
 

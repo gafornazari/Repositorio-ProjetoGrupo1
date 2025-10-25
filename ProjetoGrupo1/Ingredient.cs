@@ -27,6 +27,15 @@ namespace ProjetoGrupo1
             Situacao = 'A';
         }
 
+        public Ingredient(string id, string nome, DateOnly ultimaCompra, DateOnly dataCadastro, char situacao)
+        {
+            Id = id;
+            Nome = nome;
+            UltimaCompra = ultimaCompra;
+            DataCadastro = dataCadastro;
+            Situacao = situacao;
+        }
+
         public void SetSituacao(char situacao)
         {
             Situacao = situacao;
@@ -39,7 +48,59 @@ namespace ProjetoGrupo1
 
         public override string ToString()
         {
-            return $"Id: {Id}, Nome: {Nome}, Última compra: {UltimaCompra}, Data cadastro: {DataCadastro}, Situação: {Situacao}";
+            return $"Id: {Id}, Nome: {Nome}, Última compra: {UltimaCompra}," +
+                $" Data cadastro: {DataCadastro}, Situação: {Situacao}";
         }
+
+        public List<Ingredient> LerArquivoIngredient(string diretorio, string nomeArquivo)
+        {
+            var fullIngridient = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+            StreamReader ingridientSR = new StreamReader(fullIngridient);
+            using (ingridientSR)
+            {
+                if (ingridientSR.ReadToEnd() is "")
+                {
+                    return new List<Ingredient>();
+                }
+                else
+                {
+                    List<Ingredient> ingredients = new List<Ingredient>();
+                    string line;
+                    while ((line = ingridientSR.ReadLine()) is not null)
+                    {
+                        string id = line.Substring(0, 6);
+                        string nome = line.Substring(6, 20);
+                        DateOnly ultimaVenda = DateOnly.Parse(line.Substring(26, 8));
+                        DateOnly dataCadastro = DateOnly.Parse(line.Substring(34, 8));
+                        char situacao = char.Parse(line.Substring(42, 1));
+                        Ingredient ingredient = new Ingredient(id, nome, ultimaVenda, dataCadastro, situacao);
+                        ingredients.Add(ingredient);
+                    }
+                    ingridientSR.Close();
+                    return ingredients;
+                }
+            }
+        }
+
+        public void GravarIngredient(List<Ingredient> lista)
+        {
+            string fullPath = @"";
+
+            StreamWriter writer = new StreamWriter(fullPath);
+            using (writer)
+            {
+                foreach (var ingredient in lista)
+                {
+                    writer.WriteLine(ingredient.ToFile());
+                }
+                writer.Close();
+            }
+        }
+
+        public string ToFile()
+        {
+            return $"{Id}{Nome}{UltimaCompra}{DataCadastro}{Situacao}";
+        }
+
     }
 }

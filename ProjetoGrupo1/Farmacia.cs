@@ -403,7 +403,7 @@ namespace ProjetoGrupo1
         }
 
         //É chamada quando há uma nova compra, alterando a data da última compra
-        public void AlterarIngridientUltimaCompra(DateOnly ultimacompra, string id)
+        public void AlterarIngredientUltimaCompra(DateOnly ultimacompra, string id)
         {
             foreach (var ing in ListaIngredients)
             {
@@ -1679,10 +1679,3 @@ namespace ProjetoGrupo1
 
 
 
-
-
-
-
-
-    }
-}

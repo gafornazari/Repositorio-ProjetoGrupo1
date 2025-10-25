@@ -29,6 +29,20 @@ namespace ProjetoGrupo1
             Situacao = 'A';
         }
 
+        public Medicine(string cdb, string nome,
+            char categoria, decimal valorVenda,
+            DateOnly ultimaVenda, DateOnly dataCadastro,
+            char situacao)
+        {
+            CDB = cdb;
+            Nome = nome;
+            Categoria = categoria;
+            ValorVenda = valorVenda;
+            UltimaVenda = ultimaVenda;
+            DataCadastro = dataCadastro;
+            Situacao = situacao;
+        }
+
         public void SetValorVenda(decimal valor)
         {
             ValorVenda = valor;
@@ -44,5 +58,59 @@ namespace ProjetoGrupo1
                 $" Ultima Venda: {UltimaVenda}, Data Cadastro: {DataCadastro}, Situação: {Situacao}";
         }
 
+        public List<Medicine> LerArquivoMedicine(string diretorio, string nomeArquivo)
+        {
+            var fullMedicine = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+            StreamReader medicineSR = new StreamReader(fullMedicine);
+            using (medicineSR)
+            {
+                if (medicineSR.ReadToEnd() is "")
+                {
+                    return new List<Medicine>();
+                }
+                else
+                {
+                    List<Medicine> medicines = new List<Medicine>();
+                    string line;
+                    while ((line = medicineSR.ReadLine()) is not null)
+                    {
+                        string cdb = line.Substring(0, 13);
+                        string nome = line.Substring(13, 40);
+                        char categoria = char.Parse(line.Substring(53, 1));
+                        decimal valorVenda = decimal.Parse(line.Substring(54, 7));
+                        DateOnly ultimaVenda = DateOnly.Parse(line.Substring(61, 8));
+                        DateOnly dataCadastro = DateOnly.Parse(line.Substring(69, 8));
+                        char situacao = char.Parse(line.Substring(77, 1));
+                        Medicine medicine = new Medicine(cdb, nome, categoria, valorVenda, ultimaVenda, dataCadastro, situacao);
+                        //aqui na linha de cima, se algo nn for do tipo string, tem que fazer o Parse
+                        medicines.Add(medicine);
+                    }
+                    medicineSR.Close();
+                    return medicines;
+                }
+            }
+
+        }
+
+        public void GravarMedicine(List<Medicine> lista)
+        {
+            string fullPath = @"";
+
+            StreamWriter writer = new StreamWriter(fullPath);
+            using (writer)
+            {
+                foreach (var medicine in lista)
+                {
+                    writer.WriteLine(medicine.ToFile());
+                }
+                writer.Close();
+            }
+        }
+
+        public string ToFile()
+        {
+            return $"{CDB}{Nome}{Categoria}{ValorVenda}{UltimaVenda}{DataCadastro}{Situacao}";
+        }
     }
 }
+
