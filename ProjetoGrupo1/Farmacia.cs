@@ -18,9 +18,9 @@ namespace ProjetoGrupo1
         public List<PurchaseItem> ListaPurchaseItems { get; set; }
 
         public List<Customer> ListaCustomers { get; set; }
-        public List<Supplies> ListaSupplies { get; set; }
+        public List<Suppliers> ListaSupplies { get; set; }
         public List<Customer> ListaRestrictedCustomers { get; set; }
-        public List<Supplies> ListaRestrictedSupplies { get; set; }
+        public List<Suppliers> ListaRestrictedSupplies { get; set; }
         public List<Sales> ListaSales { get; set; }
         public List<SalesItems> ListaSalesItems { get; set; }
 
@@ -33,9 +33,9 @@ namespace ProjetoGrupo1
             this.ListaPurchases = new List<Purchases>();
             this.ListaPurchaseItems = new List<PurchaseItem>();
             this.ListaCustomers = new List<Customer>();
-            this.ListaSupplies = new List<Supplies>();
+            this.ListaSupplies = new List<Suppliers>();
             this.ListaRestrictedCustomers = new List<Customer>();
-            this.ListaRestrictedSupplies = new List<Supplies>();
+            this.ListaRestrictedSupplies = new List<Suppliers>();
             this.ListaSales = new List<Sales>();
             this.ListaSalesItems = new List<SalesItems>();
 
@@ -906,10 +906,10 @@ namespace ProjetoGrupo1
             DateOnly dataFundacao = DateOnly.Parse(Console.ReadLine());
             VerificarDataAbertura(dataFundacao);
 
-            ListaSupplies.Add(new Supplies(cnpj, razaoSocial, pais, dataFundacao));
+            ListaSupplies.Add(new Suppliers(cnpj, razaoSocial, pais, dataFundacao));
         }
 
-        public Supplies LocalizarFornecedor(string cnpj)
+        public Suppliers LocalizarFornecedor(string cnpj)
         {
             return ListaSupplies.Find(s => s.GetCNPJ() == cnpj);
 
@@ -1167,8 +1167,9 @@ namespace ProjetoGrupo1
                 string formatadoData = data.ToString().PadLeft(8);
                 Console.WriteLine("Data no formato inválido. Tente novamente.");
             }
+
             string fornecedorCnpj;
-            Supplies fornecedor = null;
+            Suppliers fornecedor = null;
             while (true)
             {
                 Console.WriteLine("Digite o CNPJ do fornecedor: ");
@@ -1249,14 +1250,14 @@ namespace ProjetoGrupo1
                     if (resposta == null || !resposta.Trim().ToUpper().StartsWith("S"))
                         break;
                 }
+                AlterarIngridientUltimaCompra(data, ingredienteId);
             }
-
             Console.WriteLine($"Valor total dos itens: {valorTotal:F2}");
             this.ListaPurchases.Add(new Purchases(id, data, fornecedor.CNPJ,
                 valorTotal));
         }
 
-        public Purchases LocalizarPurchases(int Id)
+        public Purchases RetornarPurchases(int Id)
         {
             foreach (var item in ListaPurchases)
             {
@@ -1267,7 +1268,7 @@ namespace ProjetoGrupo1
             }
             return null;
         }
-        public PurchaseItem LocalizarPurchaseItem(int Id)
+        public PurchaseItem RetornarPurchaseItem(int Id)
         {
             foreach (var item in ListaPurchaseItems)
             {
@@ -1277,6 +1278,44 @@ namespace ProjetoGrupo1
                 }
             }
             return null;
+        }
+        public void LocalizarPurchases()
+        {
+            Console.WriteLine("Digite o id da compra: ");
+            int id = int.Parse(Console.ReadLine()!);
+            Purchases purchase = RetornarPurchases(id);
+            if (purchase != null)
+            {
+                Console.Clear();
+                Console.WriteLine("Compra encontrada!");
+                Console.WriteLine(purchase);
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Compra não encontrada!");
+                Console.ReadKey();
+            }
+        }
+        public void LocalizarPurchaseItem()
+        {
+            Console.WriteLine("Digite o id do item da compra: ");
+            int id = int.Parse(Console.ReadLine()!);
+            PurchaseItem item = RetornarPurchaseItem(id);
+            if (item != null)
+            {
+                Console.Clear();
+                Console.WriteLine("Item da compra encontrado!");
+                Console.WriteLine(item);
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Item da compra não encontrado!");
+                Console.ReadKey();
+            }
         }
         public void AlterarPurchases(int IdCompra)
         {
@@ -1289,10 +1328,10 @@ namespace ProjetoGrupo1
             {
                 Console.WriteLine("O Id da compra está incorreto");
                 var aux = int.Parse(Console.ReadLine());
-                purchaseItem = LocalizarPurchaseItem(aux);
+                purchaseItem = RetornarPurchaseItem(aux);
             } while (purchaseItem == null);
 
-            purchases = LocalizarPurchases(IdCompra);
+            purchases = RetornarPurchases(IdCompra);
 
             Console.WriteLine("Digite o que deseja alterar:\n1 - Quantidade" +
                 "\n2 - ValorUnitário\n3 - As duas opções ");
@@ -1467,7 +1506,7 @@ namespace ProjetoGrupo1
             }
             Console.ReadKey();
         }
-        public void incluirItemsSales()
+        public void IncluirSaleItems()
         {
             int aux = 0;
             int id = 0;
@@ -1662,7 +1701,7 @@ namespace ProjetoGrupo1
             }
             return null;
         }
-        public void LocalizarSalesITems()
+        public void LocalizarSalesItems()
         {
             int id = 0;
             int aux = 0;

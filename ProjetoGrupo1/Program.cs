@@ -3,7 +3,7 @@ using System.Security.AccessControl;
 Farmacia farmacia = new Farmacia();
 
 int menuprincipal = 0, cadastro = 0, cliente, fornecedor, 
-    principio, manipulacao, compras;
+    principio, manipulacao, compras, vendas;
 
 void CadastrosBasicos()
 {
@@ -193,9 +193,51 @@ void VendasMedicamentos()
 {
     do
     {
-        
+        Console.WriteLine("---- VENDAS DE MEDICAMENTOS ----");
+        Console.WriteLine("1 - Registrar venda");
+        Console.WriteLine("2 - Registrar um item ");
+        Console.WriteLine("3 - Localizar vendas");
+        Console.WriteLine("4 - Localizar os itens vendidos");
+        Console.WriteLine("5 - Alterar");
+        Console.WriteLine("6 - Exibir venda");
+        Console.WriteLine("7 - Exibir itens já vendidos");
+        Console.WriteLine("8 - Sair");
+        vendas = int.Parse(Console.ReadLine());
+        switch (vendas)
+        {
+            case 1:
+                farmacia.IncluirSales();
+                break;
+            case 2:
+                farmacia.IncluirSaleItems();
+                break;
+            case 3:
+                farmacia.LocalizarSales();
+                break;
+            case 4:
+                farmacia.LocalizarSalesItems();
+                break;
+            case 5:
+                farmacia.AlterarSalesItems();
+                break;
+            case 6:
+                Console.WriteLine("Imprimindo lista de vendas");
+                farmacia.ImprimirListaSales();
+                break;
+            case 7:
+                Console.WriteLine("Imprimindo lista de itens vendidos");
+                farmacia.ImprimirListaSalesItems();
+                break;
+            case 8:
+                Console.WriteLine("Saindo");
+                break;
+            default:
+                Console.WriteLine("Opção Inválida");
+                break;
+        }
+
     }
-    while (true);
+    while (vendas != 8);
 }
 
 void ComprasPrincipiosAtivos()
@@ -218,14 +260,10 @@ void ComprasPrincipiosAtivos()
                 farmacia.IncluirPurchases();
                 break;
             case 2:
-                Console.WriteLine("Qual o Id da compra que deseja encontrar?");
-                int IdCompras = int.Parse(Console.ReadLine());
-                farmacia.LocalizarPurchases(IdCompras);
+                farmacia.LocalizarPurchases();
                 break;
             case 3:
-                Console.WriteLine("Qual o Id do item que deseja encontrar?");
-                int IdItem = int.Parse(Console.ReadLine());
-                farmacia.LocalizarPurchaseItem(IdItem);
+                farmacia.LocalizarPurchaseItem();
                 break;
             case 4:
                 Console.WriteLine("Qual o Id da compra que deseja alterar?");
@@ -253,11 +291,14 @@ void ComprasPrincipiosAtivos()
 void ManipulacaoMedicamentos()
 {
     Console.WriteLine("---- MANIPULAÇÃO DE MEDICAMENTOS ----");
-    Console.WriteLine("1 - Clientes");
-    Console.WriteLine("2 - Fornecedores");
-    Console.WriteLine("3 - Princípios ativos");
-    Console.WriteLine("4 - Medicamentos");
-    Console.WriteLine("5 - Sair");
+    Console.WriteLine("1 - Incluir Produção");
+    Console.WriteLine("2 - Incluir Item a ser produzido");
+    Console.WriteLine("3 - Localizar Produção");
+    Console.WriteLine("4 - Localizar Item produzido");
+    Console.WriteLine("5 - Alterar Produção");
+    Console.WriteLine("6 - Alterar Item produzido");
+    Console.WriteLine("7 - Alterar Item produzido");
+    Console.WriteLine("");
 }
 
 do

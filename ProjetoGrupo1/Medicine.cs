@@ -26,6 +26,7 @@ namespace ProjetoGrupo1
             Categoria = categoria;
             ValorVenda = valorVenda;
             DataCadastro = DateOnly.FromDateTime(DateTime.Now);
+            string DataFormatada = DataCadastro.ToString("ddMMyyyy");
             Situacao = 'A';
         }
 

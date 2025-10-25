@@ -26,12 +26,12 @@ namespace ProjetoGrupo1
         public override string ToString()
         {
             return $"Id: {Id}, Data da Compra: {DataFormatada()}, " +
-                //$"Fornecedor: {Fornecedor}, " +
+                $"Fornecedor: {Fornecedor}, " +
                 $"Valor Total: {ValorTotal}";
         }
         public string ToFile()
         {
-            return $"{Id}{DataFormatada()}" +//$"{Fornecedor}" +
+            return $"{Id}{DataFormatada()}" +$"{Fornecedor}" +
                 $"{ValorTotal}";
         }
         public void setValorTotal(double valorTotal)
