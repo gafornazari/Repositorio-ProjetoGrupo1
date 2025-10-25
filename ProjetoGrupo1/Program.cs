@@ -19,7 +19,8 @@ Farmacia farmacia = new Farmacia();
 //farmacia.ListaRestrictedSupplies = Supplies.LerArquivoRestrictecSupplies(diretorio, pathRestrictedSupplies);
 //farmacia.ListaRestrictedCustomers = Customer.LerArquivoRestrictedCustomer(diretorio, pathRestrictedCustomer);
 
-int menuprincipal = 0, cadastro = 0, cliente, fornecedor, principio, manipulacao, vendas, compras;
+int menuprincipal = 0, cadastro = 0, cliente, fornecedor, principio,
+    manipulacao, vendas, compras, producoes;
 
 void CadastrosBasicos()
 {
@@ -306,15 +307,60 @@ void ComprasPrincipiosAtivos()
 
 void ManipulacaoMedicamentos()
 {
-    Console.WriteLine("---- MANIPULAÇÃO DE MEDICAMENTOS ----");
-    Console.WriteLine("1 - Incluir Produção");
-    Console.WriteLine("2 - Incluir Item a ser produzido");
-    Console.WriteLine("3 - Localizar Produção");
-    Console.WriteLine("4 - Localizar Item produzido");
-    Console.WriteLine("5 - Alterar Produção");
-    Console.WriteLine("6 - Alterar Item produzido");
-    Console.WriteLine("7 - Alterar Item produzido");
-    Console.WriteLine("");
+    do
+    {
+        Console.WriteLine("---- MANIPULAÇÃO DE MEDICAMENTOS ----");
+        Console.WriteLine("1 - Incluir Produção");
+        Console.WriteLine("2 - Incluir Item a ser produzido");
+        Console.WriteLine("3 - Localizar Produção");
+        Console.WriteLine("4 - Localizar Item produzido");
+        Console.WriteLine("5 - Alterar Produção");
+        Console.WriteLine("6 - Alterar Item produzido");
+        Console.WriteLine("7 - Imprimir Lista de produções");
+        Console.WriteLine("8 - Imrprimir Lista de itens produzidos");
+        Console.WriteLine("9 - Sair");
+        producoes = int.Parse(Console.ReadLine());
+        switch(producoes)
+        {
+            case 1:
+                farmacia.IncluirProduce();
+                break;
+            case 2:
+                farmacia.IncluirProduceItem();
+                break;
+            case 3:
+                Console.WriteLine("Digite o id da produção que deseja localizar:");
+                int idProd = int.Parse(Console.ReadLine());
+                farmacia.LocalizarProduce(idProd);
+                break;
+            case 4:
+                Console.WriteLine("Digite o id do item a ser produzido" +
+                    " que deseja localizar:");
+                int idProdItem = int.Parse(Console.ReadLine());
+                farmacia.LocalizarProduceItem(idProdItem);
+                break;
+            case 5:
+                farmacia.AlterarProduce();
+                break;
+            case 6:
+                farmacia.AlterarProduceItem();
+                break;
+            case 7:
+                Console.WriteLine("Imprimindo lista de produções");
+                farmacia.ImprimirListaProduces();
+                break;
+            case 8:
+                Console.WriteLine("Imprimindo lista de itens produzidos");
+                farmacia.ImprimirListaProduceItems();
+                break;
+            case 9:
+                Console.WriteLine("Saindo");
+                break;
+            default:
+                Console.WriteLine("Opção Inválida");
+                break;
+        }
+    } while (producoes != 9);
 }
 
 do
