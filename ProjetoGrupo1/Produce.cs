@@ -63,7 +63,7 @@ namespace ProjetoGrupo1
             return resultado;
         }
 
-        public static List<Produce> LerArquivoProduce(string diretorio, string nomeArquivo)
+        public List<Produce> LerArquivoProduce(string diretorio, string nomeArquivo)
         {
             var fullProduce = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
             StreamReader produceSR = new StreamReader(fullProduce);
@@ -109,7 +109,7 @@ namespace ProjetoGrupo1
 
         public string ToFile()
         {
-            return $"{this.Id}{this.DataProducao}{this.CdbMedicamento}{FormatarInt()}";
+            return $"{this.Id}{FormatarData(this.DataProducao)}{this.CdbMedicamento}{FormatarInt()}";
         }
     }
 }

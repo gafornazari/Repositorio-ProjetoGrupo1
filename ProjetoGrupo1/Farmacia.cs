@@ -1734,6 +1734,86 @@ namespace ProjetoGrupo1
                 Console.ReadKey();
             }
         }
+
+        public void RelatorioVendasPorPeriodo(DateOnly dataInicio, DateOnly dataFim)
+        {
+            bool encontrou = false;
+            Console.Clear();
+            Console.WriteLine("###### RELATÓRIO DE VENDAS ######");
+            Console.WriteLine($"Venda realizadas entre {dataInicio:dd/mm/yyyy} e {dataFim:dd/mm/yyyy}");
+            Console.WriteLine("___________________________________________________");
+            foreach (var venda in ListaSales)
+            {
+                if (venda.DataVenda >= dataInicio && venda.DataVenda <= dataFim)
+                {
+                    Console.WriteLine(venda);
+                    Console.WriteLine("___________________________________________________");
+                    encontrou = true;
+                }
+            }
+
+            if(encontrou == false)
+            {
+                Console.WriteLine("Nenhuma venda encontrada nesse periodo");
+            }
+
+            Console.ReadKey();
+        }
+       
+        public void RelatorioMedicamentosMaisVendidos()
+        {
+            if (this.ListaSales.Count == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Nenhuma venda registrada.");
+                Console.ReadKey();
+            }
+
+            var todosItens = this.ListaSales.SelectMany(venda => venda.ListaSalesItems).ToList();
+            var top10 = todosItens.GroupBy(item => new {item.Medicamento}).Select(g => new {Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade)})
+                .OrderByDescending(x => x.TotalVendido).Take(10).ToList();
+
+            Console.Clear();
+            Console.WriteLine("###### TOP 10 MEDICAMENTOS MAIS VENDIDOS ######");
+            Console.WriteLine($"Gerado em: {DateTime.Now}");
+            Console.WriteLine("--------------------------------------");
+
+            int pos = 1;
+            foreach (var item in top10)
+            {
+                Console.WriteLine($"{pos,2}. Código de Barra: {item.Medicamento,-6} | Quantidade Vendida: {item.TotalVendido}");
+                pos++;
+            }
+
+            Console.WriteLine("--------------------------------------\n");
+            Console.ReadKey();
+        }
+
+        public void RelatorioCompraPorFornecedor()
+        {
+            if(this.ListaPurchases.Count == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Nenhuma compra registrada!");
+                Console.ReadKey();
+            }
+            else
+            {
+                var comprasPorFornecedor = this.ListaPurchases.GroupBy(fornecedor => fornecedor.Fornecedor);
+                Console.Clear();
+                Console.WriteLine("###### RELATÓRIO DE COMPRAS POR FORNECEDOR ######");
+
+                foreach (var fornecedor in comprasPorFornecedor)
+                {
+                    double totalFornecedor = fornecedor.Sum(total => total.ValorTotal);
+                }
+
+            }
+
+
+        }
+
+
     }
 }
 

@@ -4,6 +4,7 @@ string diretorio = @"C:\SneezePharma\";
 
 
 Farmacia farmacia = new Farmacia();
+Console.WriteLine("teste");
 
 ////guardando o fullPath de todos
 string pathCustomer = "Customers.data";
