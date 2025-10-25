@@ -110,7 +110,7 @@ namespace ProjetoGrupo1
 
         public string FormatarData(DateOnly data)
         {
-            string dataFormatada = data.ToString("dd/mm/yyyy");
+            string dataFormatada = data.ToString("ddmmyyyy");
             return dataFormatada; 
         }
 
