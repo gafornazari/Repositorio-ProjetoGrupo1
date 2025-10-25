@@ -44,6 +44,7 @@ namespace ProjetoGrupo1
         }
         private void CalcularValorTotal()
         {
+            this.ValorTotal = 0;
             foreach (SalesItems item in ListaSalesItems)
             {
                 this.ValorTotal += item.TotalItem;

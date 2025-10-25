@@ -62,11 +62,15 @@ namespace ProjetoGrupo1
             return resultado;
         }
 
-
+        private string FormatarData(DateOnly data)
+        {
+             string dataFormatada = data.ToString("yyyyMMdd");
+            return dataFormatada;
+        }
 
         public string ToFile()
         {
-            return $"{this.Id}{this.DataProducao}{this.CdbMedicamento}{FormatarInt()}";
+            return $"{this.Id}{FormatarData(this.DataProducao)}{this.CdbMedicamento}{FormatarInt()}";
         }
     }
 }
