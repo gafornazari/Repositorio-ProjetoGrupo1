@@ -48,7 +48,7 @@ namespace ProjetoGrupo1
 
         public override string ToString()
         {
-            return $"Id: {Id}\nNome: {Nome}\nÚltima compra: {UltimaCompra}" +
+            return $"Id: {Id}\nNome: {Nome}\nÚltima compra: {UltimaCompra}\n" +
                 $"Data cadastro: {DataCadastro}\nSituação: {Situacao}";
         }
 
