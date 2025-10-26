@@ -938,19 +938,17 @@ namespace ProjetoGrupo1
         //Métodos para clientes
 
         //Método para verificar se o cpf é válido
-        public string VerificarCpf(string cpf)
+        
+            public bool VerificarCpf(string cpf)
         {
             // Remove caracteres não numéricos
             cpf = cpf.Replace(".", "").Replace("-", "").Trim();
-
             // Verifica se tem 11 dígitos
             if (cpf.Length != 11)
-                return "CPF inválido! (deve conter 11 dígitos)";
+                return false;
 
-            // Verifica se todos os dígitos são iguais
             if (new string(cpf[0], 11) == cpf)
-                return "CPF inválido! (números repetidos)";
-
+                return false;
             // Calcula o primeiro dígito verificador
             int soma = 0;
             for (int i = 0; i < 9; i++)
@@ -958,7 +956,6 @@ namespace ProjetoGrupo1
 
             int resto = soma % 11;
             int digito1 = resto < 2 ? 0 : 11 - resto;
-
             // Calcula o segundo dígito verificador
             soma = 0;
             for (int i = 0; i < 10; i++)
@@ -967,45 +964,59 @@ namespace ProjetoGrupo1
             resto = soma % 11;
             int digito2 = resto < 2 ? 0 : 11 - resto;
 
-            // Verifica se os dígitos calculados são iguais aos do CPF informado
-            if (cpf[9] - '0' == digito1 && cpf[10] - '0' == digito2)
-                return "CPF válido!";
-            else
-                return "CPF inválido!";
+            return (cpf[9] - '0' == digito1 && cpf[10] - '0' == digito2);
         }
 
-        //Método para verificar maioridade do cliente
-        public void VerificarMaioridade(DateOnly dataNascimento)
-        {
 
-            DateTime dataAtual = DateTime.Now;
-            int idade = dataAtual.Year - dataNascimento.Year;
+
+        //Método para verificar maioridade do cliente
+        public bool VerificarMaioridade(DateOnly dataNascimento)
+        {
+            DateTime hoje = DateTime.Today;
+            int idade = hoje.Year - dataNascimento.Year;
+
+            // Corrige caso o aniversário ainda não tenha ocorrido este ano
+            if (dataNascimento.ToDateTime(TimeOnly.MinValue) > hoje.AddYears(-idade))
+                idade--;
 
             if (idade >= 18)
-
             {
-                Console.WriteLine("Cadastro Concluído.");
+                return true;
             }
-
             else
             {
-                Console.WriteLine("Não é possível concluir o cadastro. Cliente menor de idade");
-                return;
+                Console.WriteLine("Não é possível concluir o cadastro. Cliente menor de idade.");
+                return false;
             }
         }
         //Método para adicionar cliente
         public void IncluirCliente()
         {
             Console.Write("Informe CPF do cliente: ");
-            string cpf = (Console.ReadLine()!);
-            VerificarCpf(cpf);
-
-            foreach (var cliente in ListaCustomers)
+            string cpf = Console.ReadLine()!;
+            if (!VerificarCpf(cpf))
             {
-                if (cliente.CPF == cpf)
-                {
-                    Console.WriteLine("Cliente já cadastrado.");
-                }
+                Console.WriteLine("CPF inválido! Cadastro cancelado.");
+                return;
+            }
+
+            if (ListaCustomers.Any(c => c.CPF == cpf))
+            {
+                Console.WriteLine("Cliente já cadastrado.");
+                return;
+            }
+
+            Console.Write("Informe a data de nascimento do cliente: ");
+            string input = Console.ReadLine();
+            if (!DateOnly.TryParseExact(input, "ddMMyyyy", out DateOnly dataNascimento))
+            {
+                Console.WriteLine("Data inválida! Digite no formato ddMMyyyy, ex: 01012024.");
+                return;
+            }
+
+            if (!VerificarMaioridade(dataNascimento))
+            {
+                return; // cancela cadastro
             }
 
             Console.Write("Informe o nome do cliente: ");
@@ -1014,20 +1025,8 @@ namespace ProjetoGrupo1
             Console.Write("Informe o telefone: DDD + Número ");
             string telefone = Console.ReadLine();
 
-            Console.Write("Informe a data de nascimento do cliente: ");
-            
-            string input = Console.ReadLine();
-            if (DateOnly.TryParseExact(input, "ddMMyyyy", out DateOnly dataNascimento))
-            {
-                Console.WriteLine($"Data de abertura: {dataNascimento:dd/MM/yyyy}");
-            }
-            else
-            {
-                Console.WriteLine("Data inválida! Digite no formato ddMMyyyy, ex: 01012024.");
-            }
-            VerificarMaioridade(dataNascimento);
-
             ListaCustomers.Add(new Customer(cpf, nome, dataNascimento, telefone));
+            Console.WriteLine("Cliente cadastrado com sucesso!");
         }
         //Método para alterar a ultima compra do cliente
         public void AlterarCustomerUltimaCompra(DateOnly ultimaCompra, string cpf)
@@ -1115,35 +1114,31 @@ namespace ProjetoGrupo1
 
 
         //Métodos para os fornecedores/supplies
-        
+
         //Métodos para verificar se cnpj é válido
-        public string VerificarCnpj(string cnpj)
+        public bool VerificarCnpj(string cnpj)
         {
-            // Tira pontos, barras e traços
-            cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "");
+            // Remove pontuação
+            cnpj = cnpj.Replace(".", "").Replace("/", "").Replace("-", "").Trim();
 
-            // Verifica se tem 14 dígitos
             if (cnpj.Length != 14)
-                return "CNPJ inválido! (deve conter 14 dígitos)";
+                return false;
 
-            // Verifica se todos os dígitos são iguais (ex: 11111111111111)
             if (new string(cnpj[0], 14) == cnpj)
-                return "CNPJ inválido! (números repetidos)";
+                return false;
 
-            int[] multiplicador1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicador2 = new int[13] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-            string tempCnpj, digito;
-            int soma, resto;
+            int[] multiplicador1 = { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicador2 = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-            tempCnpj = cnpj.Substring(0, 12);
-            soma = 0;
+            string tempCnpj = cnpj.Substring(0, 12);
+            int soma = 0;
 
             for (int i = 0; i < 12; i++)
                 soma += (tempCnpj[i] - '0') * multiplicador1[i];
 
-            resto = (soma % 11);
+            int resto = soma % 11;
             resto = resto < 2 ? 0 : 11 - resto;
-            digito = resto.ToString();
+            string digito = resto.ToString();
 
             tempCnpj += digito;
             soma = 0;
@@ -1151,50 +1146,58 @@ namespace ProjetoGrupo1
             for (int i = 0; i < 13; i++)
                 soma += (tempCnpj[i] - '0') * multiplicador2[i];
 
-            resto = (soma % 11);
+            resto = soma % 11;
             resto = resto < 2 ? 0 : 11 - resto;
             digito += resto.ToString();
 
-            // Verifica se os dois dígitos calculados são iguais aos informados
-            if (cnpj.EndsWith(digito))
-                return "CNPJ válido!";
-            else
-                return "CNPJ inválido!";
-
+            return cnpj.EndsWith(digito);
         }
         //Verificar se a empresa tem mais de dois anos
-        public void VerificarDataAbertura(DateOnly dataAbertura)
+        public bool VerificarDataAbertura(DateOnly dataAbertura)
         {
             DateTime dataAtual = DateTime.Now;
             int anos = dataAtual.Year - dataAbertura.Year;
 
+            
+            if (dataAbertura > DateOnly.FromDateTime(dataAtual).AddYears(-anos))
+                anos--;
+
             if (anos >= 2)
-
-            {
-                Console.WriteLine("Cadastro Concluído.");
-            }
-
-
+                return true; // empresa tem mais de 2 anos
             else
             {
                 Console.WriteLine("Não é possível concluir o cadastro. Empresa com menos de 2 anos.");
-                return;
+                return false; // cancela cadastro
             }
         }
+
         //Incluir fornecedores 
         public void IncluirFornecedor()
         {
             Console.Write("Informe CNPJ: ");
-            string cnpj = (Console.ReadLine()!);
-            VerificarCnpj(cnpj);
-
-            foreach (var fornecedor in ListaSuppliers)
+            string cnpj = Console.ReadLine()!;
+            if (!VerificarCnpj(cnpj))
             {
-                if (fornecedor.GetCNPJ() == cnpj)
-                {
-                    Console.WriteLine("Empresa já cadastrada.");
-                }
+                Console.WriteLine("CNPJ inválido! Cadastro cancelado.");
+                return;
             }
+
+            if (ListaSuppliers.Any(f => f.GetCNPJ() == cnpj))
+            {
+                Console.WriteLine("Empresa já cadastrada. Cadastro cancelado.");
+                return;
+            }
+
+            Console.Write("Informe a data de fundação da empresa: ");
+            string input = Console.ReadLine();
+            if (!DateOnly.TryParseExact(input, "ddMMyyyy", out DateOnly dataAbertura))
+            {
+                Console.WriteLine("Data inválida! Digite no formato ddMMyyyy, ex: 01012024.");
+                return;
+            }
+
+            if (!VerificarDataAbertura(dataAbertura))
+                return; // cancela cadastro se empresa tiver menos de 2 anos
 
             Console.Write("Informe a razão social da empresa: ");
             string razaoSocial = Console.ReadLine();
@@ -1202,21 +1205,10 @@ namespace ProjetoGrupo1
             Console.Write("Informe o país em que a empresa se encontra: ");
             string pais = Console.ReadLine();
 
-            Console.Write("Informe a data de fundação da empresa: ");
-            string input = Console.ReadLine();
-            if (DateOnly.TryParseExact(input, "ddMMyyyy", out DateOnly dataAbertura))
-            {
-                Console.WriteLine($"Data de abertura: {dataAbertura:dd/MM/yyyy}");
-            }
-            else
-            {
-                Console.WriteLine("Data inválida! Digite no formato ddMMyyyy, ex: 01012024.");
-            }
-
-            VerificarDataAbertura(dataAbertura);
-
-            ListaSuppliers.Add(new Suppliers(cnpj,razaoSocial, pais, dataAbertura));
+            ListaSuppliers.Add(new Suppliers(cnpj, razaoSocial, pais, dataAbertura));
+            Console.WriteLine("Fornecedor cadastrado com sucesso!");
         }
+        
         //Buscar fornecedores pelo cnpj
         public Suppliers LocalizarFornecedor(string cnpj)
         {
@@ -1306,23 +1298,52 @@ namespace ProjetoGrupo1
         //Adicionar clientes a lista de restritos
         public void IncluirClientesRestritos()
         {
-            Console.WriteLine("Qual o cpf do cliente que deseja cadastrar?");
+            Console.WriteLine("Qual o CPF do cliente que deseja cadastrar?");
             string cpf = Console.ReadLine()!;
-            foreach (var cliente in ListaCustomers)
+
+            var cliente = ListaCustomers.FirstOrDefault(c => c.CPF == cpf);
+
+            if (cliente == null)
             {
-                if (cliente.CPF == cpf)
+                // Cliente não está na lista principal, pede dados para cadastro
+                Console.WriteLine("Cliente não encontrado na lista principal. Informe os dados para cadastro:");
+
+                Console.Write("Nome: ");
+                string nome = Console.ReadLine()!;
+
+                Console.Write("Telefone (DDD + número): ");
+                string telefone = Console.ReadLine()!;
+
+                Console.Write("Data de nascimento (ddMMyyyy): ");
+                string input = Console.ReadLine()!;
+                if (!DateOnly.TryParseExact(input, "ddMMyyyy", out DateOnly dataNascimento))
                 {
-                    Console.WriteLine("Cliente adicionado a lista de Clientes Restritos.");
-                    ListaRestrictedCustomers.Add(cliente);
-  
+                    Console.WriteLine("Data inválida, cadastro cancelado.");
+                    return;
                 }
-                else
+
+                cliente = new Customer(cpf, nome, dataNascimento, telefone);
+
+                // Adiciona nas duas listas
+                ListaCustomers.Add(cliente);
+                ListaRestrictedCustomers.Add(cliente);
+
+                Console.WriteLine("Cliente cadastrado e adicionado à lista de Clientes Restritos.");
+            }
+            else
+            {
+                // Se já estiver na lista restrita, avisa
+                if (ListaRestrictedCustomers.Contains(cliente))
                 {
-                    ListaRestrictedCustomers.Add(cliente);
-                    ListaCustomers.Add(cliente);
-                    Console.WriteLine("Cliente adicionado a lista de Clientes Restritos.");
+                    Console.WriteLine("Cliente já está na lista de Clientes Restritos.");
+                    return;
                 }
+
+                // Caso contrário, adiciona na lista restrita 
+                ListaRestrictedCustomers.Add(cliente);
                 
+
+                Console.WriteLine("Cliente adicionado à lista de Clientes Restritos.");
             }
         }
         //Localizar cliente restrito
@@ -1350,7 +1371,7 @@ namespace ProjetoGrupo1
 
             if (op == 1)
             {
-                ListaCustomers.Add((cliente));
+                
                 ListaRestrictedCustomers.Remove(cliente);
             }
             else if (op == 2)
@@ -1375,27 +1396,59 @@ namespace ProjetoGrupo1
         }
 
         //Fornecedores Restritos
+       //Adicionar fornecedores restritos
         public void IncluirFornecedoresRestritos()
         {
-            Console.WriteLine("Qual o cnpj da empresa que deseja cadastrar?");
+            Console.WriteLine("Qual o CNPJ da empresa que deseja cadastrar?");
             string cnpj = Console.ReadLine()!;
-            foreach (var fornecedor in ListaSuppliers)
-            {
-                if (fornecedor.GetCNPJ() == cnpj)
-                {
-                    ListaRestrictedSuppliers.Add(fornecedor);
-                    Console.WriteLine("Empresa adicionada a lista de Empresas Restritas.");
-                    
-                }
-                else
-                {
-                    ListaRestrictedSuppliers.Add(fornecedor);
-                    ListaSuppliers.Add(fornecedor);
-                    Console.WriteLine("Empresa adicionada a lista de Empresas Restritas.");
 
+            var fornecedor = ListaSuppliers.FirstOrDefault(f => f.GetCNPJ() == cnpj);
+
+            if (fornecedor == null)
+            {
+                // Fornecedor não está na lista principal, cria um novo 
+                Console.WriteLine("Empresa não encontrada na lista principal. Informe os dados para cadastro:");
+
+                Console.Write("Razão social: ");
+                string razaoSocial = Console.ReadLine()!;
+
+                Console.Write("País: ");
+                string pais = Console.ReadLine()!;
+
+                Console.Write("Data de fundação (ddMMyyyy): ");
+                string input = Console.ReadLine()!;
+                DateOnly dataAbertura;
+                if (!DateOnly.TryParseExact(input, "ddMMyyyy", out dataAbertura))
+                {
+                    Console.WriteLine("Data inválida, cadastro cancelado.");
+                    return;
                 }
+
+                fornecedor = new Suppliers(cnpj, razaoSocial, pais, dataAbertura);
+
+                // Adiciona nas duas listas
+                ListaSuppliers.Add(fornecedor);
+                ListaRestrictedSuppliers.Add(fornecedor);
+
+                Console.WriteLine("Empresa cadastrada e adicionada à lista de Empresas Restritas.");
+            }
+            else
+            {
+                // Se já estiver na lista restrita, avisa
+                if (ListaRestrictedSuppliers.Contains(fornecedor))
+                {
+                    Console.WriteLine("Empresa já está na lista de Empresas Restritas.");
+                    return;
+                }
+
+                // Caso contrário, adiciona na lista restrita
+                ListaRestrictedSuppliers.Add(fornecedor);
+                
+
+                Console.WriteLine("Empresa adicionada à lista de Empresas Restritas.");
             }
         }
+        
         //Localizar fornecedores restritos
         public bool LocalizarFornecedoresRestritos(string cnpj)
         {
@@ -1420,7 +1473,7 @@ namespace ProjetoGrupo1
 
             if (op == 1)
             {
-                ListaSuppliers.Add((fornecedor));
+              
                 ListaRestrictedSuppliers.Remove(fornecedor);
             }
             else if (op == 2)
