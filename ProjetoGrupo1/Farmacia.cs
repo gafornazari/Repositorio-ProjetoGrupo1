@@ -747,7 +747,10 @@ namespace ProjetoGrupo1
 
             int somaTotal = somaImpar + somaPar * 3;
             int verificador = 10 - (somaTotal % 10);
-            return verificador == vetoraux[12];
+            if (verificador == 10)
+                return true;
+            else
+                return verificador == vetoraux[12];
         }
 
         //inclui o novo medicamento
