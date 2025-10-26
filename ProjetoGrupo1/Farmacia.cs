@@ -1049,8 +1049,21 @@ namespace ProjetoGrupo1
             Console.Write("Informe o nome do cliente: ");
             string nome = Console.ReadLine();
 
-            Console.Write("Informe o telefone (DDD + Número): ");
-            string telefone = Console.ReadLine();
+            string telefone;
+            while (true)
+            {
+                Console.Write("Informe o telefone (DDD + número, apenas dígitos): ");
+                telefone = Console.ReadLine();
+
+                // Remove caracteres especiais
+                telefone = telefone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
+
+                // Verifica se contém apenas números e tem tamanho 11 dígitos
+                if (telefone.All(char.IsDigit) && (telefone.Length == 11))
+                    break;
+
+                Console.WriteLine("Telefone inválido! Digite apenas números, com DDD (ex: 11987654321).");
+            }
 
             ListaCustomers.Add(new Customer(cpf, nome, dataNascimento, telefone));
             Console.WriteLine("Cliente cadastrado com sucesso!");
