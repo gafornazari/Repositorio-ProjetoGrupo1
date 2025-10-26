@@ -81,9 +81,9 @@ namespace ProjetoGrupo1
                         string cdb = line.Substring(0, 13);
                         string nome = line.Substring(13, 40);
                         char categoria = char.Parse(line.Substring(53, 1));
-                        decimal valorVenda = decimal.Parse(line.Substring(54, 7).Trim(), CultureInfo.InvariantCulture);
-                        DateOnly ultimaVenda = DateOnly.ParseExact(line.Substring(61, 8), "ddMMyyyy");
-                        DateOnly dataCadastro = DateOnly.ParseExact(line.Substring(69, 8), "ddMMyyyy");
+                        decimal valorVenda = decimal.Parse(line.Substring(54, 7));
+                        DateOnly ultimaVenda = DateOnly.Parse(line.Substring(61, 8));
+                        DateOnly dataCadastro = DateOnly.Parse(line.Substring(69, 8));
                         char situacao = char.Parse(line.Substring(77, 1));
                         Medicine medicine = new Medicine(cdb, nome, categoria, valorVenda, ultimaVenda, dataCadastro, situacao);
                         medicines.Add(medicine);

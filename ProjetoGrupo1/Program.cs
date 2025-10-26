@@ -71,28 +71,33 @@ void CadastrosBasicos()
                     {
                         case 1:
                             farmacia.IncluirCliente();
+                            Console.ReadKey();
                             break;
                         case 2:
 
                             farmacia.ImprimirClientes();
+                            Console.ReadKey();
                             break;
                         case 3:
 
                             farmacia.AlterarCliente();
+                            Console.ReadKey();
                             break;
                         case 4:
                             Console.WriteLine("Qual o cpf do cliente que deseja buscar?");
                             string cpf = Console.ReadLine();
                             farmacia.LocalizarCliente(cpf);
+                            Console.ReadKey();
                             break;
 
                             case 5:
-                            Console.WriteLine("-----MENU DE CLIENTES RESTRITOS-----------");
+                           
                             int opcao;
                             do
                             {
 
                                 Console.Clear();
+                                Console.WriteLine("-----MENU DE CLIENTES RESTRITOS-----------");
                                 Console.WriteLine("1 - Incluir Cliente");
                                 Console.WriteLine("2 - Imprimir Clientes");
                                 Console.WriteLine("3 - Alterar Clientes");
@@ -104,23 +109,28 @@ void CadastrosBasicos()
                                     {
                                 case 1:
                                      farmacia.IncluirClientesRestritos();
-                                    break;
+                                        Console.ReadKey();
+                                        break;
                                         case 2:
 
                                      farmacia.ImprimirClientesRestritos();
-                                     break;
+                                        Console.ReadKey();
+                                        break;
                                          case 3:
 
                                         farmacia.AlterarClientesRestritos();
+                                        Console.ReadKey();
                                         break;
                                         case 4:
                                         Console.WriteLine("Qual o cpf do cliente que deseja localizar?");
                                         string cpfCliente = Console.ReadLine();
                                             farmacia.LocalizarClientesRestritos(cpfCliente);
+                                        Console.ReadKey();
                                         break;
                                         case 5:
                                         Customer.GravarCustomerRestricted(farmacia.ListaRestrictedCustomers, Path.Combine(diretorio, pathRestrictedCustomer));
                                         Console.WriteLine("Saindo");
+                                        Console.ReadKey();
                                         break;
                                      }
                                 } while (opcao != 5);
@@ -129,9 +139,11 @@ void CadastrosBasicos()
                         case 0:
                             Customer.GravarCustomer(farmacia.ListaCustomers, Path.Combine(diretorio, pathCustomer));
                             Console.WriteLine("Saindo");
+                            Console.ReadKey();
                             break;
                         default:
                             Console.WriteLine("Opção Inválida");
+                            Console.ReadKey();
                             break;
                     }
                 } while (cliente != 0);
@@ -154,26 +166,30 @@ void CadastrosBasicos()
                     {
                         case 1:
                             farmacia.IncluirFornecedor();
+                            Console.ReadKey();
                             break;
                         case 2:
                             farmacia.ImprimirFornecedores();
+                            Console.ReadKey();
                             break;
                         case 3:
 
                             farmacia.AlterarFornecedores();
+                            Console.ReadKey();
                             break;
                         case 4:
                             Console.WriteLine("Qual o cnpj da empresa que deseja buscar?");
                             string cnpj = Console.ReadLine();
                             farmacia.LocalizarFornecedor(cnpj);
+                            Console.ReadKey();
                             break;
                             case 5:
-                            Console.WriteLine("-----MENU DE FORNECEDORES RESTRITOS-----------");
                             int opcao;
                             do
                             {
 
                                 Console.Clear();
+                                Console.WriteLine("-----MENU DE FORNECEDORES RESTRITOS-----------");
                                 Console.WriteLine("1 - Incluir Fornecedores");
                                 Console.WriteLine("2 - Imprimir Fornecedores");
                                 Console.WriteLine("3 - Alterar Fornecedores");
@@ -185,23 +201,28 @@ void CadastrosBasicos()
                                 {
                                     case 1:
                                         farmacia.IncluirFornecedoresRestritos();
+                                        Console.ReadKey();
                                         break;
                                     case 2:
 
                                         farmacia.ImprimirFornecedoresRestritos();
+                                        Console.ReadKey();
                                         break;
                                     case 3:
 
                                         farmacia.AlterarFornecedoresRestritos();
+                                        Console.ReadKey();
                                         break;
                                     case 4:
                                         Console.WriteLine("Qual o cnpj do fornecedor que deseja localizar?");
                                         string cnpjFornecedor = Console.ReadLine();
                                         farmacia.LocalizarFornecedoresRestritos(cnpjFornecedor);
+                                        Console.ReadKey();
                                         break;
                                     case 5:
                                         Suppliers.GravarSupplierRestricted(farmacia.ListaRestrictedSuppliers, Path.Combine(diretorio, pathRestrictedSupplies));
                                         Console.WriteLine("Saindo");
+                                        Console.ReadKey();
                                         break;
                                 }
                             } while (opcao != 5);
@@ -210,9 +231,11 @@ void CadastrosBasicos()
                         case 0:
                             Suppliers.GravarSupplier(farmacia.ListaSuppliers, Path.Combine(diretorio, pathSuppliers));
                             Console.WriteLine("Saindo");
+                            Console.ReadKey();
                             break;
                         default:
                             Console.WriteLine("Opção Inválida");
+                            Console.ReadKey();
                             break;
                     }
                 } while (fornecedor != 0);
@@ -234,26 +257,32 @@ void CadastrosBasicos()
                     {
                         case 1:
                             farmacia.IncluirIngredient();
+                            Console.ReadKey();
                             break;
                         case 2:
                             Console.WriteLine("Qual o Id do ingrediente que deseja localizar?");
                             string idloc = Console.ReadLine();
                             farmacia.LocalizarIngridient(idloc);
+                            Console.ReadKey();
                             break;
                         case 3:
                             Console.WriteLine("Qual o Id do ingrediente que deseja alterar?");
                             string idalt = Console.ReadLine();
                             farmacia.AlterarIngridient(idalt);
+                            Console.ReadKey();
                             break;
                         case 4:
                             farmacia.ImprimirIngridient();
+                            Console.ReadKey();
                             break;
                         case 5:
                             Ingredient.GravarIngredient(farmacia.ListaIngredients, Path.Combine(diretorio, pathIngredient));
                             Console.WriteLine("Saindo");
+                            Console.ReadKey();
                             break;
                         default:
                             Console.WriteLine("Opção Inválida");
+                            Console.ReadKey();
                             break;
                     }
                     
@@ -263,10 +292,12 @@ void CadastrosBasicos()
             case 4:
                 do
                 {
-                    Console.WriteLine("1 - Inserir");
-                    Console.WriteLine("2 - Localizar");
-                    Console.WriteLine("3 - Alterar");
-                    Console.WriteLine("4 - Imprimir");
+                    Console.Clear();
+                    Console.WriteLine("-----MENU DE MEDICAMENTOS-----------");
+                    Console.WriteLine("1 - Inserir Medicamento");
+                    Console.WriteLine("2 - Localizar Medicamento");
+                    Console.WriteLine("3 - Alterar Medicamento");
+                    Console.WriteLine("4 - Imprimir Medicamentos");
                     Console.WriteLine("5 - Sair");
                     manipulacao = int.Parse(Console.ReadLine());
 
@@ -274,34 +305,55 @@ void CadastrosBasicos()
                     {
                         case 1:
                             farmacia.IncluirMedicine();
+                            Console.ReadKey();
                             break;
                         case 2:
                             Console.WriteLine("Qual o CDB do medicamento que deseja localizar?");
                             string idloc = Console.ReadLine();
                             Medicine localizar = farmacia.LocalizarMedicine(idloc);
                             if (localizar != null)
+                            {
                                 Console.WriteLine(localizar.ToString());
+                                Console.ReadKey();
+
+                            }
                             else
+                            {
                                 Console.WriteLine("CDB não encontrado!");
+                                Console.ReadKey();
+
+                            }
+                                
                             break;
                         case 3:
                             Console.WriteLine("Qual o CDB do medicamento que deseja alterar?");
                             string idalt = Console.ReadLine();
                             Medicine alterar = farmacia.LocalizarMedicine(idalt);
                             if (alterar != null)
+                            {
                                 farmacia.AlterarMedicine(idalt);
+                                Console.ReadKey();
+                            }
                             else
+                            {
                                 Console.WriteLine("CDB não encontrado!");
+                                Console.ReadKey();
+                            }
+                                
+
                             break;
                         case 4:
                             farmacia.ImprimirMedicines();
+                            Console.ReadKey();
                             break;
                         case 5:
                             Medicine.GravarMedicine(farmacia.ListaMedicines, Path.Combine(diretorio, pathMedicine));
                             Console.WriteLine("Saindo");
+                            Console.ReadKey();
                             break;
                         default:
                             Console.WriteLine("Opção Inválida");
+                            Console.ReadKey();
                             break;
                     }
                 } while (manipulacao != 5);
@@ -309,9 +361,11 @@ void CadastrosBasicos()
             case 5:
                 
                 Console.WriteLine("Saindo");
+                Console.ReadKey();
                 break;
             default:
                 Console.WriteLine("Opção Inválida");
+                Console.ReadKey();
                 break;
         }
     } while (cadastro != 5);
@@ -362,6 +416,7 @@ void VendasMedicamentos()
                 Sales.GravarSales(farmacia.ListaSales, Path.Combine(diretorio, pathSales));
                 SalesItems.GravarSalesItems(farmacia.ListaSalesItems, Path.Combine(diretorio, pathSalesItems));
                 Console.WriteLine("Saindo");
+                Console.ReadKey();
                 break;
             default:
                 Console.WriteLine("Opção Inválida");
@@ -392,17 +447,21 @@ void ComprasPrincipiosAtivos()
         {
             case 1:
                 farmacia.IncluirPurchases();
+                Console.ReadKey();
                 break;
             case 2:
                 farmacia.LocalizarPurchases();
+                Console.ReadKey();
                 break;
             case 3:
                 farmacia.LocalizarPurchaseItem();
+                Console.ReadKey();
                 break;
             case 4:
                 Console.WriteLine("Qual o Id da compra que deseja alterar?");
                 int IdAlt = int.Parse(Console.ReadLine());
                 farmacia.AlterarPurchases(IdAlt);
+                Console.ReadKey();
                 break;
             case 5:
                 Console.WriteLine("Imprimindo lista de compras");
@@ -416,9 +475,11 @@ void ComprasPrincipiosAtivos()
                 Purchases.GravarPurchases(farmacia.ListaPurchases, Path.Combine(diretorio, pathPurchases));
                 PurchaseItem.GravarPurchaseItem(farmacia.ListaPurchaseItems, Path.Combine(diretorio, pathPurchaseItem));
                 Console.WriteLine("Saindo");
+                Console.ReadKey();
                 break;
             default:
                 Console.WriteLine("Opção Inválida");
+                Console.ReadKey();
                 break;
         }
     } while (compras != 7);
@@ -477,6 +538,7 @@ void ManipulacaoMedicamentos()
                 break;
             default:
                 Console.WriteLine("Opção Inválida");
+                Console.ReadKey();
                 break;
         }
     } while (producoes != 9);

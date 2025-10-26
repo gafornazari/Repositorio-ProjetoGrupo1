@@ -76,7 +76,7 @@ namespace ProjetoGrupo1
                     if (line.Length == 31)
                     {
                         int id = int.Parse(line.Substring(0, 5));
-                        DateOnly data = DateOnly.Parse(line.Substring(5, 10));
+                        DateOnly data = DateOnly.ParseExact(line.Substring(5, 10), "ddMMyyyy");
                         string idMedicamento = line.Substring(15, 13);
                         int quantidade = int.Parse(line.Substring(28, 3));
                         Produce produce = new Produce(id, data, idMedicamento, quantidade);
