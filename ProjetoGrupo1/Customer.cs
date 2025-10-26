@@ -73,6 +73,10 @@ public class Customer
         return DataNascimento;
     }
 
+    public string GetCPF()
+    {
+        return CPF;
+    }
     public override string ToString()
     {
         return $"CPF: {this.CPF}\n Nome: {this.Nome}\n Data Nascimento: {this.DataNascimento}\n " +
