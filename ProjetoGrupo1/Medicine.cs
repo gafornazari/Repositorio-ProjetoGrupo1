@@ -101,7 +101,7 @@ namespace ProjetoGrupo1
 
         public string ToFile()
         {
-            return $"{CDB}{Nome}{Categoria}{ValorVenda}{UltimaVenda}{DataCadastro}{Situacao}";
+            return $"{CDB}{Nome}{Categoria}{ValorVenda}{UltimaVenda.ToString("ddMMyyyy")}{DataCadastro.ToString("ddMMyyyy")}{Situacao}";
         }
     }
 }

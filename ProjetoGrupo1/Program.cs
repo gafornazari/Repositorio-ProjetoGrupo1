@@ -43,6 +43,7 @@ void CadastrosBasicos()
 {
     do
     {
+        Console.Clear();
         Console.WriteLine("---- CADASTROS BÁSICOS ----");
         Console.WriteLine("1 - Clientes");
         Console.WriteLine("2 - Fornecedores");
@@ -56,6 +57,8 @@ void CadastrosBasicos()
             case 1:
                 do
                 {
+
+                    Console.Clear();
                     Console.WriteLine("1 - Incluir Cliente");
                     Console.WriteLine("2 - Imprimir Clientes");
                     Console.WriteLine("3 - Alterar Clientes");
@@ -88,6 +91,8 @@ void CadastrosBasicos()
                             int opcao;
                             do
                             {
+
+                                Console.Clear();
                                 Console.WriteLine("1 - Incluir Cliente");
                                 Console.WriteLine("2 - Imprimir Clientes");
                                 Console.WriteLine("3 - Alterar Clientes");
@@ -135,6 +140,8 @@ void CadastrosBasicos()
             case 2:
                 do
                 {
+
+                    Console.Clear();
                     Console.WriteLine("1 - Incluir Fornecedor");
                     Console.WriteLine("2 - Imprimir Fornecedos");
                     Console.WriteLine("3 - Alterar Fornecedor");
@@ -165,6 +172,8 @@ void CadastrosBasicos()
                             int opcao;
                             do
                             {
+
+                                Console.Clear();
                                 Console.WriteLine("1 - Incluir Fornecedores");
                                 Console.WriteLine("2 - Imprimir Fornecedores");
                                 Console.WriteLine("3 - Alterar Fornecedores");
@@ -212,6 +221,8 @@ void CadastrosBasicos()
             case 3:
                 do
                 {
+
+                    Console.Clear();
                     Console.WriteLine("1 - Inserir Princípio Ativo");
                     Console.WriteLine("2 - Localizar Princípio Ativo");
                     Console.WriteLine("3 - Alterar Princípio Ativo");
@@ -252,10 +263,10 @@ void CadastrosBasicos()
             case 4:
                 do
                 {
-                    Console.WriteLine("1 - Inserir Medicamento");
-                    Console.WriteLine("2 - Localizar Medicamento");
-                    Console.WriteLine("3 - Alterar Medicamento");
-                    Console.WriteLine("4 - Imprimir Medicamentos");
+                    Console.WriteLine("1 - Inserir");
+                    Console.WriteLine("2 - Localizar");
+                    Console.WriteLine("3 - Alterar");
+                    Console.WriteLine("4 - Imprimir");
                     Console.WriteLine("5 - Sair");
                     manipulacao = int.Parse(Console.ReadLine());
 
@@ -310,6 +321,8 @@ void VendasMedicamentos()
 {
     do
     {
+
+        Console.Clear();
         Console.WriteLine("---- VENDAS DE MEDICAMENTOS ----");
         Console.WriteLine("1 - Registrar venda");
         Console.WriteLine("2 - Registrar um item ");
@@ -363,6 +376,8 @@ void ComprasPrincipiosAtivos()
 {
     do
     {
+
+        Console.Clear();
         Console.WriteLine("---- COMPRAS DE PRINCÍPIOS ATIVOS ----");
         Console.WriteLine("1 - Registrar compra");
         Console.WriteLine("2 - Localizar compras");
@@ -413,6 +428,8 @@ void ManipulacaoMedicamentos()
 {
     do
     {
+
+        Console.Clear();
         Console.WriteLine("---- MANIPULAÇÃO DE MEDICAMENTOS ----");
         Console.WriteLine("1 - Incluir Produção");
         Console.WriteLine("2 - Incluir Item a ser produzido");
@@ -467,6 +484,8 @@ void ManipulacaoMedicamentos()
 
 do
 {
+
+    Console.Clear();
     Console.WriteLine("---- MENU PRINCIPAL ----");
     Console.WriteLine("1 - Cadastros básicos");
     Console.WriteLine("2 - Vendas de medicamentos");
