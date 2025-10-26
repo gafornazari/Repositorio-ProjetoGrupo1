@@ -57,17 +57,18 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = purchaseItensSR.ReadLine()) != null)
                 {
-                    if (line.Length == 0)//trocar o 0 pela quantidade de carcateres da linha
+                    if (line.Length == 31)//trocar o 0 pela quantidade de carcateres da linha
                     {
 
-                        //var idCompra = line.Substring(0, 5);
-                        //var ingredient = line.Substring(5, 6);
-                        //var quantity = line.Substring(15, 14);
-                        //var TotalItem = line.Substring(29, 8);
-                        //PurchaseItem purchaseItem = new PurchaseItem(int.Parse(idCompra),
-                        //    int.Parse(ingredient), int.Parse(quantity),
-                        //    double.Parse(TotalItem));
-                        //purchaseItens.Add(purchaseItem);
+                        var idCompra = line.Substring(0, 5);
+                        var ingredient = line.Substring(5, 6);
+                        var quantity = line.Substring(11, 4);
+                        var ValorUnitario = line.Substring(15, 6);
+                        var TotalItem = line.Substring(21, 10);
+                        PurchaseItem purchaseItem = new PurchaseItem(int.Parse(idCompra),
+                            ingredient, int.Parse(quantity),
+                            double.Parse(ValorUnitario));
+                        purchaseItens.Add(purchaseItem);
                     }
                 }
                 return purchaseItens;
