@@ -1528,7 +1528,7 @@ namespace ProjetoGrupo1
             {
                 Console.WriteLine($"Digite a data da compra (ddMMyyyy)," +
                     $"vazio para hoje ({DateOnly.FromDateTime(DateTime.Now):ddMMyyyy}):");
-                string input = Console.ReadLine();
+                string input = Console.ReadLine()!;
                 if (string.IsNullOrWhiteSpace(input))
                 {
                     data = DateOnly.FromDateTime(DateTime.Now);
@@ -1562,7 +1562,7 @@ namespace ProjetoGrupo1
                 }
                 break;
             }
-            Purchases purchases = new Purchases(id, data, fornecedor.CNPJ);
+            Purchases purchases = new Purchases(id, data, fornecedor.CNPJ, valorTotal);
             int contadorItens = 0;
             while (contadorItens <= 3)
             {
@@ -1581,7 +1581,7 @@ namespace ProjetoGrupo1
                     Console.WriteLine("Digite o Id do princípio ativo: ");
                     ingredienteId = Console.ReadLine()!;
                     ingredient = ListaIngredients.FirstOrDefault(i => i.Id ==
-                    ingredienteId && i.Situacao == 'A');
+                    ingredienteId && i.Situacao == 'A')!;
                     if (ingredient != null)
                         break;
                     Console.WriteLine("Ingrediente inválido ou inativo. " +

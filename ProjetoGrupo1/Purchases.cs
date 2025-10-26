@@ -13,11 +13,12 @@ namespace ProjetoGrupo1
         public double ValorTotal { get; private set; }
         public List<PurchaseItem> purchaseItems;
         public Purchases(int id, DateOnly dataCompra,
-            string fornecedor)
+            string fornecedor, double valorTotal)
         {
             this.Id = id;
             this.DataCompra = dataCompra;
             this.Fornecedor = fornecedor;
+            this.ValorTotal = valorTotal;
             this.purchaseItems = new List<PurchaseItem>();
             CalcularTotal();
         }
@@ -54,16 +55,16 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = purchaseSR.ReadLine()) != null)
                 {
-                    if (line.Length == 0)//trocar o 0 pela quantidade de carcateres da linha
+                    if (line.Length == 37)//trocar o 0 pela quantidade de carcateres da linha
                     {
-                        //    var id = line.Substring(0, 5);
-                        //    var date = line.Substring(5, 10);
-                        //    var suplierCNPJ = line.Substring(14, 14);
-                        //    var TotalValue = line.Substring(29, 8);
-                        //    Purchases purchase = new Purchases(int.Parse(id),
-                        //        DateOnly.Parse(date), /*suplierCNPJ,*/
-                        //        double.Parse(TotalValue));
-                        //    purchases.Add(purchase);
+                            var id = line.Substring(0, 5);
+                            var date = line.Substring(5, 10);
+                            var suplierCNPJ = line.Substring(14, 14);
+                            var TotalValue = line.Substring(29, 8);
+                            Purchases purchase = new Purchases(int.Parse(id),
+                                DateOnly.Parse(date), suplierCNPJ,
+                                double.Parse(TotalValue));
+                            purchases.Add(purchase);
                     }
                 }
                 return purchases;
