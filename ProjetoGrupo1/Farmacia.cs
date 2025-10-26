@@ -2173,9 +2173,20 @@ namespace ProjetoGrupo1
 
                 foreach (var fornecedor in comprasPorFornecedor)
                 {
-                    double totalFornecedor = fornecedor.Sum(total => total.ValorTotal);
-                }
+                    Console.WriteLine("--------------------------------------------------------");
+                    Console.WriteLine($"Fornecedor: {fornecedor.Key}");
 
+                    foreach (var compras in fornecedor)
+                    {
+                        Console.WriteLine($"ID: {compras} | Data: {compras.DataCompra:dd/MM/yyyy} | Total: R${compras.ValorTotal}");
+                    }
+
+                    double totalFornecedor = fornecedor.Sum(total => total.ValorTotal);
+                    Console.WriteLine("--------------------------------------------------------");
+                    Console.WriteLine($"TOTAL do Fornecedor {fornecedor.Key}: R${totalFornecedor}\n");
+                    Console.WriteLine();
+                }
+               
             }
 
 
