@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,8 +57,13 @@ namespace ProjetoGrupo1
         }
         public override string ToString()
         {
-            return $"CDB: {CDB}, Nome: {Nome}, Categoria: {Categoria}, Valor Venda: {ValorVenda}," +
-                $" Ultima Venda: {UltimaVenda}, Data Cadastro: {DataCadastro}, Situação: {Situacao}";
+            return $"CDB: {CDB}\nNome: {Nome}\nCategoria: {Categoria}\nValor Venda: {ValorVenda}\n" +
+                $"Ultima Venda: {UltimaVenda}\nData Cadastro: {DataCadastro}\nSituação: {Situacao}";
+        }
+
+        private string FormatarDecimal(decimal valor)
+        {
+            return valor.ToString("0000.00", CultureInfo.InvariantCulture);
         }
 
         public static List<Medicine> LerArquivoMedicine(string diretorio, string nomeArquivo)
@@ -101,7 +108,7 @@ namespace ProjetoGrupo1
 
         public string ToFile()
         {
-            return $"{CDB}{Nome}{Categoria}{ValorVenda}{UltimaVenda.ToString("ddMMyyyy")}{DataCadastro.ToString("ddMMyyyy")}{Situacao}";
+            return $"{CDB}{Nome}{Categoria}{FormatarDecimal(this.ValorVenda)}{UltimaVenda.ToString("ddMMyyyy")}{DataCadastro.ToString("ddMMyyyy")}{Situacao}";
         }
     }
 }

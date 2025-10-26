@@ -155,9 +155,9 @@ public class Customer
                 string line;
                 while ((line = customerRestrictedSR.ReadLine()) != null)
                 {
-                    if(line.Length == 0)//trocar o 0 pela quantidade de elementos que vai ter na linha
+                    if(line.Length == 11)
                 {
-                    //lógica para adicionar na lista de customer restrito
+                    string cpf = line.Substring(0, 11);
                     customersRest.Add(new Customer());
                 }
                 }
