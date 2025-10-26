@@ -1015,7 +1015,16 @@ namespace ProjetoGrupo1
             string telefone = Console.ReadLine();
 
             Console.Write("Informe a data de nascimento do cliente: ");
-            DateOnly dataNascimento = DateOnly.Parse(Console.ReadLine());
+            
+            string input = Console.ReadLine();
+            if (DateOnly.TryParseExact(input, "ddMMyyyy", out DateOnly dataNascimento))
+            {
+                Console.WriteLine($"Data de abertura: {dataNascimento:dd/MM/yyyy}");
+            }
+            else
+            {
+                Console.WriteLine("Data inválida! Digite no formato ddMMyyyy, ex: 01012024.");
+            }
             VerificarMaioridade(dataNascimento);
 
             ListaCustomers.Add(new Customer(cpf, nome, dataNascimento, telefone));
@@ -1194,7 +1203,16 @@ namespace ProjetoGrupo1
             string pais = Console.ReadLine();
 
             Console.Write("Informe a data de fundação da empresa: ");
-            DateOnly dataAbertura = DateOnly.Parse(Console.ReadLine());
+            string input = Console.ReadLine();
+            if (DateOnly.TryParseExact(input, "ddMMyyyy", out DateOnly dataAbertura))
+            {
+                Console.WriteLine($"Data de abertura: {dataAbertura:dd/MM/yyyy}");
+            }
+            else
+            {
+                Console.WriteLine("Data inválida! Digite no formato ddMMyyyy, ex: 01012024.");
+            }
+
             VerificarDataAbertura(dataAbertura);
 
             ListaSuppliers.Add(new Suppliers(cnpj,razaoSocial, pais, dataAbertura));
@@ -1296,6 +1314,7 @@ namespace ProjetoGrupo1
                 {
                     Console.WriteLine("Cliente adicionado a lista de Clientes Restritos.");
                     ListaRestrictedCustomers.Add(cliente);
+  
                 }
                 else
                 {

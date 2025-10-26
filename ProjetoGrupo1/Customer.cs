@@ -87,8 +87,9 @@ public class Customer
 
     public string FormatarData(DateOnly data)
     {
-        string dataFormatada = data.ToString("ddmmyyyy");
+        string dataFormatada = data.ToString("ddMMyyyy");
         return dataFormatada;
+
     }
 
 
@@ -103,7 +104,7 @@ public class Customer
         StreamReader customerSR = new StreamReader(fullNomeArquivo);
         using (customerSR)
         {
-            if (customerSR.ReadToEnd() is "")
+            if (customerSR.ReadToEnd() is null)
             {
                 return new List<Customer>();
             }
@@ -115,10 +116,10 @@ public class Customer
                 {
                     string cpf = line.Substring(0, 11);
                     string nome = line.Substring(11, 50);
-                    DateOnly dataNascimento = DateOnly.Parse(line.Substring(61, 8));
+                    DateOnly dataNascimento = DateOnly.ParseExact(line.Substring(61, 8), "ddMMyyyy");
                     string telefone = line.Substring(69, 11);
-                    DateOnly ultimaCompra = DateOnly.Parse(line.Substring(80, 8));
-                    DateOnly dataCadastro = DateOnly.Parse(line.Substring(88, 8));
+                    DateOnly ultimaCompra = DateOnly.ParseExact(line.Substring(80, 8), "ddMMyyyy");
+                    DateOnly dataCadastro = DateOnly.ParseExact(line.Substring(88, 8), "ddMMyyyy");
                     char situacao = char.Parse(line.Substring(96, 1));
                     Customer customer = new Customer(cpf, nome, dataNascimento, telefone,
                         ultimaCompra, dataCadastro, situacao);

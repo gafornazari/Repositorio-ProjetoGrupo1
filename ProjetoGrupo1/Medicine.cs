@@ -106,15 +106,11 @@ namespace ProjetoGrupo1
             }
         }
 
-        public string FormatarData(DateOnly data)
-        {
-            string dataFormatada = data.ToString("ddmmyyyy");
-            return dataFormatada;
-        }
+        
 
         public string ToFile()
         {
-            return $"{CDB}{Nome}{Categoria}{ValorVenda}{FormatarData(UltimaVenda)}{FormatarData(DataCadastro)}{Situacao}";
+            return $"{CDB}{Nome}{Categoria}{ValorVenda}{UltimaVenda}{DataCadastro}{Situacao}";
         }
     }
 }

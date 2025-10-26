@@ -75,6 +75,7 @@ public class Suppliers
             $"Data Cadastro: {this.DataCadastro}\n Situação: {this.Situacao}";
     }
 
+    
     public string FormatString(string razaoSocial)
     {
         return razaoSocial.PadRight(50, ' ');
@@ -87,7 +88,7 @@ public class Suppliers
 
     public string FormatarData(DateOnly data)
     {
-        string dataFormatada = data.ToString("ddmmyyyy");
+        string dataFormatada = data.ToString("ddMMyyyy");
         return dataFormatada;
     }
 
@@ -107,13 +108,13 @@ public class Suppliers
                 string line;
                 while ((line = suppliersSR.ReadLine()) is not null)
                 {
-                    string cnpj = line.Substring(0, 11);
-                    string razaoSocial = line.Substring(11, 50);
-                    string pais = line.Substring(11, 50);
-                    DateOnly dataAbertura = DateOnly.Parse(line.Substring(61, 8));
-                    DateOnly ultimaFornecimento = DateOnly.Parse(line.Substring(80, 8));
-                    DateOnly dataCadastro = DateOnly.Parse(line.Substring(88, 8));
-                    char situacao = char.Parse(line.Substring(96, 1));
+                    string cnpj = line.Substring(0, 14);
+                    string razaoSocial = line.Substring(14, 50);
+                    string pais = line.Substring(64, 20);
+                    DateOnly dataAbertura = DateOnly.ParseExact(line.Substring(84, 8), "ddMMyyyy");
+                    DateOnly ultimaFornecimento = DateOnly.ParseExact(line.Substring(92, 8), "ddMMyyyy");
+                    DateOnly dataCadastro = DateOnly.ParseExact(line.Substring(100, 8), "ddMMyyyy");
+                    char situacao = char.Parse(line.Substring(108, 1));
                     Suppliers supplier = new Suppliers(cnpj, razaoSocial, pais, dataAbertura,
                         ultimaFornecimento, dataCadastro, situacao);
                     suppliers.Add(supplier);
