@@ -1,6 +1,7 @@
 ﻿using ProjetoGrupo1;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
@@ -2192,12 +2193,60 @@ namespace ProjetoGrupo1
             }
         }
 
-        public void RelatorioVendasPorPeriodo(DateOnly dataInicio, DateOnly dataFim)
+        public void RelatorioVendasPorPeriodo()
         {
+            DateOnly dataInicio, dataFim;
+            string formato = "dd/MM/yyyy";
+            bool entrada = false;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Digite a data de início do período(Formato dd/mm/yyyy): ");
+                string data = Console.ReadLine()!;
+                if(DateOnly.TryParseExact(data, formato,System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out dataInicio))
+                {
+                    if(dataInicio > DateOnly.FromDateTime(DateTime.Today))
+                    {
+                        Console.Clear();
+                        Console.WriteLine("A data não pode ser posterior a data de hoje.");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        entrada = true;
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Data no formato não permitido. Tente novamente.");
+                    Console.ReadKey();
+                }
+
+            } while (entrada == false);
+            entrada = false;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Digite a data de fim do período(Formato dd/mm/yyyy): ");
+                string data = Console.ReadLine()!;
+                if (DateOnly.TryParseExact(data, formato, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dataFim))
+                {
+                    entrada = true;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Data no formato não permitido. Tente novamente.");
+                    Console.ReadKey();
+                }
+
+            } while (entrada == false);
+
             bool encontrou = false;
             Console.Clear();
             Console.WriteLine("###### RELATÓRIO DE VENDAS ######");
-            Console.WriteLine($"Venda realizadas entre {dataInicio:dd/mm/yyyy} e {dataFim:dd/mm/yyyy}");
+            Console.WriteLine($"Vendas realizadas entre {dataInicio:dd/MM/yyyy} e {dataFim:dd/MM/yyyy}");
             Console.WriteLine("___________________________________________________");
             foreach (var venda in ListaSales)
             {
@@ -2225,25 +2274,30 @@ namespace ProjetoGrupo1
                 Console.WriteLine("Nenhuma venda registrada.");
                 Console.ReadKey();
             }
-
-            var todosItens = this.ListaSales.SelectMany(venda => venda.ListaSalesItems).ToList();
-            var top10 = todosItens.GroupBy(item => new { item.Medicamento }).Select(g => new { Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade) })
-                .OrderByDescending(x => x.TotalVendido).Take(10).ToList();
-
-            Console.Clear();
-            Console.WriteLine("###### TOP 10 MEDICAMENTOS MAIS VENDIDOS ######");
-            Console.WriteLine($"Gerado em: {DateTime.Now}");
-            Console.WriteLine("--------------------------------------");
-
-            int pos = 1;
-            foreach (var item in top10)
+            else
             {
-                Console.WriteLine($"{pos,2}. Código de Barra: {item.Medicamento,-6} | Quantidade Vendida: {item.TotalVendido}");
-                pos++;
+                var todosItens = this.ListaSales.SelectMany(venda => venda.ListaSalesItems).ToList();
+                var top10 = todosItens.GroupBy(item => new { item.Medicamento }).Select(g => new { Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade) })
+                    .OrderByDescending(x => x.TotalVendido).Take(10).ToList();
+
+                Console.Clear();
+                Console.WriteLine("###### TOP 10 MEDICAMENTOS MAIS VENDIDOS ######");
+                Console.WriteLine($"Gerado em: {DateTime.Now}");
+                Console.WriteLine("--------------------------------------");
+
+                int pos = 1;
+                foreach (var item in top10)
+                {
+                    Console.WriteLine($"{pos,2}. Código de Barra: {item.Medicamento,-6} | Quantidade Vendida: {item.TotalVendido}");
+                    pos++;
+                }
+
+                Console.WriteLine("--------------------------------------\n");
+                Console.ReadKey();
+
             }
 
-            Console.WriteLine("--------------------------------------\n");
-            Console.ReadKey();
+               
         }
 
         public void RelatorioCompraPorFornecedor()
