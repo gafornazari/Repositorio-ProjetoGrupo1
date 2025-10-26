@@ -71,26 +71,22 @@ namespace ProjetoGrupo1
             StreamReader produceItemSR = new StreamReader(fullProduceItem);
             using (produceItemSR)
             {
-                if (produceItemSR.ReadToEnd() is "")
+                List<ProduceItem> produceItems = new List<ProduceItem>();
+                string line;
+                while ((line = produceItemSR.ReadLine()) != null)
                 {
-                    return new List<ProduceItem>();
-                }
-                else
-                {
-                    List<ProduceItem> produceItems = new List<ProduceItem>();
-                    string line;
-                    while ((line = produceItemSR.ReadLine()) is not null)
+                    if (line.Length == 20)
                     {
                         int idProduceItem = int.Parse(line.Substring(0, 5));
                         int idProducao = int.Parse(line.Substring(5, 5));
                         string idPrincipio = line.Substring(10, 6);
                         int quantidade = int.Parse(line.Substring(16, 4));
                         ProduceItem produceItem = new ProduceItem(idProduceItem, idProducao, idPrincipio, quantidade);
-                    produceItems.Add(produceItem);
+                        produceItems.Add(produceItem);
                     }
-                    produceItemSR.Close();
-                    return produceItems;
                 }
+                produceItemSR.Close();
+                return produceItems;
             }
         }
 
@@ -103,7 +99,6 @@ namespace ProjetoGrupo1
                 {
                     writer.WriteLine(produceItem.ToFile());
                 }
-                writer.Close();
             }
         }
 

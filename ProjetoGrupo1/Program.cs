@@ -1,12 +1,8 @@
 ﻿using ProjetoGrupo1;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 Farmacia farmacia = new Farmacia();
 
 string diretorio = @"C:\SneezePharma\";
 
-
-
-Console.WriteLine("teste");
 
 ////guardando o fullPath de todos
 string pathCustomer = "Customers.data";
@@ -118,7 +114,7 @@ void CadastrosBasicos()
                                             farmacia.LocalizarClientesRestritos(cpfCliente);
                                         break;
                                         case 5:
-                                        Customer.GravarCustomerRestricted(farmacia.ListaRestrictedCustomers, pathRestrictedCustomer);
+                                        Customer.GravarCustomerRestricted(farmacia.ListaRestrictedCustomers, Path.Combine(diretorio, pathRestrictedCustomer));
                                         Console.WriteLine("Saindo");
                                         break;
                                      }
@@ -126,7 +122,7 @@ void CadastrosBasicos()
                             break;
 
                         case 0:
-                            Customer.GravarCustomer(farmacia.ListaCustomers, pathCustomer);
+                            Customer.GravarCustomer(farmacia.ListaCustomers, Path.Combine(diretorio, pathCustomer));
                             Console.WriteLine("Saindo");
                             break;
                         default:
@@ -195,7 +191,7 @@ void CadastrosBasicos()
                                         farmacia.LocalizarFornecedoresRestritos(cnpjFornecedor);
                                         break;
                                     case 5:
-                                        Suppliers.GravarSupplierRestricted(farmacia.ListaRestrictedSuppliers, pathRestrictedSupplies);
+                                        Suppliers.GravarSupplierRestricted(farmacia.ListaRestrictedSuppliers, Path.Combine(diretorio, pathRestrictedSupplies));
                                         Console.WriteLine("Saindo");
                                         break;
                                 }
@@ -203,7 +199,7 @@ void CadastrosBasicos()
                             break;
 
                         case 0:
-                            Suppliers.GravarSupplier(farmacia.ListaSuppliers, pathSuppliers);
+                            Suppliers.GravarSupplier(farmacia.ListaSuppliers, Path.Combine(diretorio, pathSuppliers));
                             Console.WriteLine("Saindo");
                             break;
                         default:
@@ -242,23 +238,24 @@ void CadastrosBasicos()
                             farmacia.ImprimirIngridient();
                             break;
                         case 5:
-                            Ingredient.GravarIngredient(farmacia.ListaIngredients, pathIngredient);
+                            Ingredient.GravarIngredient(farmacia.ListaIngredients, Path.Combine(diretorio, pathIngredient));
                             Console.WriteLine("Saindo");
                             break;
                         default:
                             Console.WriteLine("Opção Inválida");
                             break;
                     }
+                    
                 } while (principio != 5);
                 break;
             //Medicamentos
             case 4:
                 do
                 {
-                    Console.WriteLine("1 - Inserir");
-                    Console.WriteLine("2 - Localizar");
-                    Console.WriteLine("3 - Alterar");
-                    Console.WriteLine("4 - Imprimir");
+                    Console.WriteLine("1 - Inserir Medicamento");
+                    Console.WriteLine("2 - Localizar Medicamento");
+                    Console.WriteLine("3 - Alterar Medicamento");
+                    Console.WriteLine("4 - Imprimir Medicamentos");
                     Console.WriteLine("5 - Sair");
                     manipulacao = int.Parse(Console.ReadLine());
 
@@ -289,7 +286,7 @@ void CadastrosBasicos()
                             farmacia.ImprimirMedicines();
                             break;
                         case 5:
-                            Medicine.GravarMedicine(farmacia.ListaMedicines, pathMedicine);
+                            Medicine.GravarMedicine(farmacia.ListaMedicines, Path.Combine(diretorio, pathMedicine));
                             Console.WriteLine("Saindo");
                             break;
                         default:
@@ -299,6 +296,7 @@ void CadastrosBasicos()
                 } while (manipulacao != 5);
                 break;
             case 5:
+                
                 Console.WriteLine("Saindo");
                 break;
             default:
@@ -348,8 +346,8 @@ void VendasMedicamentos()
                 farmacia.ImprimirListaSalesItems();
                 break;
             case 8:
-                Sales.GravarSales(farmacia.ListaSales, pathSales);
-                SalesItems.GravarSalesItems(farmacia.ListaSalesItems, pathSalesItems);
+                Sales.GravarSales(farmacia.ListaSales, Path.Combine(diretorio, pathSales));
+                SalesItems.GravarSalesItems(farmacia.ListaSalesItems, Path.Combine(diretorio, pathSalesItems));
                 Console.WriteLine("Saindo");
                 break;
             default:
@@ -400,8 +398,8 @@ void ComprasPrincipiosAtivos()
                 farmacia.ImprimirPurchaseItens();
                 break;
             case 7:
-                Purchases.GravarPurchases(farmacia.ListaPurchases, pathPurchases);
-                PurchaseItem.GravarPurchaseItem(farmacia.ListaPurchaseItems, pathPurchaseItem);
+                Purchases.GravarPurchases(farmacia.ListaPurchases, Path.Combine(diretorio, pathPurchases));
+                PurchaseItem.GravarPurchaseItem(farmacia.ListaPurchaseItems, Path.Combine(diretorio, pathPurchaseItem));
                 Console.WriteLine("Saindo");
                 break;
             default:
@@ -456,8 +454,8 @@ void ManipulacaoMedicamentos()
                 farmacia.ImprimirListaProduceItems();
                 break;
             case 9:
-                Produce.GravarProduce(farmacia.ListaProduces, pathProduce);
-                ProduceItem.GravarProduceItem(farmacia.ListaProducesItems, pathProduceItem);
+                Produce.GravarProduce(farmacia.ListaProduces, Path.Combine(diretorio, pathProduce));
+                ProduceItem.GravarProduceItem(farmacia.ListaProducesItems, Path.Combine(diretorio, pathProduceItem));
                 Console.WriteLine("Saindo");
                 break;
             default:

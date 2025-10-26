@@ -30,18 +30,18 @@ namespace ProjetoGrupo1
         {
             this.Quantidade = quantidade;
             CalcularTotalItem();
-            
+
         }
 
         private void CalcularTotalItem()
         {
             this.TotalItem = this.Quantidade * this.ValorUnitario;
         }
-      
+
         public override string ToString()
         {
             return $"Id da Compra: {IdCompra}\n" +
-                $" Ingrediente: {Ingrediente}\n"+
+                $" Ingrediente: {Ingrediente}\n" +
                 $"Quantidade: {Quantidade}\n" +
                 $" Valor Unitário: {ValorUnitario}\n" +
                 $"Total do Item: {TotalItem}\n";
@@ -53,16 +53,13 @@ namespace ProjetoGrupo1
             StreamReader purchaseItensSR = new StreamReader(fullPath);
             using (purchaseItensSR)
             {
-                if (purchaseItensSR.ReadToEnd() is "")
+                List<PurchaseItem> purchaseItens = new List<PurchaseItem>();
+                string line;
+                while ((line = purchaseItensSR.ReadLine()) != null)
                 {
-                    return new List<PurchaseItem>();
-                }
-                else
-                {
-                    List<PurchaseItem> purchaseItens = new List<PurchaseItem>();
-                    string line;
-                    while ((line = purchaseItensSR.ReadLine()) is not null)
+                    if (line.Length == 0)//trocar o 0 pela quantidade de carcateres da linha
                     {
+
                         //var idCompra = line.Substring(0, 5);
                         //var ingredient = line.Substring(5, 6);
                         //var quantity = line.Substring(15, 14);
@@ -72,9 +69,8 @@ namespace ProjetoGrupo1
                         //    double.Parse(TotalItem));
                         //purchaseItens.Add(purchaseItem);
                     }
-                    purchaseItensSR.Close();
-                    return purchaseItens;
                 }
+                return purchaseItens;
             }
         }
 
@@ -87,10 +83,9 @@ namespace ProjetoGrupo1
                 {
                     writer.WriteLine(purchaseItem.ToFile());
                 }
-                writer.Close();
             }
         }
-      
+
         public string ToFile()
         {
             return $"{IdCompra}{Ingrediente}{Quantidade}" +

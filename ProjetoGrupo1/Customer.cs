@@ -104,15 +104,11 @@ public class Customer
         StreamReader customerSR = new StreamReader(fullNomeArquivo);
         using (customerSR)
         {
-            if (customerSR.ReadToEnd() is null)
+            List<Customer> customers = new List<Customer>();
+            string line;
+            while ((line = customerSR.ReadLine()) != null)
             {
-                return new List<Customer>();
-            }
-            else
-            {
-                List<Customer> customers = new List<Customer>();
-                string line;
-                while ((line = customerSR.ReadLine()) is not null)
+                if (line.Length == 97)
                 {
                     string cpf = line.Substring(0, 11);
                     string nome = line.Substring(11, 50);
@@ -123,12 +119,10 @@ public class Customer
                     char situacao = char.Parse(line.Substring(96, 1));
                     Customer customer = new Customer(cpf, nome, dataNascimento, telefone,
                         ultimaCompra, dataCadastro, situacao);
-                    
                     customers.Add(customer);
                 }
-                customerSR.Close();
-                return customers;
             }
+            return customers;
         }
     }
 
@@ -141,7 +135,6 @@ public class Customer
             {
                 writer.WriteLine(customer.ToFile());
             }
-            writer.Close();
         }
     }
 
@@ -158,23 +151,17 @@ public class Customer
         StreamReader customerRestrictedSR = new StreamReader(fullNomeArquivo);
         using (customerRestrictedSR)
         {
-            if (customerRestrictedSR.ReadToEnd() is "")
-            {
-                return new List<Customer>();
-            }
-            else
-            {
                 List<Customer> customersRest = new List<Customer>();
                 string line;
-                while ((line = customerRestrictedSR.ReadLine()) is not null)
+                while ((line = customerRestrictedSR.ReadLine()) != null)
+                {
+                    if(line.Length == 0)//trocar o 0 pela quantidade de elementos que vai ter na linha
                 {
                     //lógica para adicionar na lista de customer restrito
-                    
                     customersRest.Add(new Customer());
                 }
-                customerRestrictedSR.Close();
+                }
                 return customersRest;
-            }
         }
     }
 
@@ -187,13 +174,12 @@ public class Customer
             {
                 writer.WriteLine(customerRest.ToFileRest());
             }
-            writer.Close();
         }
     }
 
     public string ToFileRest()
     {
-        
+
         return $"{this.CPF}";
     }
 

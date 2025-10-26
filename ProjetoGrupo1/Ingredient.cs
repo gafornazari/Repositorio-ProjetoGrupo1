@@ -58,31 +58,26 @@ namespace ProjetoGrupo1
             StreamReader ingridientSR = new StreamReader(fullIngridient);
             using (ingridientSR)
             {
-                if (ingridientSR.ReadToEnd() is "")
+                List<Ingredient> ingredients = new List<Ingredient>();
+                string line;
+                while ((line = ingridientSR.ReadLine()) != null)
                 {
-                    return new List<Ingredient>();
-                }
-                else
-                {
-                    List<Ingredient> ingredients = new List<Ingredient>();
-                    string line;
-                    while ((line = ingridientSR.ReadLine()) is not null)
+                    if (line.Length == 43)
                     {
                         string id = line.Substring(0, 6);
                         string nome = line.Substring(6, 20);
-                        DateOnly ultimaVenda = DateOnly.Parse(line.Substring(26, 8));
-                        DateOnly dataCadastro = DateOnly.Parse(line.Substring(34, 8));
+                        DateOnly ultimaVenda = DateOnly.ParseExact(line.Substring(26, 8), "ddMMyyyy");
+                        DateOnly dataCadastro = DateOnly.ParseExact(line.Substring(34, 8), "ddMMyyyy");
                         char situacao = char.Parse(line.Substring(42, 1));
                         Ingredient ingredient = new Ingredient(id, nome, ultimaVenda, dataCadastro, situacao);
                         ingredients.Add(ingredient);
                     }
-                    ingridientSR.Close();
-                    return ingredients;
                 }
+                return ingredients;
             }
         }
 
-        public static void GravarIngredient(List<Ingredient> lista,string fullPath)
+        public static void GravarIngredient(List<Ingredient> lista, string fullPath)
         {
 
             StreamWriter writer = new StreamWriter(fullPath);
@@ -92,7 +87,6 @@ namespace ProjetoGrupo1
                 {
                     writer.WriteLine(ingredient.ToFile());
                 }
-                writer.Close();
             }
         }
 

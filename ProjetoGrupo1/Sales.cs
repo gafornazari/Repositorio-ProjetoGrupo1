@@ -90,15 +90,11 @@ namespace ProjetoGrupo1
             StreamReader SalesSR = new StreamReader(fullNomeArquivo);
             using (SalesSR)
             {
-                if (SalesSR.ReadToEnd() is "")
+                List<Sales> sales = new List<Sales>();
+                string line;
+                while ((line = SalesSR.ReadLine()) != null)
                 {
-                    return new List<Sales>();
-                }
-                else
-                {
-                    List<Sales> sales = new List<Sales>();
-                    string line;
-                    while ((line = SalesSR.ReadLine()) is not null)
+                    if (line.Length == 31)
                     {
                         var id = int.Parse(line.Substring(0, 5));
                         var date = DateOnly.Parse(line.Substring(5, 8));
@@ -107,9 +103,8 @@ namespace ProjetoGrupo1
                         Sales sale = new Sales(id, date, cpf, totalValue);
                         sales.Add(sale);
                     }
-                    SalesSR.Close();
-                    return sales;
                 }
+                return sales;
             }
         }
 
@@ -122,7 +117,6 @@ namespace ProjetoGrupo1
                 {
                     writer.WriteLine(sale.ToFile());
                 }
-                writer.Close();
             }
         }
 

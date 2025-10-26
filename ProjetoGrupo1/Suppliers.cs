@@ -38,7 +38,7 @@ public class Suppliers
     }
 
     public Suppliers(string cnpj, string razaoSocial, string pais, DateOnly dataAbertura,
-                        DateOnly ultimaFornecimento, DateOnly  dataCadastro, char situacao)
+                        DateOnly ultimaFornecimento, DateOnly dataCadastro, char situacao)
     {
         RazaoSocial = razaoSocial;
         Pais = pais;
@@ -75,7 +75,7 @@ public class Suppliers
             $"Data Cadastro: {this.DataCadastro}\n Situação: {this.Situacao}";
     }
 
-    
+
     public string FormatString(string razaoSocial)
     {
         return razaoSocial.PadRight(50, ' ');
@@ -98,15 +98,11 @@ public class Suppliers
         StreamReader suppliersSR = new StreamReader(fullSuppliers);
         using (suppliersSR)
         {
-            if (suppliersSR.ReadToEnd() is "")
+            List<Suppliers> suppliers = new List<Suppliers>();
+            string line;
+            while ((line = suppliersSR.ReadLine()) != null)
             {
-                return new List<Suppliers>();
-            }
-            else
-            {
-                List<Suppliers> suppliers = new List<Suppliers>();
-                string line;
-                while ((line = suppliersSR.ReadLine()) is not null)
+                if (line.Length == 109)
                 {
                     string cnpj = line.Substring(0, 14);
                     string razaoSocial = line.Substring(14, 50);
@@ -119,9 +115,8 @@ public class Suppliers
                         ultimaFornecimento, dataCadastro, situacao);
                     suppliers.Add(supplier);
                 }
-                suppliersSR.Close();
-                return suppliers;
             }
+            return suppliers;
         }
     }
 
@@ -134,7 +129,6 @@ public class Suppliers
             {
                 writer.WriteLine(supplier.ToFile());
             }
-            writer.Close();
         }
     }
 
@@ -150,22 +144,17 @@ public class Suppliers
         StreamReader suppliersRestrictedSR = new StreamReader(fullNomeArquivo);
         using (suppliersRestrictedSR)
         {
-            if (suppliersRestrictedSR.ReadToEnd() is "")
+            List<Suppliers> suppliersRest = new List<Suppliers>();
+            string line;
+            while ((line = suppliersRestrictedSR.ReadLine()) != null)
             {
-                return new List<Suppliers>();
-            }
-            else
-            {
-                List<Suppliers> suppliersRest = new List<Suppliers>();
-                string line;
-                while ((line = suppliersRestrictedSR.ReadLine()) is not null)
+                if (line.Length == 0)//trocar o 0 pela quantidade de carcateres da linha
                 {
                     //lógica para adicionar na lista de suplier restrito
                     suppliersRest.Add(new Suppliers());
                 }
-                suppliersRestrictedSR.Close();
-                return suppliersRest;
             }
+            return suppliersRest;
         }
     }
 
@@ -178,13 +167,12 @@ public class Suppliers
             {
                 writer.WriteLine(supplierRest.ToFileRest());
             }
-            writer.Close();
         }
     }
 
     public string ToFileRest()
     {
-        
+
         return $"{this.CNPJ}";
     }
 

@@ -69,27 +69,21 @@ namespace ProjetoGrupo1
             StreamReader produceSR = new StreamReader(fullProduce);
             using (produceSR)
             {
-                if (produceSR.ReadToEnd() is "")
+                List<Produce> produces = new List<Produce>();
+                string line;
+                while ((line = produceSR.ReadLine()) != null)
                 {
-                    return new List<Produce>();
-                }
-                else
-                {
-                    List<Produce> produces = new List<Produce>();
-                    string line;
-                    while ((line = produceSR.ReadLine()) is not null)
+                    if (line.Length == 31)
                     {
                         int id = int.Parse(line.Substring(0, 5));
                         DateOnly data = DateOnly.Parse(line.Substring(5, 10));
                         string idMedicamento = line.Substring(15, 13);
                         int quantidade = int.Parse(line.Substring(28, 3));
                         Produce produce = new Produce(id, data, idMedicamento, quantidade);
-                        //aqui na linha de cima, se algo nn for do tipo string, tem que fazer o Parse
                         produces.Add(produce);
                     }
-                    produceSR.Close();
-                    return produces;
                 }
+                return produces;
             }
         }
 
@@ -102,14 +96,13 @@ namespace ProjetoGrupo1
                 {
                     writer.WriteLine(produce.ToFile());
                 }
-                writer.Close();
             }
         }
 
         public string FormatarData(DateOnly data)
         {
             string dataFormatada = data.ToString("ddmmyyyy");
-            return dataFormatada; 
+            return dataFormatada;
         }
 
         public string ToFile()

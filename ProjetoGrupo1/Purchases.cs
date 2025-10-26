@@ -36,10 +36,10 @@ namespace ProjetoGrupo1
             CalcularTotal();
         }
 
-        private void  CalcularTotal()
+        private void CalcularTotal()
         {
             this.ValorTotal = 0;
-            foreach(var item in this.purchaseItems)
+            foreach (var item in this.purchaseItems)
             {
                 this.ValorTotal += item.TotalItem;
             }
@@ -50,28 +50,23 @@ namespace ProjetoGrupo1
             StreamReader purchaseSR = new StreamReader(fullPath);
             using (purchaseSR)
             {
-                if (purchaseSR.ReadToEnd() is "")
+                List<Purchases> purchases = new List<Purchases>();
+                string line;
+                while ((line = purchaseSR.ReadLine()) != null)
                 {
-                    return new List<Purchases>();
-                }
-                else
-                {
-                    List<Purchases> purchases = new List<Purchases>();
-                    string line;
-                    while ((line = purchaseSR.ReadLine()) is not null)
+                    if (line.Length == 0)//trocar o 0 pela quantidade de carcateres da linha
                     {
-                    //    var id = line.Substring(0, 5);
-                    //    var date = line.Substring(5, 10);
-                    //    var suplierCNPJ = line.Substring(14, 14);
-                    //    var TotalValue = line.Substring(29, 8);
-                    //    Purchases purchase = new Purchases(int.Parse(id),
-                    //        DateOnly.Parse(date), /*suplierCNPJ,*/
-                    //        double.Parse(TotalValue));
-                    //    purchases.Add(purchase);
+                        //    var id = line.Substring(0, 5);
+                        //    var date = line.Substring(5, 10);
+                        //    var suplierCNPJ = line.Substring(14, 14);
+                        //    var TotalValue = line.Substring(29, 8);
+                        //    Purchases purchase = new Purchases(int.Parse(id),
+                        //        DateOnly.Parse(date), /*suplierCNPJ,*/
+                        //        double.Parse(TotalValue));
+                        //    purchases.Add(purchase);
                     }
-                    purchaseSR.Close();
-                    return purchases;
                 }
+                return purchases;
             }
         }
 
@@ -84,15 +79,13 @@ namespace ProjetoGrupo1
                 {
                     writer.WriteLine(purchases.ToFile());
                 }
-                writer.Close();
             }
         }
 
 
         public string ToFile()
         {
-            return $"{Id}{DataFormatada()}" +$"{Fornecedor}" +
-                $"{ValorTotal}";
+            return $"{Id}{DataFormatada()}{Fornecedor}{ValorTotal}";
         }
     }
 }

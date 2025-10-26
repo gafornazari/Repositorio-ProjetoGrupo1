@@ -65,15 +65,11 @@ namespace ProjetoGrupo1
             StreamReader medicineSR = new StreamReader(fullMedicine);
             using (medicineSR)
             {
-                if (medicineSR.ReadToEnd() is "")
+                List<Medicine> medicines = new List<Medicine>();
+                string line;
+                while ((line = medicineSR.ReadLine()) != null)
                 {
-                    return new List<Medicine>();
-                }
-                else
-                {
-                    List<Medicine> medicines = new List<Medicine>();
-                    string line;
-                    while ((line = medicineSR.ReadLine()) is not null)
+                    if (line.Length == 78)
                     {
                         string cdb = line.Substring(0, 13);
                         string nome = line.Substring(13, 40);
@@ -83,12 +79,10 @@ namespace ProjetoGrupo1
                         DateOnly dataCadastro = DateOnly.Parse(line.Substring(69, 8));
                         char situacao = char.Parse(line.Substring(77, 1));
                         Medicine medicine = new Medicine(cdb, nome, categoria, valorVenda, ultimaVenda, dataCadastro, situacao);
-                        //aqui na linha de cima, se algo nn for do tipo string, tem que fazer o Parse
                         medicines.Add(medicine);
                     }
-                    medicineSR.Close();
-                    return medicines;
                 }
+                return medicines;
             }
 
         }
@@ -102,11 +96,8 @@ namespace ProjetoGrupo1
                 {
                     writer.WriteLine(medicine.ToFile());
                 }
-                writer.Close();
             }
         }
-
-        
 
         public string ToFile()
         {

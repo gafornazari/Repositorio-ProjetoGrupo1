@@ -69,15 +69,12 @@ namespace ProjetoGrupo1
             StreamReader SalesItemsSR = new StreamReader(fullNomeArquivo);
             using (SalesItemsSR)
             {
-                if (SalesItemsSR.ReadToEnd() is "")
-                {
-                    return new List<SalesItems>();
-                }
-                else
-                {
+                
                     List<SalesItems> salesItems = new List<SalesItems>();
                     string line;
-                    while ((line = SalesItemsSR.ReadLine()) is not null)
+                    while ((line = SalesItemsSR.ReadLine()) != null)
+                    {
+                    if(line.Length == 39)
                     {
                         var idVenda = int.Parse(line.Substring(0, 5));
                         var chave = int.Parse(line.Substring(5, 5));
@@ -89,10 +86,9 @@ namespace ProjetoGrupo1
                             valorUnitario, totalItem);
                         salesItems.Add(salesItem);
                     }
-                    SalesItemsSR.Close();
+                    }
                     return salesItems;
                 }
-            }
         }
 
         public static void GravarSalesItems(List<SalesItems> lista, string fullPath)
@@ -104,7 +100,6 @@ namespace ProjetoGrupo1
                 {
                     writer.WriteLine(salesItems.ToFile());
                 }
-                writer.Close();
             }
         }
 

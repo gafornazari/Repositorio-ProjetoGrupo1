@@ -850,7 +850,10 @@ namespace ProjetoGrupo1
                         Console.WriteLine("Qual o novo valor da venda do medicamento?");
                         valorVenda = decimal.Parse(Console.ReadLine());
                         if (valorVenda > 0 && valorVenda < 10000)
+                        {
+                            string formatadoValorVenda = valorVenda.ToString("F2").PadLeft(7);
                             auxVenda = 1;
+                        }
                         else
                             Console.WriteLine("Valor inválido! Deve ser > 0 e < 10.000");
                     } while (auxVenda == 0);
@@ -883,7 +886,10 @@ namespace ProjetoGrupo1
                         Console.WriteLine("Qual o novo valor da venda do medicamento?");
                         valorVenda = decimal.Parse(Console.ReadLine());
                         if (valorVenda > 0 && valorVenda < 10000)
+                        {
+                            string formatadoValorVenda = valorVenda.ToString("F2").PadLeft(7);
                             auxVenda = 1;
+                        }
                         else
                             Console.WriteLine("Valor inválido! Deve ser > 0 e < 10.000");
                     } while (auxVenda == 0);
@@ -914,7 +920,7 @@ namespace ProjetoGrupo1
             }
         }
 
-        //
+        
         public void ImprimirMedicines()
         {
             if (ListaMedicines == null || !ListaMedicines.Any())
@@ -928,7 +934,7 @@ namespace ProjetoGrupo1
             }
         }
 
-        //Ana---------------------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------------------------------
         //Ana
