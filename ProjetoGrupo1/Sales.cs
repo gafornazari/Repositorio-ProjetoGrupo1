@@ -97,7 +97,7 @@ namespace ProjetoGrupo1
                     if (line.Length == 31)
                     {
                         var id = int.Parse(line.Substring(0, 5));
-                        var date = DateOnly.Parse(line.Substring(5, 8));
+                        var date = DateOnly.ParseExact(line.Substring(5, 8), "ddMMyyyy");
                         var cpf = line.Substring(13, 11);
                         var totalValue = decimal.Parse(line.Substring(24, 7));
                         Sales sale = new Sales(id, date, cpf, totalValue);
