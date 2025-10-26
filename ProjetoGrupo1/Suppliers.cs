@@ -148,9 +148,9 @@ public class Suppliers
             string line;
             while ((line = suppliersRestrictedSR.ReadLine()) != null)
             {
-                if (line.Length == 0)//trocar o 0 pela quantidade de carcateres da linha
+                if (line.Length == 14)
                 {
-                    //lógica para adicionar na lista de suplier restrito
+                    string cnpj = line.Substring(0, 14);
                     suppliersRest.Add(new Suppliers());
                 }
             }

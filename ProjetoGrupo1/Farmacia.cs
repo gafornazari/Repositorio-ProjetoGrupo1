@@ -1015,23 +1015,29 @@ namespace ProjetoGrupo1
                 return;
             }
 
-            Console.Write("Informe a data de nascimento do cliente: ");
-            string input = Console.ReadLine();
-            if (!DateOnly.TryParseExact(input, "ddMMyyyy", out DateOnly dataNascimento))
+            DateOnly dataNascimento;
+            while (true)
             {
-                Console.WriteLine("Data inválida! Digite no formato ddMMyyyy, ex: 01012024.");
-                return;
+                Console.Write("Informe a data de nascimento do cliente (ddMMyyyy): ");
+                string input = Console.ReadLine();
+
+                if (DateOnly.TryParseExact(input, "ddMMyyyy", out dataNascimento))
+                {
+                    break; // Loop até inserir data em formato correto
+                }
+
+                Console.WriteLine("Data inválida! Digite novamente no formato ddMMyyyy, ex: 01012024.");
             }
 
             if (!VerificarMaioridade(dataNascimento))
             {
-                return; // cancela cadastro
+                return; // cancela cadastro se for menor de idade
             }
 
             Console.Write("Informe o nome do cliente: ");
             string nome = Console.ReadLine();
 
-            Console.Write("Informe o telefone: DDD + Número ");
+            Console.Write("Informe o telefone (DDD + Número): ");
             string telefone = Console.ReadLine();
 
             ListaCustomers.Add(new Customer(cpf, nome, dataNascimento, telefone));
@@ -1197,12 +1203,19 @@ namespace ProjetoGrupo1
                 return;
             }
 
-            Console.Write("Informe a data de fundação da empresa: ");
-            string input = Console.ReadLine();
-            if (!DateOnly.TryParseExact(input, "ddMMyyyy", out DateOnly dataAbertura))
+            DateOnly dataAbertura;
+            while (true)
             {
-                Console.WriteLine("Data inválida! Digite no formato ddMMyyyy, ex: 01012024.");
-                return;
+                Console.Write("Informe a data de fundação da empresa (ddMMyyyy): ");
+                string input = Console.ReadLine();
+
+                if (DateOnly.TryParseExact(input, "ddMMyyyy", out dataAbertura))
+                {
+                    // Loop até informar uma data válida
+                    break;
+                }
+
+                Console.WriteLine("Data inválida! Digite novamente no formato ddMMyyyy, ex: 01012024.");
             }
 
             if (!VerificarDataAbertura(dataAbertura))
