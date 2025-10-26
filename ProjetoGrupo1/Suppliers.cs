@@ -85,6 +85,12 @@ public class Suppliers
         return pais.PadRight(20, ' ');
     }
 
+    public string FormatarData(DateOnly data)
+    {
+        string dataFormatada = data.ToString("ddmmyyyy");
+        return dataFormatada;
+    }
+
     public static List<Suppliers> LerArquivoSuppliers(string diretorio, string nomeArquivo)
     {
         var fullSuppliers = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
@@ -123,9 +129,9 @@ public class Suppliers
         StreamWriter writer = new StreamWriter(fullPath);
         using (writer)
         {
-            foreach (var customer in lista)
+            foreach (var supplier in lista)
             {
-                writer.WriteLine(customer.ToFile());
+                writer.WriteLine(supplier.ToFile());
             }
             writer.Close();
         }
@@ -133,7 +139,7 @@ public class Suppliers
 
     public string ToFile()
     {
-        return $"{this.CNPJ}{this.RazaoSocial}{this.Pais}{this.DataAbertura.ToString("ddMMyyyy")}{this.UltimoFornecimento.ToString("ddMMyyyy")}{this.DataCadastro.ToString("ddMMyyyy")}{this.Situacao}";
+        return $"{this.CNPJ}{FormatString(this.RazaoSocial)}{FormatStringPais(this.Pais)}{FormatarData(this.DataAbertura)}{FormatarData(this.UltimoFornecimento)}{FormatarData(this.DataCadastro)}{this.Situacao}";
     }
 
 

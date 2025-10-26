@@ -85,6 +85,12 @@ public class Customer
         return $"{ListaRestrictedCustomers}";
     }
 
+    public string FormatarData(DateOnly data)
+    {
+        string dataFormatada = data.ToString("ddmmyyyy");
+        return dataFormatada;
+    }
+
 
     public string FormatString(string nome)
     {
@@ -116,7 +122,7 @@ public class Customer
                     char situacao = char.Parse(line.Substring(96, 1));
                     Customer customer = new Customer(cpf, nome, dataNascimento, telefone,
                         ultimaCompra, dataCadastro, situacao);
-                    //aqui na linha de cima, se algo nn for do tipo string, tem que fazer o Parse
+                    
                     customers.Add(customer);
                 }
                 customerSR.Close();
@@ -141,8 +147,8 @@ public class Customer
 
     public string ToFile()
     {
-        return $"{this.CPF}{this.Nome}{this.DataNascimento.ToString("ddMMyyyy")}{this.Telefone}" +
-            $"{this.UltimaCompra.ToString("ddMMyyyy")}{this.DataCadastro.ToString("ddMMyyyy")}{this.Situacao}";
+        return $"{this.CPF}{FormatString(this.Nome)}{FormatarData(this.DataNascimento)}{this.Telefone}" +
+            $"{FormatarData(this.UltimaCompra)}{FormatarData(this.DataCadastro)}{this.Situacao}";
     }
 
     public static List<Customer> LerArquivoRestrictedCustomer(string diretorio, string nomeArquivo)
@@ -162,7 +168,7 @@ public class Customer
                 while ((line = customerRestrictedSR.ReadLine()) is not null)
                 {
                     //lógica para adicionar na lista de customer restrito
-                    //customersRest.Add(customerRest);
+                    
                     customersRest.Add(new Customer());
                 }
                 customerRestrictedSR.Close();

@@ -126,9 +126,16 @@ namespace ProjetoGrupo1
             }
         }
 
+
+        public string FormatarData(DateOnly data)
+        {
+            string dataFormatada = data.ToString("ddmmyyyy");
+            return dataFormatada;
+        }
+
         public string ToFile()
         {
-            return $"{this.Id}{this.DataVenda}{this.ClienteCPF}{this.ValorTotal}";
+            return $"{this.Id}{FormatarData(this.DataVenda)}{this.ClienteCPF}{this.ValorTotal}";
         }
     }
 }
