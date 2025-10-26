@@ -87,7 +87,7 @@ namespace ProjetoGrupo1
             do
             {
                 Console.Clear();
-                Console.WriteLine("Digite o Id do porduto: ");
+                Console.WriteLine("Digite o Id da produção: ");
                 var idProduto = Console.ReadLine()!;
                 if (idProduto.Length == 5 && idProduto.All(char.IsDigit))
                 {
@@ -185,7 +185,8 @@ namespace ProjetoGrupo1
                 this.ListaProduces.Add(produce);
 
                 Console.Clear();
-                Console.WriteLine("Produce criada com sucesso!");
+                Console.WriteLine("Produção criada com sucesso!");
+                Console.WriteLine($"Id: {produce.Id}");
                 Console.ReadKey();
 
             }
@@ -202,7 +203,7 @@ namespace ProjetoGrupo1
             do
             {
                 Console.Clear();
-                Console.WriteLine("Digite o Id do porduto: ");
+                Console.WriteLine("Digite o Id da produção: ");
                 var idProduto = Console.ReadLine()!;
                 if (idProduto.Length == 5 && idProduto.All(char.IsDigit))
                 {
@@ -296,7 +297,7 @@ namespace ProjetoGrupo1
             do
             {
                 Console.Clear();
-                Console.WriteLine("Digite o Id do porduto produzido: ");
+                Console.WriteLine("Digite o Id da produção: ");
                 var idProduto = Console.ReadLine()!;
                 if (idProduto.Length == 5 && idProduto.All(char.IsDigit))
                 {
@@ -363,9 +364,11 @@ namespace ProjetoGrupo1
                             Console.ReadKey();
                         }
                     } while (aux == 0);
-                    this.ListaProducesItems.Add(new ProduceItem(id, idIngredient, quantidade));
+                    ProduceItem produceItem = new ProduceItem(id, idIngredient, quantidade);
+                    this.ListaProducesItems.Add(produceItem);
                     Console.Clear();
                     Console.WriteLine("Item de produção Incluído com sucesso!");
+                    Console.WriteLine($"Id: {produceItem.IdProduceItem}");
                     Console.ReadKey();
                 }
                 else
@@ -526,7 +529,7 @@ namespace ProjetoGrupo1
         {
             Console.Clear();
             Console.WriteLine("###### LISTA ITENS DE PRODUÇÃO ######");
-            foreach (var produce in this.ListaProduces)
+            foreach (var produce in this.ListaProducesItems)
             {
                 
                 Console.WriteLine(produce);
