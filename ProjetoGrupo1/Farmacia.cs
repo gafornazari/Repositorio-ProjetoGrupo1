@@ -56,17 +56,23 @@ namespace ProjetoGrupo1
         }
         public void ImprimirListaProduces()
         {
-
-            Console.Clear();
-            Console.WriteLine("###### LISTA DE PRODUTOS ######");
-            foreach (var produce in this.ListaProduces)
+            if (ListaProduces == null || !ListaIngredients.Any())
+                Console.WriteLine("A lista está vazia!");
+            else
             {
-                
-                Console.WriteLine(produce);
-                Console.WriteLine("_______________________");
+                Console.WriteLine("LISTA DE PRODUTOS:");
+                foreach (var produce in this.ListaProduces)
+                {
+                    Console.WriteLine("------------------------------------");
+                    Console.WriteLine(produce);
+                    Console.WriteLine("------------------------------------");
+                }
+                Console.ReadKey();
             }
-            Console.ReadKey();
+
         }
+
+
         public Produce RetornaProduce(int idProduce)
         {
             foreach (Produce produce in ListaProduces)
@@ -81,7 +87,8 @@ namespace ProjetoGrupo1
         }
 
 
-        public void LocalizarProduce() {
+        public void LocalizarProduce()
+        {
             int aux = 0;
             int id = 0;
             do
@@ -146,7 +153,7 @@ namespace ProjetoGrupo1
                     Console.ReadKey();
                 }
             } while (aux == 0);
-           
+
             Medicine medicine = LocalizarMedicine(cdb);
             if (medicine == null)
             {
@@ -167,7 +174,7 @@ namespace ProjetoGrupo1
                     Console.Clear();
                     Console.WriteLine("Digite a quantidade: ");
                     string stringQuantidade = Console.ReadLine()!;
-                    if (stringQuantidade.Length > 0 && stringQuantidade.Length <=3 && stringQuantidade.All(char.IsDigit))
+                    if (stringQuantidade.Length > 0 && stringQuantidade.Length <= 3 && stringQuantidade.All(char.IsDigit))
                     {
                         quantidade = int.Parse(stringQuantidade);
                         aux = 1;
@@ -331,7 +338,7 @@ namespace ProjetoGrupo1
                         idIngredient.StartsWith("AI") &&
                         idIngredient.Substring(2).All(char.IsDigit))
                     {
-                        aux = 1; 
+                        aux = 1;
                     }
                     else
                     {
@@ -342,7 +349,7 @@ namespace ProjetoGrupo1
                 } while (aux == 0);
 
                 Ingredient Ingredient = RetornarIngredient(idIngredient);
-                
+
                 if (Ingredient != null && Ingredient.Situacao == 'A')
                 {
                     aux = 0;
@@ -419,7 +426,7 @@ namespace ProjetoGrupo1
             } while (aux == 0);
 
             var produceItem = RetornarProduceItem(id);
-            if( produceItem != null )
+            if (produceItem != null)
             {
                 Console.Clear();
                 Console.WriteLine(produceItem);
@@ -523,20 +530,26 @@ namespace ProjetoGrupo1
             {
                 Console.WriteLine("Item de produção não encontrado!");
             }
-        } 
+        }
 
         public void ImprimirListaProduceItems()
         {
-            Console.Clear();
-            Console.WriteLine("###### LISTA ITENS DE PRODUÇÃO ######");
-            foreach (var produce in this.ListaProducesItems)
+            if (ListaProducesItems == null || !ListaIngredients.Any())
+                Console.WriteLine("A lista está vazia!");
+            else
             {
-                
-                Console.WriteLine(produce);
-                Console.WriteLine("_______________________");
+                Console.WriteLine("LISTA ITENS DE PRODUÇÃO:");
+                foreach (var produce in this.ListaProducesItems)
+                {
+                    Console.WriteLine("------------------------------------");
+                    Console.WriteLine(produce);
+                    Console.WriteLine("------------------------------------");
+                }
+                Console.ReadKey();
             }
-            Console.ReadKey();
         }
+
+
 
         public void PopularListaProduceItem(List<ProduceItem> producesItems)
         {
@@ -548,10 +561,12 @@ namespace ProjetoGrupo1
         }
 
 
-        //Giovanna-----------------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------
         //-----------------------------------------------------------------------------------------------------------------
         //-----------------------------------------------------------------------------------------------------------------
         //Giovanna
+
+
         //método para verificar se já existe algum ingrediente com o mesmo id
         public bool BuscarIngridientId(string id)
         {
@@ -637,9 +652,9 @@ namespace ProjetoGrupo1
 
         public Ingredient RetornarIngredient(string id)
         {
-            foreach(var ing in ListaIngredients)
+            foreach (var ing in ListaIngredients)
             {
-                if(ing.Id == id)
+                if (ing.Id == id)
                 {
                     return ing;
                 }
@@ -690,15 +705,16 @@ namespace ProjetoGrupo1
                 Console.WriteLine("A lista está vazia!");
             else
             {
+                Console.WriteLine("LISTA DE PRINCÍPIOS ATIVOS:");
+
                 foreach (var ing in ListaIngredients)
                 {
-                    Console.WriteLine(ing.ToString());
+                    Console.WriteLine("------------------------------------");
+                    Console.WriteLine(ing.ToString() + "\n");
+                    Console.WriteLine("------------------------------------");
                 }
             }
         }
-
-
-
 
         //começo medicine
 
@@ -822,7 +838,6 @@ namespace ProjetoGrupo1
                 valorVenda = decimal.Parse(Console.ReadLine());
                 if (valorVenda > 0 && valorVenda < 10000)
                 {
-                    string formatadoValorVenda = valorVenda.ToString("F2").PadLeft(7);
                     auxVenda = 1;
                 }
                 else
@@ -853,10 +868,7 @@ namespace ProjetoGrupo1
                         Console.WriteLine("Qual o novo valor da venda do medicamento?");
                         valorVenda = decimal.Parse(Console.ReadLine());
                         if (valorVenda > 0 && valorVenda < 10000)
-                        {
-                            string formatadoValorVenda = valorVenda.ToString("F2").PadLeft(7);
                             auxVenda = 1;
-                        }
                         else
                             Console.WriteLine("Valor inválido! Deve ser > 0 e < 10.000");
                     } while (auxVenda == 0);
@@ -889,10 +901,7 @@ namespace ProjetoGrupo1
                         Console.WriteLine("Qual o novo valor da venda do medicamento?");
                         valorVenda = decimal.Parse(Console.ReadLine());
                         if (valorVenda > 0 && valorVenda < 10000)
-                        {
-                            string formatadoValorVenda = valorVenda.ToString("F2").PadLeft(7);
                             auxVenda = 1;
-                        }
                         else
                             Console.WriteLine("Valor inválido! Deve ser > 0 e < 10.000");
                     } while (auxVenda == 0);
@@ -923,16 +932,19 @@ namespace ProjetoGrupo1
             }
         }
 
-        
+
         public void ImprimirMedicines()
         {
             if (ListaMedicines == null || !ListaMedicines.Any())
                 Console.WriteLine("A lista está vazia!");
             else
             {
+                Console.WriteLine("LISTA DE MEDICAMENTOS:");
                 foreach (var med in ListaMedicines)
                 {
+                    Console.WriteLine("------------------------------------");
                     Console.WriteLine(med.ToString());
+                    Console.WriteLine("------------------------------------");
                 }
             }
         }
@@ -947,8 +959,8 @@ namespace ProjetoGrupo1
         //Métodos para clientes
 
         //Método para verificar se o cpf é válido
-        
-            public bool VerificarCpf(string cpf)
+
+        public bool VerificarCpf(string cpf)
         {
             // Remove caracteres não numéricos
             cpf = cpf.Replace(".", "").Replace("-", "").Trim();
@@ -1105,14 +1117,14 @@ namespace ProjetoGrupo1
         //Método para imprimir lista de clientes
         public void ImprimirClientes()
         {
-            Console.WriteLine("LISTA DE CLIENTES");
-            foreach (var cliente in ListaCustomers)
+            if (ListaCustomers == null || !ListaCustomers.Any())
             {
-                if (cliente == null)
-                {
-                    Console.WriteLine("Lista vazia");
-                }
-                else
+                Console.WriteLine("Lista vazia");
+            }
+            else
+            {
+                Console.WriteLine("LISTA DE CLIENTES");
+                foreach (var cliente in ListaCustomers)
                 {
                     Console.WriteLine("------------------------------------");
                     Console.WriteLine(cliente + "\n");
@@ -1120,6 +1132,9 @@ namespace ProjetoGrupo1
                 }
             }
         }
+
+
+
 
 
         //Métodos para os fornecedores/supplies
@@ -1167,7 +1182,7 @@ namespace ProjetoGrupo1
             DateTime dataAtual = DateTime.Now;
             int anos = dataAtual.Year - dataAbertura.Year;
 
-            
+
             if (dataAbertura > DateOnly.FromDateTime(dataAtual).AddYears(-anos))
                 anos--;
 
@@ -1217,7 +1232,7 @@ namespace ProjetoGrupo1
             ListaSuppliers.Add(new Suppliers(cnpj, razaoSocial, pais, dataAbertura));
             Console.WriteLine("Fornecedor cadastrado com sucesso!");
         }
-        
+
         //Buscar fornecedores pelo cnpj
         public Suppliers LocalizarFornecedor(string cnpj)
         {
@@ -1235,14 +1250,14 @@ namespace ProjetoGrupo1
         //Imprimir lista de fornecedores
         public void ImprimirFornecedores()
         {
-            Console.WriteLine("LISTA DE FORNECEDORES");
-            foreach (var fornecedor in ListaSuppliers)
+            if (ListaSuppliers == null || !ListaSuppliers.Any())
             {
-                if (fornecedor == null)
-                {
-                    Console.WriteLine("Lista vazia");
-                }
-                else
+                Console.WriteLine("Lista vazia");
+            }
+            else
+            {
+                Console.WriteLine("LISTA DE FORNECEDORES");
+                foreach (var fornecedor in ListaSuppliers)
                 {
                     Console.WriteLine("------------------------------------");
                     Console.WriteLine(fornecedor + "\n");
@@ -1250,6 +1265,7 @@ namespace ProjetoGrupo1
                 }
             }
         }
+
         //Alterar a data de ultimo fornecimento do fornecedor
         public void AlterarSuppliersUltimoFornecimento(DateOnly ultimoFornecimento, string cnpj)
         {
@@ -1350,7 +1366,7 @@ namespace ProjetoGrupo1
 
                 // Caso contrário, adiciona na lista restrita 
                 ListaRestrictedCustomers.Add(cliente);
-                
+
 
                 Console.WriteLine("Cliente adicionado à lista de Clientes Restritos.");
             }
@@ -1380,7 +1396,7 @@ namespace ProjetoGrupo1
 
             if (op == 1)
             {
-                
+
                 ListaRestrictedCustomers.Remove(cliente);
             }
             else if (op == 2)
@@ -1395,17 +1411,26 @@ namespace ProjetoGrupo1
         //Imprimir cpfs dos clientes restritos
         public void ImprimirClientesRestritos()
         {
-            Console.WriteLine("LISTA DE CLIENTES RESTRITOS");
-            foreach (var cliente in ListaRestrictedCustomers)
+            if (ListaRestrictedCustomers == null || !ListaRestrictedCustomers.Any())
+                Console.WriteLine("A lista está vazia!");
+            else
             {
-                Console.WriteLine("------------------------------------");
-                Console.WriteLine(cliente.CPF + "\n");
-                Console.WriteLine("-------------------------------------");
+                Console.WriteLine("LISTA DE CLIENTES RESTRITOS");
+                foreach (var cliente in ListaRestrictedCustomers)
+                {
+                    Console.WriteLine("------------------------------------");
+                    Console.WriteLine(cliente.CPF + "\n");
+                    Console.WriteLine("------------------------------------");
+
+                }
             }
         }
 
+
+
+
         //Fornecedores Restritos
-       //Adicionar fornecedores restritos
+        //Adicionar fornecedores restritos
         public void IncluirFornecedoresRestritos()
         {
             Console.WriteLine("Qual o CNPJ da empresa que deseja cadastrar?");
@@ -1452,12 +1477,12 @@ namespace ProjetoGrupo1
 
                 // Caso contrário, adiciona na lista restrita
                 ListaRestrictedSuppliers.Add(fornecedor);
-                
+
 
                 Console.WriteLine("Empresa adicionada à lista de Empresas Restritas.");
             }
         }
-        
+
         //Localizar fornecedores restritos
         public bool LocalizarFornecedoresRestritos(string cnpj)
         {
@@ -1482,7 +1507,7 @@ namespace ProjetoGrupo1
 
             if (op == 1)
             {
-              
+
                 ListaRestrictedSuppliers.Remove(fornecedor);
             }
             else if (op == 2)
@@ -1497,15 +1522,23 @@ namespace ProjetoGrupo1
         //Imprimir lista de cnpjs restritos
         public void ImprimirFornecedoresRestritos()
         {
-            Console.WriteLine("LISTA DE FORNECEDORES RESTRITOS");
-            foreach (var fornecedor in ListaRestrictedSuppliers)
+            if (ListaRestrictedSuppliers == null || !ListaRestrictedSuppliers.Any())
+                Console.WriteLine("A lista está vazia!");
+            else
             {
-                Console.WriteLine("------------------------------------");
-                Console.WriteLine(fornecedor.CNPJ + "\n");
-                Console.WriteLine("-------------------------------------");
+                Console.WriteLine("LISTA DE FORNECEDORES RESTRITOS");
+                foreach (var fornecedor in ListaRestrictedSuppliers)
+                {
+                    Console.WriteLine("------------------------------------");
+                    Console.WriteLine(fornecedor.CNPJ + "\n");
+                    Console.WriteLine("-------------------------------------");
+                }
             }
 
         }
+
+
+
 
         //Felipe---------------------------------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------------------------------
@@ -1614,7 +1647,7 @@ namespace ProjetoGrupo1
                 valorTotal += totalItem;
 
                 this.ListaPurchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario));
-                purchases.purchaseItems.Add(new PurchaseItem(idCompra,ingredient.Id, quantidade, valorUnitario));
+                purchases.purchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario));
                 purchases.setValorTotal();
                 contadorItens++;
 
@@ -1812,24 +1845,41 @@ namespace ProjetoGrupo1
         }
         public void ImprimirPurchases()
         {
-            Console.Clear();
-            foreach (var purchase in this.ListaPurchases)
+            if (ListaPurchases == null || !ListaPurchases.Any())
+                Console.WriteLine("A lista está vazia!");
+            else
             {
-                Console.WriteLine(purchase);
-                Console.WriteLine("---------//---------");
+                Console.WriteLine("LISTA DE COMPRAS:");
+                foreach (var purchase in this.ListaPurchases)
+                {
+                    Console.WriteLine("------------------------------------");
+                    Console.WriteLine(purchase);
+                    Console.WriteLine("------------------------------------");
+                }
             }
             Console.ReadKey();
         }
+
+
+
         public void ImprimirPurchaseItens()
         {
-            Console.Clear();
-            foreach (var purchaseItem in this.ListaPurchaseItems)
+            if (ListaIngredients == null || !ListaIngredients.Any())
+                Console.WriteLine("A lista está vazia!");
+            else
             {
-                Console.WriteLine(purchaseItem);
-                Console.WriteLine("---------//---------");
+                Console.WriteLine("LISTA DE ITENS DAS COMPRAS:");
+
+                foreach (var purchaseItem in this.ListaPurchaseItems)
+                {
+                    Console.WriteLine("------------------------------------");
+                    Console.WriteLine(purchaseItem);
+                    Console.WriteLine("------------------------------------");
+                }
+                Console.ReadKey();
             }
-            Console.ReadKey();
         }
+
 
         //Leandro--------------------------------------------------------------------------------------------
         public void IncluirSales()
@@ -1874,14 +1924,21 @@ namespace ProjetoGrupo1
         }
         public void ImprimirListaSales()
         {
-            Console.Clear();
-            foreach (var venda in ListaSales)
+            if (ListaSales == null || !ListaSales.Any())
+                Console.WriteLine("A lista está vazia!");
+            else
             {
-                Console.WriteLine(venda);
-                Console.WriteLine("---------//---------");
+                Console.WriteLine("LISTA DE VENDAS:");
+                foreach (var venda in ListaSales)
+                {
+                    Console.WriteLine("------------------------------------");
+                    Console.WriteLine(venda);
+                    Console.WriteLine("------------------------------------");
+                }
             }
             Console.ReadKey();
         }
+
         public void IncluirSaleItems()
         {
             int aux = 0;
@@ -1982,14 +2039,24 @@ namespace ProjetoGrupo1
         }
         public void ImprimirListaSalesItems()
         {
-            Console.Clear();
-            foreach (var item in ListaSalesItems)
+            if (ListaIngredients == null || !ListaIngredients.Any())
+                Console.WriteLine("A lista está vazia!");
+            else
             {
-                Console.WriteLine(item);
-                Console.WriteLine("---------//---------");
+                Console.WriteLine("LISTA DE ITENS DAS VENDAS:");
+
+                foreach (var item in ListaSalesItems)
+                {
+                    Console.WriteLine("------------------------------------");
+                    Console.WriteLine(item);
+                    Console.WriteLine("------------------------------------");
+                }
             }
             Console.ReadKey();
         }
+
+
+
         public void AlterarSalesItems()
         {
             int id = 0;
@@ -2195,7 +2262,7 @@ namespace ProjetoGrupo1
                     Console.WriteLine($"TOTAL do Fornecedor {fornecedor.Key}: R${totalFornecedor}\n");
                     Console.WriteLine();
                 }
-               
+
             }
 
 

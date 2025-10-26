@@ -48,8 +48,8 @@ namespace ProjetoGrupo1
 
         public override string ToString()
         {
-            return $"Id: {Id}, Nome: {Nome}, Última compra: {UltimaCompra}," +
-                $" Data cadastro: {DataCadastro}, Situação: {Situacao}";
+            return $"Id: {Id}\nNome: {Nome}\nÚltima compra: {UltimaCompra}" +
+                $"Data cadastro: {DataCadastro}\nSituação: {Situacao}";
         }
 
         public static List<Ingredient> LerArquivoIngredient(string diretorio, string nomeArquivo)
