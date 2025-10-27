@@ -452,10 +452,10 @@ void ComprasPrincipiosAtivos()
         Console.WriteLine("---- COMPRAS DE PRINCÍPIOS ATIVOS ----");
         Console.WriteLine("1 - Registrar compra");
         Console.WriteLine("2 - Localizar compras");
-        Console.WriteLine("3 - Localizar os itens comprados");
+        Console.WriteLine("3 - Localizar os itens registrados");
         Console.WriteLine("4 - Alterar");
         Console.WriteLine("5 - Exibir compra");
-        Console.WriteLine("6 - Exibir itens já comprados");
+        Console.WriteLine("6 - Exibir itens registrados");
         Console.WriteLine("7 - Sair");
         compras = int.Parse(Console.ReadLine());
 
