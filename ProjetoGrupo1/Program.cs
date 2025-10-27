@@ -543,6 +543,42 @@ void ManipulacaoMedicamentos()
         }
     } while (producoes != 9);
 }
+void Relatorios()
+{
+    string menuRelatorio;
+    do
+    {
+
+        Console.Clear();
+        Console.WriteLine("---- MENU DE RELATÓRIOS ----");
+        Console.WriteLine("1 - Vendas Por Período");
+        Console.WriteLine("2 - Medicamentos Mais Vendidos");
+        Console.WriteLine("3 - Compras Por Fornecedor");
+        Console.WriteLine("0 - Voltar");
+        menuRelatorio = Console.ReadLine()!;
+
+        switch (menuRelatorio)
+        {
+            case "1":
+                farmacia.RelatorioVendasPorPeriodo();
+                break;
+            case "2":
+                farmacia.RelatorioMedicamentosMaisVendidos();
+                break;
+            case "3":
+                farmacia.RelatorioCompraPorFornecedor();
+                break;
+            case "0":
+                Console.WriteLine("Voltando...");
+                break;
+            default:
+                Console.WriteLine("Opção inválida!");
+                break;
+        }
+    } while (menuRelatorio != "0");
+
+
+}
 
 do
 {
@@ -553,7 +589,8 @@ do
     Console.WriteLine("2 - Vendas de medicamentos");
     Console.WriteLine("3 - Compras de princípios ativos");
     Console.WriteLine("4 - Manipulação de medicamentos");
-    Console.WriteLine("5 - Sair");
+    Console.WriteLine("5 - Relatórios");
+    Console.WriteLine("0 - Sair");
     menuprincipal = int.Parse(Console.ReadLine());
 
     switch (menuprincipal)
@@ -571,10 +608,13 @@ do
             ManipulacaoMedicamentos();
             break;
         case 5:
+            Relatorios();
+            break;
+        case 0:
             Console.WriteLine("Saindo");
             break;
         default:
             Console.WriteLine("Opção inválida!");
             break;
     }
-} while (menuprincipal != 5);
+} while (menuprincipal != 0);
