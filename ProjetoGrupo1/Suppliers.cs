@@ -40,9 +40,13 @@ public class Suppliers
     public Suppliers(string cnpj, string razaoSocial, string pais, DateOnly dataAbertura,
                         DateOnly ultimaFornecimento, DateOnly dataCadastro, char situacao)
     {
+        CNPJ = cnpj;
         RazaoSocial = razaoSocial;
         Pais = pais;
         DataAbertura = dataAbertura;
+        UltimoFornecimento = ultimaFornecimento;
+        DataCadastro = dataCadastro;
+        Situacao = situacao;
     }
 
     public void SetSituacao(char situacao)
