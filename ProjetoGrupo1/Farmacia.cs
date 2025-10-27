@@ -1592,9 +1592,9 @@ namespace ProjetoGrupo1
             while (true)
             {
                 Console.WriteLine("Digite o CNPJ do fornecedor: ");
-                fornecedorCnpj = Console.ReadLine();
+                fornecedorCnpj = Console.ReadLine()!;
                 string formatadoCnpj = fornecedorCnpj.ToString().PadLeft(14);
-                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj)!;
                 if (fornecedor == null)
                 {
                     Console.WriteLine("Fornecedor não encontrado. Tente novamente.");
@@ -1659,18 +1659,19 @@ namespace ProjetoGrupo1
 
                 valorTotal += totalItem;
 
-                this.ListaPurchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario));
-                purchases.purchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario));
+                this.ListaPurchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario, totalItem));
+                purchases.purchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario, totalItem));
                 purchases.setValorTotal();
                 contadorItens++;
 
-                if (contadorItens <= 3)
+                if (contadorItens < 3)
                 {
                     Console.WriteLine("Deseja adicionar mais um item? (S/N)");
                     var resposta = Console.ReadLine();
                     if (resposta == null || !resposta.Trim().ToUpper().StartsWith("S"))
                         break;
                 }
+                AlterarSuppliersUltimoFornecimento(data, fornecedorCnpj);
                 AlterarIngredientUltimaCompra(data, ingredienteId);
             }
             Console.WriteLine($"Valor total dos itens: {valorTotal:F2}");
@@ -1742,14 +1743,14 @@ namespace ProjetoGrupo1
             int quantidade;
             double valorUnitario;
             int auxItems = 0;
-            PurchaseItem purchaseItem;
+            PurchaseItem purchaseItem = null;
             Purchases purchases;
-            do
+            while (purchaseItem == null);      
             {
                 Console.WriteLine("O Id da compra está incorreto");
                 var aux = int.Parse(Console.ReadLine()!);
                 purchaseItem = RetornarPurchaseItem(aux);
-            } while (purchaseItem == null);
+            } 
 
             purchases = RetornarPurchases(IdCompra);
 

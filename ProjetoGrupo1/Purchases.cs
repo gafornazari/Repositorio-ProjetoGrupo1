@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,14 +58,14 @@ namespace ProjetoGrupo1
                 {
                     if (line.Length == 37)//trocar o 0 pela quantidade de carcateres da linha
                     {
-                            var id = line.Substring(0, 5);
-                            var date = line.Substring(5, 10);
-                            var suplierCNPJ = line.Substring(14, 14);
-                            var TotalValue = line.Substring(29, 8);
-                            Purchases purchase = new Purchases(int.Parse(id),
-                                DateOnly.Parse(date), suplierCNPJ,
-                                double.Parse(TotalValue));
-                            purchases.Add(purchase);
+                        var id = line.Substring(0, 5);
+                        DateOnly dataCompra = DateOnly.ParseExact(line.Substring(5, 10), "ddMMyyyy");
+                        var suplierCNPJ = line.Substring(14, 14);
+                        double TotalValue = double.Parse(line.Substring(29, 8).Trim(), CultureInfo.InvariantCulture);
+                        Purchases purchase = new Purchases(int.Parse(id),
+                            dataCompra, suplierCNPJ,
+                            TotalValue);
+                        purchases.Add(purchase);
                     }
                 }
                 return purchases;

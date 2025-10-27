@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +14,13 @@ namespace ProjetoGrupo1
         public double ValorUnitario { get; private set; }
         public double TotalItem { get; private set; }
         public PurchaseItem(int idCompra, string ingrediente, int quantidade,
-            double valorUnitario)
+            double valorUnitario, double totalItem)
         {
             IdCompra = idCompra;
             Ingrediente = ingrediente;
             Quantidade = quantidade;
             ValorUnitario = valorUnitario;
+            TotalItem = totalItem;
             CalcularTotalItem();
         }
         public void setValorUnitario(double valorUnitario)
@@ -63,11 +65,11 @@ namespace ProjetoGrupo1
                         var idCompra = line.Substring(0, 5);
                         var ingredient = line.Substring(5, 6);
                         var quantity = line.Substring(11, 4);
-                        var ValorUnitario = line.Substring(15, 6);
-                        var TotalItem = line.Substring(21, 10);
+                        double ValorUnitario = double.Parse(line.Substring(15, 6).Trim(), CultureInfo.InvariantCulture);
+                        double TotalItem = double.Parse(line.Substring(21, 10).Trim(), CultureInfo.InvariantCulture);
                         PurchaseItem purchaseItem = new PurchaseItem(int.Parse(idCompra),
                             ingredient, int.Parse(quantity),
-                            double.Parse(ValorUnitario));
+                            ValorUnitario, TotalItem);
                         purchaseItens.Add(purchaseItem);
                     }
                 }
