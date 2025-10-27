@@ -70,7 +70,7 @@ public class Suppliers
 
     public override string ToString()
     {
-        return $"CNPJ: {FormatCnpj(this.CNPJ)}\n Razão social: {this.RazaoSocial}\n País: {this.Pais}\n " +
+        return $"CNPJ: {this.CNPJ}\n Razão social: {this.RazaoSocial}\n País: {this.Pais}\n " +
             $"Data Abertura: {this.DataAbertura}\n Ultimo fornecimento: {this.UltimoFornecimento}\n " +
             $"Data Cadastro: {this.DataCadastro}\n Situação: {this.Situacao}";
     }
@@ -92,10 +92,6 @@ public class Suppliers
         return dataFormatada;
     }
 
-    public string FormatCnpj(string cnpj)
-    {
-        return CNPJ.Replace(".", "").Replace("/", "").Replace("-", "").Trim();
-    }
 
     public static List<Suppliers> LerArquivoSuppliers(string diretorio, string nomeArquivo)
     {
