@@ -1980,7 +1980,7 @@ namespace ProjetoGrupo1
 
 
         //Leandro--------------------------------------------------------------------------------------------
-        public void IncluirSales()
+        public void IncluirSales()    // Registra uma venda se o cliente estiver cadastrado e for ativo
         {
 
             Console.WriteLine("Digite o CPF do cliente: ");
@@ -2021,7 +2021,7 @@ namespace ProjetoGrupo1
                 }
             }
         }
-        public Sales RetornarSales(int id)
+        public Sales RetornarSales(int id) //Retorna Venda
         {
             foreach (var sales in this.ListaSales)
             {
@@ -2032,7 +2032,7 @@ namespace ProjetoGrupo1
             }
             return null;
         }
-        public void LocalizarSales()
+        public void LocalizarSales()  //Verifica a lista de vendas
         {
             Console.WriteLine("Digite o id da venda: ");
             int id = int.Parse(Console.ReadLine()!);
@@ -2051,7 +2051,7 @@ namespace ProjetoGrupo1
                 Console.ReadKey();
             }
         }
-        public void ImprimirListaSales()
+        public void ImprimirListaSales()  // Imprime a lista de vendas
         {
             if (ListaSales == null || !ListaSales.Any())
                 Console.WriteLine("A lista está vazia!");
@@ -2079,7 +2079,7 @@ namespace ProjetoGrupo1
             }
             return false;
         }
-        public void IncluirSaleItems()
+        public void IncluirSaleItems() //Registra um item
         {
             int aux = 1;
             int id = 0;
@@ -2201,7 +2201,7 @@ namespace ProjetoGrupo1
 
 
 
-        public void ImprimirListaSalesItems()
+        public void ImprimirListaSalesItems() //Imprime lista de itens 
         {
             if (ListaIngredients == null || !ListaIngredients.Any())
                 Console.WriteLine("A lista está vazia!");
@@ -2221,7 +2221,7 @@ namespace ProjetoGrupo1
 
 
 
-        public void AlterarSalesItems()
+        public void AlterarSalesItems() //Altera os dados
         {
             int id = 0;
             int aux = 0;
@@ -2308,10 +2308,10 @@ namespace ProjetoGrupo1
             }
             return null;
         }
-        public void LocalizarSalesItems()
+        public void LocalizarSalesItems() //Busca de itens 
         {
             int id = 0;
-            int aux = 0;
+            int aux = 1;
             do
             {
                 Console.Clear();
@@ -2320,14 +2320,16 @@ namespace ProjetoGrupo1
                 if (idItem.Length == 5 && idItem.All(char.IsDigit))
                 {
                     id = int.Parse(idItem);
-                    aux = 1;
+                    aux = 2;
                 }
                 else
                 {
                     Console.WriteLine("Id no formato inválido!");
-                    Console.ReadKey();
+                    Console.WriteLine("Digite: 1- Tentar Novamente!");
+                    Console.WriteLine("Digite: 2- Sair do Menu!");
+                    aux = int.Parse(Console.ReadLine());
                 }
-            } while (aux == 0);
+            } while (aux == 1);
             var salesItems = RetornaSalesItems(id);
             if (salesItems is null)
             {
@@ -2342,7 +2344,6 @@ namespace ProjetoGrupo1
                 Console.ReadKey();
             }
         }
-
         public void RelatorioVendasPorPeriodo()
         {
             DateOnly dataInicio, dataFim;
