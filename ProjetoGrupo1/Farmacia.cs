@@ -945,6 +945,16 @@ namespace ProjetoGrupo1
             }
         }
 
+        public void AlterarMedicineUltimaVenda(DateOnly ultimavenda, string cdb)
+        {
+            foreach (var med in ListaMedicines)
+            {
+                if (med.CDB == cdb)
+                {
+                    med.SetUltimaVenda(ultimavenda);
+                }
+            }
+        }
 
         public void ImprimirMedicines()
         {
@@ -2112,6 +2122,8 @@ namespace ProjetoGrupo1
                     sales.IncluirListaSalesItems(salesItems);
                     Console.Clear();
                     Console.WriteLine("Item de venda inserido com sucesso!");
+                    DateOnly data = DateOnly.FromDateTime(DateTime.Now);
+                    AlterarMedicineUltimaVenda(data, cdb);
                     Console.ReadKey();
                 }
                 else
@@ -2342,34 +2354,38 @@ namespace ProjetoGrupo1
 
         public void RelatorioMedicamentosMaisVendidos()
         {
-            if (this.ListaSales.Count == 0)
+            if (this.ListaSales == null || this.ListaSales.Count == 0)
             {
                 Console.Clear();
                 Console.WriteLine("Nenhuma venda registrada.");
                 Console.ReadKey();
+                return;
             }
-            else
+
+
+            var todosItens = this.ListaSales.Where(venda => venda?.ListaSalesItems != null)
+                .SelectMany(venda => venda.ListaSalesItems).ToList();
+
+            var top10 = todosItens.GroupBy(item => new { item.Medicamento })
+                .Select(g => new { Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade) })
+                .OrderByDescending(x => x.TotalVendido).Take(10).ToList();
+
+            Console.Clear();
+            Console.WriteLine("###### TOP 10 MEDICAMENTOS MAIS VENDIDOS ######");
+            Console.WriteLine($"Gerado em: {DateTime.Now}");
+            Console.WriteLine("--------------------------------------");
+
+            int pos = 1;
+            foreach (var item in top10)
             {
-                var todosItens = this.ListaSales.SelectMany(venda => venda.ListaSalesItems).ToList();
-                var top10 = todosItens.GroupBy(item => new { item.Medicamento }).Select(g => new { Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade) })
-                    .OrderByDescending(x => x.TotalVendido).Take(10).ToList();
-
-                Console.Clear();
-                Console.WriteLine("###### TOP 10 MEDICAMENTOS MAIS VENDIDOS ######");
-                Console.WriteLine($"Gerado em: {DateTime.Now}");
-                Console.WriteLine("--------------------------------------");
-
-                int pos = 1;
-                foreach (var item in top10)
-                {
-                    Console.WriteLine($"{pos,2}. Código de Barra: {item.Medicamento,-6} | Quantidade Vendida: {item.TotalVendido}");
-                    pos++;
-                }
-
-                Console.WriteLine("--------------------------------------\n");
-                Console.ReadKey();
-
+                Console.WriteLine($"{pos,2}. Código de Barra: {item.Medicamento,-6} | Quantidade Vendida: {item.TotalVendido}");
+                pos++;
             }
+
+            Console.WriteLine("--------------------------------------\n");
+            Console.ReadKey();
+
+
 
 
         }
