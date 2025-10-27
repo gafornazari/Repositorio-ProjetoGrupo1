@@ -13,16 +13,32 @@ namespace ProjetoGrupo1
         public int Quantidade { get; private set; }
         public double ValorUnitario { get; private set; }
         public double TotalItem { get; private set; }
-        public PurchaseItem(int idCompra, string ingrediente, int quantidade,
+        public PurchaseItem(string ingrediente, int quantidade,
             double valorUnitario, double totalItem)
         {
-            IdCompra = idCompra;
+            SetId(new Random().Next(10000, 100000));
             Ingrediente = ingrediente;
             Quantidade = quantidade;
             ValorUnitario = valorUnitario;
             TotalItem = totalItem;
             CalcularTotalItem();
         }
+
+        private void SetId(int v)
+        {
+            this.IdCompra = v;
+        }
+
+        public PurchaseItem(int id, string ingrediente, int quantidade,
+           double valorUnitario, double totalItem)
+        {
+            IdCompra = id;
+            Ingrediente = ingrediente;
+            Quantidade = quantidade;
+            ValorUnitario = valorUnitario;
+            TotalItem = totalItem;
+        }
+
         public void setValorUnitario(double valorUnitario)
         {
             this.ValorUnitario = valorUnitario;

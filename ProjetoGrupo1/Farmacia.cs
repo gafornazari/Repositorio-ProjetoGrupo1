@@ -1648,15 +1648,7 @@ namespace ProjetoGrupo1
         {
 
             double valorTotal = 0;
-
-            Console.WriteLine("Adicione o Id da compra(5 números): ");
-            if (!int.TryParse(Console.ReadLine(), out int id))
-            {
-                Console.WriteLine("Id inválido. Operação cancelada.");
-                return;
-            }
-            string idFormatado = id.ToString().PadLeft(5, '0');
-
+            int id=0, aux;
             Console.WriteLine($"Adicione a data da compra (ddMMyyyy) ou vazio para hoje " +
                 $"({DateOnly.FromDateTime(DateTime.Now):ddMMyyyy}):");
             string inputData = Console.ReadLine()!;
@@ -1674,8 +1666,8 @@ namespace ProjetoGrupo1
             string cnpj = Console.ReadLine()!;
             cnpj = Regex.Replace(cnpj, @"\D", "");
             Suppliers suppliers = LocalizarFornecedor(cnpj);
-            int aux = 1;
-            while (aux == 1)
+            int aux2 = 1;
+            while (aux2 == 1)
             {
                 if (suppliers == null)
                 {
@@ -1683,14 +1675,14 @@ namespace ProjetoGrupo1
                     Console.WriteLine("Fornecedor não Encontrado!");
                     Console.WriteLine("Adicione: 1- Tentar Novamente! ");
                     Console.WriteLine("Adicione: 2- Voltar no Menu!");
-                    aux = int.Parse(Console.ReadLine());
-                    if (aux == 1)
+                    aux2 = int.Parse(Console.ReadLine());
+                    if (aux2 == 1)
                     {
                         Console.WriteLine("Adicione o CNPJ do fornecedor: ");
                         cnpj = Console.ReadLine()!;
                         
                     }
-                    else if (aux == 2)
+                    else if (aux2 == 2)
                             {
                         return;
                     }
@@ -1699,27 +1691,19 @@ namespace ProjetoGrupo1
                 {
                     Console.WriteLine("Fornecedor restrito!");
                     Console.WriteLine("Não é possivel finalizar a compra!");
-                    aux = 2;
+                    aux2 = 2;
                     return;
                 }
-                aux = 2;
+                aux2 = 2;
                 continue;
 
             }
 
-            Purchases purchases = new Purchases(id, data, cnpj, valorTotal);
+            Purchases purchases = new Purchases(data, cnpj, valorTotal);
 
             int contadorItens = 0;
             while (contadorItens < 3)
             {
-                Console.WriteLine("Adicione o Id do item comprado(5 números):");
-                if (!int.TryParse(Console.ReadLine(), out int idCompra))
-                {
-                    Console.WriteLine("Id do item inválido. Operação cancelada.");
-                    return;
-                }
-                string idCompraFormatado = idCompra.ToString().PadLeft(5, '0');
-
                 Console.WriteLine("Adicione o Id do princípio ativo" +
                     "(Lembrete do formato obrigatório: AI + 4 dígitos, exemplo: AI0000):");
                 string ingredienteId = Console.ReadLine()!;
@@ -1758,7 +1742,7 @@ namespace ProjetoGrupo1
 
                 valorTotal += totalItem;
 
-                var item = new PurchaseItem(idCompra, ingredient.Id, quantidade,
+                var item = new PurchaseItem(ingredient.Id, quantidade,
                     valorUnitario, totalItem);
                 ListaPurchaseItems.Add(item);
                 purchases.purchaseItems.Add(item);

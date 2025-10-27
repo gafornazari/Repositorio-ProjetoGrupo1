@@ -13,16 +13,30 @@ namespace ProjetoGrupo1
         public string Fornecedor { get; private set; }
         public double ValorTotal { get; private set; }
         public List<PurchaseItem> purchaseItems;
-        public Purchases(int id, DateOnly dataCompra,
+        public Purchases(DateOnly dataCompra,
             string fornecedor, double valorTotal)
         {
-            this.Id = id;
+            SetId(new Random().Next(10000, 100000));
             this.DataCompra = dataCompra;
             this.Fornecedor = fornecedor;
             this.ValorTotal = valorTotal;
             this.purchaseItems = new List<PurchaseItem>();
             CalcularTotal();
         }
+
+        public Purchases(int id, DateOnly dataCompra, string fornecedor, double valorTotal)
+        {
+            this.Id = id;
+            this.DataCompra = dataCompra;
+            this.Fornecedor = fornecedor;
+            this.ValorTotal = valorTotal;
+        }
+
+        public void SetId(int id)
+        {
+            this.Id = id;
+        }
+
         public string DataFormatada()
         {
             return DataCompra.ToString("ddMMyyyy");
@@ -62,7 +76,7 @@ namespace ProjetoGrupo1
                         var id = line.Substring(0, 5);
                         DateOnly dataCompra = DateOnly.ParseExact
                             (line.Substring(5, 10), "ddMMyyyy");
-                        var suplierCNPJ = line.Substring(14, 14);
+                        var suplierCNPJ = line.Substring(15, 14);
                         double TotalValue = double.Parse(line.Substring(29, 8).Trim(),
                             CultureInfo.InvariantCulture);
                         Purchases purchase = new Purchases(int.Parse(id),
