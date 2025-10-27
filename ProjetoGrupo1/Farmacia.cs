@@ -1704,6 +1704,14 @@ namespace ProjetoGrupo1
             int contadorItens = 0;
             while (contadorItens < 3)
             {
+                Console.WriteLine("Adicione o Id do item comprado(5 números):");
+                if (!int.TryParse(Console.ReadLine(), out int idCompra))
+                {
+                    Console.WriteLine("Id do item inválido. Operação cancelada.");
+                    return;
+                }
+                string idCompraFormatado = idCompra.ToString().PadLeft(5, '0');
+
                 Console.WriteLine("Adicione o Id do princípio ativo" +
                     "(Lembrete do formato obrigatório: AI + 4 dígitos, exemplo: AI0000):");
                 string ingredienteId = Console.ReadLine()!;
