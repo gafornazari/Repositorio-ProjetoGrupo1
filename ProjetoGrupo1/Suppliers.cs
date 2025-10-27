@@ -135,7 +135,7 @@ public class Suppliers
 
     public string ToFile()
     {
-        return $"{FormatCnpj(this.CNPJ)}{FormatString(this.RazaoSocial)}{FormatStringPais(this.Pais)}{FormatarData(this.DataAbertura)}{FormatarData(this.UltimoFornecimento)}{FormatarData(this.DataCadastro)}{this.Situacao}";
+        return $"{this.CNPJ}{FormatString(this.RazaoSocial)}{FormatStringPais(this.Pais)}{FormatarData(this.DataAbertura)}{FormatarData(this.UltimoFornecimento)}{FormatarData(this.DataCadastro)}{this.Situacao}";
     }
 
 
@@ -174,7 +174,7 @@ public class Suppliers
     public string ToFileRest()
     {
 
-        return $"{FormatCnpj(this.CNPJ)}";
+        return $"{this.CNPJ}";
     }
 
 }
