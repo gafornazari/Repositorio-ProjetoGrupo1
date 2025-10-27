@@ -305,9 +305,9 @@ namespace ProjetoGrupo1
 
         public bool ExisteProduceItem(int id)
         {
-            foreach(var item in this.ListaProducesItems)
+            foreach (var item in this.ListaProducesItems)
             {
-                if(item.IdProduceItem == id)
+                if (item.IdProduceItem == id)
                 {
                     return true;
                 }
@@ -619,9 +619,9 @@ namespace ProjetoGrupo1
                     string prefixo = id.Substring(2);
                     if (BuscarIngridientId(id))
                         Console.WriteLine("Erro! Esse Id já é cadastrado!");
-                    else if ((!sufixo.Equals("AI")) )
+                    else if ((!sufixo.Equals("AI")))
                         Console.WriteLine("Erro! O formato do Id está incorreto! AI necessita ser maiúsculo!");
-                    else if((!prefixo.All(c => char.IsDigit(c))))
+                    else if ((!prefixo.All(c => char.IsDigit(c))))
                         Console.WriteLine("Erro! O formato do Id está incorreto!\nEle precisa ser composto por AI + 4 dígitos, exemplo: AI0000");
                     else
                     {
@@ -1309,7 +1309,7 @@ namespace ProjetoGrupo1
 
             if (fornecedor == null)
             {
-       
+
                 return null;
             }
 
@@ -1457,8 +1457,8 @@ namespace ProjetoGrupo1
 
         public Customer LocalizarClienteRestrito(string cpf)
         {
-            
-        
+
+
             var cliente = ListaRestrictedCustomers.Find(c => c.CPF == cpf);
 
             if (cliente == null)
@@ -1470,7 +1470,7 @@ namespace ProjetoGrupo1
             return cliente;
 
         }
-        
+
         //Alterar clientes restritos
         public void AlterarClientesRestritos()
         {
@@ -1719,7 +1719,11 @@ namespace ProjetoGrupo1
                     {
                         Console.WriteLine("Digite o CNPJ do fornecedor: ");
                         cnpj = Console.ReadLine()!;
-                        
+
+                    }
+                    else if (aux == 2)
+                            {
+                        return;
                     }
                 }
                 else if (LocalizarFornecedoresRestritos(cnpj))
@@ -1731,7 +1735,7 @@ namespace ProjetoGrupo1
                 }
                 aux = 2;
                 continue;
-                
+
             }
 
             Purchases purchases = new Purchases(id, data, cnpj, valorTotal);
@@ -1748,7 +1752,7 @@ namespace ProjetoGrupo1
 
                 Console.WriteLine("Digite o Id do princípio ativo:");
                 string ingredienteId = Console.ReadLine()!;
-                Ingredient ingredient = ListaIngredients.FirstOrDefault(i => i.Id == 
+                Ingredient ingredient = ListaIngredients.FirstOrDefault(i => i.Id ==
                 ingredienteId && i.Situacao == 'A');
                 if (ingredient == null)
                 {
@@ -1757,7 +1761,7 @@ namespace ProjetoGrupo1
                 }
 
                 Console.WriteLine("Digite a quantidade em gramas do item (0 a 10000):");
-                if (!int.TryParse(Console.ReadLine(), out int quantidade) || quantidade < 0 
+                if (!int.TryParse(Console.ReadLine(), out int quantidade) || quantidade < 0
                     || quantidade > 10000)
                 {
                     Console.WriteLine("Quantidade inválida. Operação cancelada.");
@@ -1765,7 +1769,7 @@ namespace ProjetoGrupo1
                 }
 
                 Console.WriteLine("Digite o valor unitário do item (0 a 1000):");
-                if (!double.TryParse(Console.ReadLine(), out double valorUnitario) 
+                if (!double.TryParse(Console.ReadLine(), out double valorUnitario)
                     || valorUnitario < 0 || valorUnitario > 1000)
                 {
                     Console.WriteLine("Valor unitário inválido. Operação cancelada.");
@@ -1783,7 +1787,7 @@ namespace ProjetoGrupo1
 
                 valorTotal += totalItem;
 
-                var item = new PurchaseItem(idCompra, ingredient.Id, quantidade, 
+                var item = new PurchaseItem(idCompra, ingredient.Id, quantidade,
                     valorUnitario, totalItem);
                 ListaPurchaseItems.Add(item);
                 purchases.purchaseItems.Add(item);
@@ -1881,7 +1885,7 @@ namespace ProjetoGrupo1
             if (!int.TryParse(Console.ReadLine(), out int auxId))
             {
                 Console.WriteLine("Id inválido. Operação cancelada.");
-                return; 
+                return;
             }
 
             purchaseItem = RetornarPurchaseItem(auxId);
@@ -2019,7 +2023,7 @@ namespace ProjetoGrupo1
         //Leandro--------------------------------------------------------------------------------------------
         public void IncluirSales()
         {
-            
+
             Console.WriteLine("Digite o CPF do cliente: ");
             string cpf = Console.ReadLine()!;
             Customer customer = LocalizarCliente(cpf);
@@ -2109,7 +2113,7 @@ namespace ProjetoGrupo1
         {
             foreach (var producao in this.ListaProduces)
             {
-                if(producao.CdbMedicamento == cdb)
+                if (producao.CdbMedicamento == cdb)
                 {
                     return true;
                 }
@@ -2210,7 +2214,7 @@ namespace ProjetoGrupo1
                                 Console.ReadKey();
                             }
                         } while (aux == 0);
-                       
+
                         var salesItems = new SalesItems(id, cdb, quantidade, medicine.ValorVenda);
                         this.ListaSalesItems.Add(salesItems);
                         sales.IncluirListaSalesItems(salesItems);
@@ -2225,7 +2229,7 @@ namespace ProjetoGrupo1
                         Console.ReadKey();
 
                     }
-                    
+
                 }
                 else
                 {
