@@ -60,7 +60,10 @@ namespace ProjetoGrupo1
                 this.ValorTotal += item.TotalItem;
             }
         }
-        public static List<Purchases> LerArquivoPurchases(string diretorio, 
+
+
+
+        public static List<Purchases> LerArquivoPurchases(string diretorio,
             string nomeArquivo)
         {
             var fullPath = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
@@ -71,19 +74,19 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = purchaseSR.ReadLine()) != null)
                 {
-                    if (line.Length == 37)
+                    if (line.Length == 35)
                     {
                         var id = line.Substring(0, 5);
                         DateOnly dataCompra = DateOnly.ParseExact
-                            (line.Substring(5, 10), "ddMMyyyy");
-                        var suplierCNPJ = line.Substring(15, 14);
-                        double TotalValue = double.Parse(line.Substring(29, 8).Trim(),
-                            CultureInfo.InvariantCulture);
+                            (line.Substring(5, 8), "ddMMyyyy");
+                        var suplierCNPJ = line.Substring(13, 14);
+                        double TotalValue = double.Parse(line.Substring(27, 8));
                         Purchases purchase = new Purchases(int.Parse(id),
                             dataCompra, suplierCNPJ,
                             TotalValue);
                         purchases.Add(purchase);
                     }
+
                 }
                 return purchases;
             }

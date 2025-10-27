@@ -65,7 +65,24 @@ namespace ProjetoGrupo1
                 $"Total do Item: {TotalItem}\n";
         }
 
-        public static List<PurchaseItem> LerArquivoPurchasesItem(string 
+        private string FormatarInt()
+        {
+            string resultado = this.Quantidade.ToString().PadLeft(4, '0');
+            return resultado;
+        }
+
+        private string FormatarDoubleTotal(double valor)
+        {
+            return valor.ToString("00000000.00", CultureInfo.InvariantCulture);
+        }
+
+        private string FormatarDoubleUnitario(double valor)
+        {
+            return valor.ToString("000.00", CultureInfo.InvariantCulture);
+        }
+
+
+        public static List<PurchaseItem> LerArquivoPurchasesItem(string
             diretorio, string nomeArquivo)
         {
             var fullPath = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
@@ -76,16 +93,13 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = purchaseItensSR.ReadLine()) != null)
                 {
-                    if (line.Length == 31)
+                    if (line.Length == 32)
                     {
-
                         var idCompra = line.Substring(0, 5);
                         var ingredient = line.Substring(5, 6);
                         var quantity = line.Substring(11, 4);
-                        double ValorUnitario = double.Parse(line.Substring(15, 6).
-                            Trim(), CultureInfo.InvariantCulture);
-                        double TotalItem = double.Parse(line.Substring(21, 10).Trim(), 
-                            CultureInfo.InvariantCulture);
+                        double ValorUnitario = double.Parse(line.Substring(15, 6));
+                        double TotalItem = double.Parse(line.Substring(21, 11));
                         PurchaseItem purchaseItem = new PurchaseItem(int.Parse(idCompra),
                             ingredient, int.Parse(quantity),
                             ValorUnitario, TotalItem);
@@ -96,7 +110,7 @@ namespace ProjetoGrupo1
             }
         }
 
-        public static void GravarPurchaseItem(List<PurchaseItem> lista, 
+        public static void GravarPurchaseItem(List<PurchaseItem> lista,
             string fullPath)
         {
             StreamWriter writer = new StreamWriter(fullPath);
@@ -108,19 +122,10 @@ namespace ProjetoGrupo1
                 }
             }
         }
-        private string FormatarDoubleTotal(double valor)
-        {
-            return valor.ToString("00000000.00", CultureInfo.InvariantCulture);
-        }
-
-        private string FormatarDoubleUnitario(double valor)
-        {
-            return valor.ToString("000.00", CultureInfo.InvariantCulture);
-        }
 
         public string ToFile()
         {
-            return $"{IdCompra}{Ingrediente}{Quantidade}" +
+            return $"{IdCompra}{Ingrediente}{FormatarInt()}" +
                 $"{FormatarDoubleUnitario(ValorUnitario)}{FormatarDoubleTotal(TotalItem)}";
         }
     }

@@ -1704,14 +1704,6 @@ namespace ProjetoGrupo1
             int contadorItens = 0;
             while (contadorItens < 3)
             {
-                Console.WriteLine("Adicione o Id do item comprado(5 números):");
-                if (!int.TryParse(Console.ReadLine(), out int idCompra))
-                {
-                    Console.WriteLine("Id do item inválido. Operação cancelada.");
-                    return;
-                }
-                string idCompraFormatado = idCompra.ToString().PadLeft(5, '0');
-
                 Console.WriteLine("Adicione o Id do princípio ativo" +
                     "(Lembrete do formato obrigatório: AI + 4 dígitos, exemplo: AI0000):");
                 string ingredienteId = Console.ReadLine()!;
@@ -1723,14 +1715,16 @@ namespace ProjetoGrupo1
                     return;
                 }
 
+
                 Console.WriteLine("Digite a quantidade em gramas do item (0 a 10000):");
                 if (!int.TryParse(Console.ReadLine(), out int quantidade) || quantidade < 0 
                     || quantidade > 10000)
                 {
                     Console.WriteLine("Quantidade inválida. Operação cancelada.");
+
                     return;
                 }
-
+                quantidade.ToString().PadLeft(4, '0');
                 Console.WriteLine("Digite o valor unitário do item (0 a 1000):");
                 if (!double.TryParse(Console.ReadLine(), out double valorUnitario) 
                     || valorUnitario < 0 || valorUnitario > 1000)
@@ -1745,10 +1739,12 @@ namespace ProjetoGrupo1
                     Console.WriteLine("Valor total do item inválido. Operação cancelada.");
                     return;
                 }
-
+                valorUnitario.ToString().PadLeft(6, '0');
+                totalItem.ToString().PadLeft(11, '0');
                 Console.WriteLine($"Total do item: {totalItem:F2}");
 
                 valorTotal += totalItem;
+                valorTotal.ToString().PadLeft(11, '0');
 
                 var item = new PurchaseItem(ingredient.Id, quantidade,
                     valorUnitario, totalItem);
