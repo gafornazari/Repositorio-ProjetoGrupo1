@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -103,9 +104,24 @@ namespace ProjetoGrupo1
             }
         }
 
+        private string FormatarDecimalUnitario(decimal valor)
+        {
+            return valor.ToString("0000.00", CultureInfo.InvariantCulture);
+        }
+
+        private string FormatarDecimalTotal(decimal valor)
+        {
+            return valor.ToString("00000000.00", CultureInfo.InvariantCulture);
+        }
+
+        private string FormatarDecimalQuantidade(int valor)
+        {
+            return valor.ToString("000", CultureInfo.InvariantCulture);
+        }
+
         public string ToFile()
         {
-            return $"{this.IdVenda}{this.Medicamento}{this.Quantidade}{this.ValorUnitario}{TotalItem}";
+            return $"{this.IdVenda}{this.Medicamento}{FormatarDecimalQuantidade(this.Quantidade)}{FormatarDecimalUnitario(this.ValorUnitario)}{FormatarDecimalTotal(TotalItem)}";
         }
 
 

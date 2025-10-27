@@ -92,14 +92,20 @@ namespace ProjetoGrupo1
                 }
             }
         }
-        private string FormatarDouble(double valor)
+        private string FormatarDoubleTotal(double valor)
         {
-            return valor.ToString("0000.00", CultureInfo.InvariantCulture);
+            return valor.ToString("00000000.00", CultureInfo.InvariantCulture);
         }
+
+        private string FormatarDoubleUnitario(double valor)
+        {
+            return valor.ToString("000.00", CultureInfo.InvariantCulture);
+        }
+
         public string ToFile()
         {
             return $"{IdCompra}{Ingrediente}{Quantidade}" +
-                $"{FormatarDouble(ValorUnitario)}{FormatarDouble(TotalItem)}";
+                $"{FormatarDoubleUnitario(ValorUnitario)}{FormatarDoubleTotal(TotalItem)}";
         }
     }
 }
