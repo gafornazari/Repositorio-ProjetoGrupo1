@@ -618,14 +618,12 @@ namespace ProjetoGrupo1
                     string prefixo = id.Substring(2);
                     if (BuscarIngridientId(id))
                         Console.WriteLine("Erro! Esse Id já é cadastrado!");
-                    else if ((!sufixo.Equals("AI", StringComparison.OrdinalIgnoreCase)) || (!prefixo.All(c => char.IsDigit(c))))
+                    else if ((!sufixo.Equals("AI")) )
+                        Console.WriteLine("Erro! O formato do Id está incorreto! AI necessita ser maiúsculo!");
+                    else if((!prefixo.All(c => char.IsDigit(c))))
                         Console.WriteLine("Erro! O formato do Id está incorreto!\nEle precisa ser composto por AI + 4 dígitos, exemplo: AI0000");
                     else
                     {
-                        if(sufixo == "ai")
-                        {
-                            sufixo = "AI";
-                        }
                         auxId = 1;
                     }
                 }
