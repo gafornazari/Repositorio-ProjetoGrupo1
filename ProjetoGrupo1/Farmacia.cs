@@ -1132,7 +1132,7 @@ namespace ProjetoGrupo1
                     char novaSituacao = char.Parse(Console.ReadLine());
 
                     cliente.SetSituacao(novaSituacao);
-                    Console.WriteLine("Nova situação" + novaSituacao);
+                    Console.WriteLine("Nova situação - " + novaSituacao);
                 }
                 else
                 {
@@ -1275,7 +1275,7 @@ namespace ProjetoGrupo1
 
             if (fornecedor == null)
             {
-                Console.WriteLine("Empresa não encontrada.");
+       
                 return null;
             }
 
@@ -1343,7 +1343,7 @@ namespace ProjetoGrupo1
                     char novaSituacao = char.Parse(Console.ReadLine());
 
                     fornecedor.SetSituacao(novaSituacao);
-                    Console.WriteLine("Nova situação" + novaSituacao);
+                    Console.WriteLine("Nova situação - " + novaSituacao);
                 }
                 else
                 {
@@ -1420,6 +1420,23 @@ namespace ProjetoGrupo1
             return false;
 
         }
+
+        public Customer LocalizarClienteRestrito(string cpf)
+        {
+            
+        
+            var cliente = ListaRestrictedCustomers.Find(c => c.CPF == cpf);
+
+            if (cliente == null)
+            {
+
+                return null;
+            }
+
+            return cliente;
+
+        }
+        
         //Alterar clientes restritos
         public void AlterarClientesRestritos()
         {
@@ -1530,6 +1547,20 @@ namespace ProjetoGrupo1
 
             }
             return false;
+        }
+
+        public Suppliers LocalizarFornecedorRestrito(string cnpj)
+        {
+            var fornecedor = ListaRestrictedSuppliers.Find(f => f.CNPJ == cnpj);
+
+            if (fornecedor == null)
+            {
+
+                return null;
+            }
+
+            return fornecedor;
+
         }
         //Alterar informações fornecedores restritos
         public void AlterarFornecedoresRestritos()
