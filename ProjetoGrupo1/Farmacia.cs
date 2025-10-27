@@ -1585,7 +1585,7 @@ namespace ProjetoGrupo1
             int id;
             while (true)
             {
-                Console.WriteLine("Digite o Id da compra: ");
+                Console.WriteLine("Digite o Id da compra(máximo de 5 números): ");
                 if (int.TryParse(Console.ReadLine(), out id))
                     break;
                 string formatadoId = id.ToString().PadLeft(5, '0');
@@ -1614,33 +1614,39 @@ namespace ProjetoGrupo1
             while (true)
             {
                 Console.WriteLine("Digite o CNPJ do fornecedor: ");
-                fornecedorCnpj = Console.ReadLine()!;
-                string formatadoCnpj = fornecedorCnpj.PadLeft(14);
-                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj)!;
+                fornecedorCnpj = Console.ReadLine()!.Trim();
+
+                if (fornecedorCnpj.Length < 14)
+                    fornecedorCnpj = fornecedorCnpj.PadLeft(14, '0');
+
+                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
 
                 if (fornecedor == null)
                 {
                     Console.WriteLine("Fornecedor não encontrado. Tente novamente.");
                     continue;
                 }
-                var fornecedorBloqueado = ListaRestrictedSuppliers.FirstOrDefault(f => 
-                f.CNPJ == fornecedorCnpj);
+
+                var fornecedorBloqueado = ListaRestrictedSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
                 if (fornecedorBloqueado != null)
                 {
                     Console.WriteLine("Fornecedor está bloqueado e não pode ser selecionado.");
                     continue;
                 }
+
                 Console.WriteLine($"Fornecedor {fornecedor.RazaoSocial} selecionado com sucesso.");
                 break;
             }
-            Purchases purchases = new Purchases(id, data, fornecedor.CNPJ, valorTotal);
+
+            Purchases purchases = new Purchases(id, data, fornecedor.CNPJ, 0);
             int contadorItens = 0;
+
             while (contadorItens <= 3)
             {
                 int idCompra;
                 while (true)
                 {
-                    Console.WriteLine("Digite o Id do item comprado: ");
+                    Console.WriteLine("Digite o Id do item comprado(máximo de 5 números): ");
                     if (int.TryParse(Console.ReadLine(), out idCompra))
                         break;
                     Console.WriteLine("Id inválido. Digite um número inteiro.");
@@ -1649,7 +1655,7 @@ namespace ProjetoGrupo1
                 Ingredient ingredient = null;
                 while (true)
                 {
-                    Console.WriteLine("Digite o Id do princípio ativo: ");
+                    Console.WriteLine("Digite o Id do princípio ativo(AI+4 dígitos): ");
                     ingredienteId = Console.ReadLine()!;
                     ingredient = ListaIngredients.FirstOrDefault(i => i.Id ==
                     ingredienteId && i.Situacao == 'A')!;
@@ -1684,9 +1690,12 @@ namespace ProjetoGrupo1
 
                 valorTotal += totalItem;
 
-                this.ListaPurchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario, totalItem));
-                purchases.purchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario, totalItem));
+                var item = new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario, totalItem);
+                this.ListaPurchaseItems.Add(item);
+                purchases.purchaseItems.Add(item);
+
                 purchases.setValorTotal();
+
                 contadorItens++;
 
                 if (contadorItens < 3)
@@ -1696,9 +1705,11 @@ namespace ProjetoGrupo1
                     if (resposta == null || !resposta.Trim().ToUpper().StartsWith("S"))
                         break;
                 }
+
                 AlterarSuppliersUltimoFornecimento(data, fornecedorCnpj);
                 AlterarIngredientUltimaCompra(data, ingredienteId);
             }
+
             Console.WriteLine($"Valor total dos itens: {valorTotal:F2}");
             this.ListaPurchases.Add(purchases);
         }
@@ -1727,7 +1738,7 @@ namespace ProjetoGrupo1
         }
         public void LocalizarPurchases()
         {
-            Console.WriteLine("Digite o id da compra: ");
+            Console.WriteLine("Digite o id da compra(máximo de 5 dígitos): ");
             int id = int.Parse(Console.ReadLine()!);
             Purchases purchase = RetornarPurchases(id);
             if (purchase != null)
@@ -1746,7 +1757,7 @@ namespace ProjetoGrupo1
         }
         public void LocalizarPurchaseItem()
         {
-            Console.WriteLine("Digite o id do item da compra: ");
+            Console.WriteLine("Digite o id do item da compra(máximo de 5 dígitos): ");
             int id = int.Parse(Console.ReadLine()!);
             PurchaseItem item = RetornarPurchaseItem(id);
             if (item != null)
@@ -1789,7 +1800,8 @@ namespace ProjetoGrupo1
                     auxItems = 0;
                     do
                     {
-                        Console.WriteLine("Digite a nova quantidade em gramas do item:");
+                        Console.WriteLine("Digite a nova quantidade em gramas do item" +
+                            "(entre 0 e 10.000):");
                         quantidade = int.Parse(Console.ReadLine()!);
                         string formatadoQuantidade =
                             quantidade.ToString().PadLeft(4, '0');
@@ -1815,7 +1827,7 @@ namespace ProjetoGrupo1
                     do
                     {
                         Console.WriteLine("Digite o novo Valor Unitário" +
-                            " por gramas do item: ");
+                            " por gramas do item(entre 0 e 1.000): ");
                         valorUnitario = double.Parse(Console.ReadLine()!);
                         string formatadoValorUnitario = valorUnitario.
                             ToString("F2").PadLeft(6, '0');
@@ -1842,7 +1854,7 @@ namespace ProjetoGrupo1
                     auxItems = 0;
                     do
                     {
-                        Console.WriteLine("Digite a nova quantidade em gramas do item:");
+                        Console.WriteLine("Digite a nova quantidade em gramas do item(0 e 10.000):");
                         quantidade = int.Parse(Console.ReadLine()!);
                         string formatadoQuantidade =
                             quantidade.ToString().PadLeft(4, '0');
@@ -1854,7 +1866,7 @@ namespace ProjetoGrupo1
                             continue;
                         }
                         Console.WriteLine("Digite o novo Valor Unitário" +
-                            " por gramas do item: ");
+                            " por gramas do item(entre 0 e 1.000): ");
                         valorUnitario = double.Parse(Console.ReadLine()!);
                         string formatadoValorUnitario = valorUnitario.
                             ToString("F2").PadLeft(6, '0');
