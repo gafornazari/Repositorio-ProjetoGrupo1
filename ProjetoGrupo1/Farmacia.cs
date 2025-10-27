@@ -1915,13 +1915,54 @@ namespace ProjetoGrupo1
         //Leandro--------------------------------------------------------------------------------------------
         public void IncluirSales()
         {
+            
             Console.WriteLine("Digite o CPF do cliente: ");
             string cpf = Console.ReadLine()!;
-            Sales sal = new Sales(cpf);
-            this.ListaSales.Add(sal);
-            Console.Clear();
-            Console.WriteLine("Venda realizada com Sucesso!");
-            Console.ReadKey();
+            Customer customer = LocalizarCliente(cpf);
+
+            int aux = 1;
+
+            while (aux == 1)
+            {
+
+
+                if (customer == null)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Cliente não Encontrado!");
+
+                    Console.WriteLine("Digite: 1- Tentar Novamente! ");
+                    Console.WriteLine("Digite: 2- Voltar no Menu!");
+                    aux = int.Parse(Console.ReadLine());
+                    if(aux == 1)
+                    {
+                        Console.WriteLine("Digite o CPF do cliente: ");
+                        cpf = Console.ReadLine()!;
+                       
+                    }
+                    
+                    
+                }
+                else if (LocalizarClientesRestritos(cpf))
+                {
+                    Console.WriteLine("Cliente restrito!");
+                    Console.WriteLine("Não é possivel finalizar a compra!");
+                    aux = 2;
+                }
+                else 
+                {
+
+
+                    Sales sal = new Sales(cpf);
+                    this.ListaSales.Add(sal);
+                    Console.Clear();
+                    Console.WriteLine("Venda realizada com Sucesso!");
+                    Console.WriteLine("Id de compra do cliente: " + sal.Id );
+                    Console.ReadKey();
+                    aux = 2;
+
+                }
+            }
         }
         public Sales RetornarSales(int id)
         {
@@ -1972,7 +2013,7 @@ namespace ProjetoGrupo1
 
         public void IncluirSaleItems()
         {
-            int aux = 0;
+            int aux = 1;
             int id = 0;
             do
             {
@@ -1982,14 +2023,17 @@ namespace ProjetoGrupo1
                 if (idVenda.Length == 5 && idVenda.All(char.IsDigit))
                 {
                     id = int.Parse(idVenda);
-                    aux = 1;
+                    aux = 2;
                 }
                 else
                 {
                     Console.WriteLine("Id no formato inválido!");
-                    Console.ReadKey();
+                    Console.WriteLine("Digite: 1- Tentar Novamente:");
+                    Console.WriteLine("Digite: 2- Voltar no Menu!");
+                    aux = int.Parse(Console.ReadLine());
+                    
                 }
-            } while (aux == 0);
+            } while (aux == 1);
             var sales = RetornarSales(id);
             if (sales == null)
             {
@@ -2005,7 +2049,7 @@ namespace ProjetoGrupo1
             }
             else
             {
-                aux = 0;
+                aux = 1;
                 string cdb;
                 do
                 {
@@ -2014,59 +2058,76 @@ namespace ProjetoGrupo1
                     cdb = Console.ReadLine()!;
                     if (cdb.Length == 13 && cdb.All(char.IsDigit))
                     {
-                        aux = 1;
+                        aux = 2;
                     }
                     else
                     {
                         Console.WriteLine("Código de barra no formato inválido!");
-                        Console.ReadKey();
+                        Console.WriteLine("Digite: 1- Tentar Novamente!");
+                        Console.WriteLine("Digite: 2- Voltar no menu!");
+                        aux = int.Parse(Console.ReadLine()!);
                     }
-                } while (aux == 0);
-                aux = 0;
-                int quantidade = 0;
-                do
+                } while (aux == 1);
+                Medicine medicine = LocalizarMedicine(cdb);
+
+                if(medicine != null)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Digite a quantidade vendida: ");
-                    string stringQuantidade = Console.ReadLine()!;
-                    if (stringQuantidade.Length <= 3 && stringQuantidade.All(char.IsDigit))
-                    {
-                        quantidade = int.Parse(stringQuantidade);
-                        aux = 1;
-                    }
-                    else
+                    aux = 0;
+                    int quantidade = 0;
+                    do
                     {
                         Console.Clear();
-                        Console.WriteLine("Número inválido!");
-                        Console.ReadKey();
-                    }
-                } while (aux == 0);
-                aux = 0;
-                decimal valorUnit = 0.0m;
-                do
-                {
-                    Console.Clear();
-                    Console.WriteLine("Digite o valor unitario: ");
-                    string stringvalorUnit = Console.ReadLine()!;
-                    if (stringvalorUnit.Length <= 6 && stringvalorUnit.All(char.IsDigit))
-                    {
-                        valorUnit = decimal.Parse(stringvalorUnit);
-                        aux = 1;
-                    }
-                    else
+                        Console.WriteLine("Digite a quantidade vendida: ");
+                        string stringQuantidade = Console.ReadLine()!;
+                        if (stringQuantidade.Length <= 3 && stringQuantidade.All(char.IsDigit))
+                        {
+                            quantidade = int.Parse(stringQuantidade);
+                            aux = 1;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Número inválido!");
+                            Console.ReadKey();
+                        }
+                    } while (aux == 0);
+                    aux = 0;
+                    decimal valorUnit = 0.0m;
+                    do
                     {
                         Console.Clear();
-                        Console.WriteLine("Número inválido!");
-                        Console.ReadKey();
-                    }
-                } while (aux == 0);
-                var salesItems = new SalesItems(id, cdb, quantidade, valorUnit);
-                this.ListaSalesItems.Add(salesItems);
-                sales.IncluirListaSalesItems(salesItems);
-                Console.Clear();
-                Console.WriteLine("Item de venda inserido com sucesso!");
-                Console.ReadKey();
+                        Console.WriteLine("Digite o valor unitario: ");
+                        string stringvalorUnit = Console.ReadLine()!;
+                        if (stringvalorUnit.Length <= 6 && stringvalorUnit.All(char.IsDigit))
+                        {
+                            valorUnit = decimal.Parse(stringvalorUnit);
+                            aux = 1;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Número inválido!");
+                            Console.ReadKey();
+                        }
+                    } while (aux == 0);
+                    var salesItems = new SalesItems(id, cdb, quantidade, valorUnit);
+                    this.ListaSalesItems.Add(salesItems);
+                    sales.IncluirListaSalesItems(salesItems);
+                    Console.Clear();
+                    Console.WriteLine("Item de venda inserido com sucesso!");
+                    Console.ReadKey();
+
+                }
+                else
+                {
+                   
+                    Console.WriteLine("Medicamento não encontrado!");
+                    Console.ReadKey();
+                }
             }
+            
+
+                
         }
         public void ImprimirListaSalesItems()
         {
