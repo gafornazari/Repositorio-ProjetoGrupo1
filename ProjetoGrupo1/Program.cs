@@ -84,10 +84,14 @@ void CadastrosBasicos()
                             Console.ReadKey();
                             break;
                         case 4:
-                            Console.WriteLine("Qual o cpf do cliente que deseja buscar?");
+                            Console.WriteLine("Qual o CPF do cliente que deseja buscar?");
                             string cpf = Console.ReadLine();
-                            farmacia.LocalizarCliente(cpf);
-                            Console.ReadKey();
+                            Customer customer = farmacia.LocalizarCliente(cpf);
+                            if(customer != null)
+                                Console.WriteLine(customer.ToString());
+                            else
+                                Console.WriteLine("Cliente não encontrado!");
+                                Console.ReadKey();
                             break;
 
                             case 5:

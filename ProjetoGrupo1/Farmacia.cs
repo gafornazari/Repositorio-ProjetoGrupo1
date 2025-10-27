@@ -1096,7 +1096,6 @@ namespace ProjetoGrupo1
 
             if (cliente == null)
             {
-                Console.WriteLine("Cliente não encontrado.");
                 return null;
             }
 
