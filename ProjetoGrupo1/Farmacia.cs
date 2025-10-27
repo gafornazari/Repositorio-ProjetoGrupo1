@@ -2138,8 +2138,24 @@ namespace ProjetoGrupo1
                 }
                 else
                 {
-                    Console.WriteLine("Id no formato inválido!");
-                    Console.ReadKey();
+                    Console.WriteLine("Id inválido!");
+                    Console.WriteLine("Digite: 1 - Tentar novamente");
+                    Console.WriteLine("Digite: 2 - Voltar ao menu");
+                    string opcao = Console.ReadLine()!;
+
+                    if (opcao == "1")
+                    {
+                        aux = 1; // volta a pedir o ID
+                    }
+                    else if (opcao == "2")
+                    {
+                        return; // sai da função e volta ao menu
+                    }
+                    else
+                    {
+                        Console.WriteLine("Opção inválida! Voltando ao menu...");
+                        return;
+                    }
                 }
             } while (aux == 1);
             var sales = RetornarSales(id);
