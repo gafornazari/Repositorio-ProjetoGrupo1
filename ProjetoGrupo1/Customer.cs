@@ -102,6 +102,10 @@ public class Customer
         return nome.PadRight(50, ' ');
     }
 
+    public string FormatCpf(string cpf)
+    {
+        return CPF.Replace(".", "").Replace("/", "").Replace("-", "").Trim();
+    }
     public static List<Customer> LerArquivoCustomer(string diretorio, string nomeArquivo)
     {
         var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
@@ -181,10 +185,11 @@ public class Customer
         }
     }
 
+
     public string ToFileRest()
     {
 
-        return $"{this.CPF}";
+        return $"{FormatCpf(this.CPF)}";
     }
 
 }
