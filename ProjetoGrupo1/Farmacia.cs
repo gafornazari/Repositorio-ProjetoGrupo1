@@ -2000,11 +2000,41 @@ namespace ProjetoGrupo1
             
             Console.WriteLine("Digite o CPF do cliente: ");
             string cpf = Console.ReadLine()!;
-            Sales sal = new Sales(cpf);
-            this.ListaSales.Add(sal);
-            Console.Clear();
-            Console.WriteLine("Venda realizada com Sucesso!");
-            Console.ReadKey();
+            Customer customer = LocalizarCliente(cpf);
+            int aux = 1;
+            while (aux == 1)
+            {
+                if (customer == null)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Cliente não Encontrado!");
+                    Console.WriteLine("Digite: 1- Tentar Novamente! ");
+                    Console.WriteLine("Digite: 2- Voltar no Menu!");
+                    aux = int.Parse(Console.ReadLine());
+                    if (aux == 1)
+                    {
+                        Console.WriteLine("Digite o CPF do cliente: ");
+                        cpf = Console.ReadLine()!;
+                    }
+                }
+                else if (LocalizarClientesRestritos(cpf))
+                {
+                    Console.WriteLine("Cliente restrito!");
+                    Console.WriteLine("Não é possivel finalizar a compra!");
+                    aux = 2;
+                }
+                else
+                {
+                    Sales sal = new Sales(cpf);
+                    this.ListaSales.Add(sal);
+                    AlterarCustomerUltimaCompra(DateOnly.FromDateTime(DateTime.Now), cpf);
+                    Console.Clear();
+                    Console.WriteLine("Venda realizada com Sucesso!");
+                    Console.WriteLine("Id de compra do cliente: " + sal.Id);
+                    Console.ReadKey();
+                    aux = 2;
+                }
+            }
         }
         public Sales RetornarSales(int id)
         {
