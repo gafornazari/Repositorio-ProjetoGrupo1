@@ -1720,15 +1720,31 @@ namespace ProjetoGrupo1
                 }
                 string idCompraFormatado = idCompra.ToString().PadLeft(5, '0');
 
-                Console.WriteLine("Adicione o Id do princípio ativo" +
-                    "(Lembrete do formato obrigatório: AI + 4 dígitos, exemplo: AI0000):");
-                string ingredienteId = Console.ReadLine()!;
-                Ingredient ingredient = ListaIngredients.FirstOrDefault(i => i.Id ==
-                ingredienteId && i.Situacao == 'A');
-                if (ingredient == null)
+                string ingredienteId;
+                Ingredient ingredient = null;
+                while (true)
                 {
-                    Console.WriteLine("Ingrediente inválido ou inativo. Operação cancelada.");
-                    return;
+                    Console.WriteLine("Adicione o Id do princípio ativo" +
+                        "(Lembrete do formato obrigatório: AI + 4 dígitos, exemplo: AI0000):");
+                    ingredienteId = Console.ReadLine()!;
+                    ingredient = ListaIngredients.FirstOrDefault(i => i.Id == 
+                    ingredienteId && i.Situacao == 'A');
+
+                    if (ingredient != null)
+                    {
+                        break; 
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ingrediente inválido ou inativo.");
+                        Console.WriteLine("Deseja tentar novamente? (S/N)");
+                        string resposta = Console.ReadLine()?.Trim().ToUpper() ?? "N";
+                        if (resposta != "S")
+                        {
+                            Console.WriteLine("Operação cancelada.");
+                            return; 
+                        }
+                    }
                 }
 
                 Console.WriteLine("Digite a quantidade em gramas do item (0 a 10000):");
