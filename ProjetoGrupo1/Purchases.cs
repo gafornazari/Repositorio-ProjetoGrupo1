@@ -57,7 +57,7 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = purchaseSR.ReadLine()) != null)
                 {
-                    if (line.Length == 37)//trocar o 0 pela quantidade de carcateres da linha
+                    if (line.Length == 37)
                     {
                         var id = line.Substring(0, 5);
                         DateOnly dataCompra = DateOnly.ParseExact

@@ -60,7 +60,7 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = purchaseItensSR.ReadLine()) != null)
                 {
-                    if (line.Length == 31)//trocar o 0 pela quantidade de carcateres da linha
+                    if (line.Length == 31)
                     {
 
                         var idCompra = line.Substring(0, 5);
