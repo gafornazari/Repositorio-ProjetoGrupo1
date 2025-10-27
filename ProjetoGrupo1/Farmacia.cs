@@ -188,8 +188,13 @@ namespace ProjetoGrupo1
                     }
                 } while (aux == 0);
 
+                int id;
+                do
+                {
+                    id = new Random().Next(10000, 100000);
 
-                Produce produce = new Produce(cdb, quantidade);
+                } while (ExisteProduce(id));
+                Produce produce = new Produce(cdb, quantidade, id);
                 this.ListaProduces.Add(produce);
 
                 Console.Clear();
@@ -297,6 +302,17 @@ namespace ProjetoGrupo1
 
         }
 
+        public bool ExisteProduceItem(int id)
+        {
+            foreach(var item in this.ListaProducesItems)
+            {
+                if(item.IdProduceItem == id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public void IncluirProduceItem()
         {
@@ -372,7 +388,14 @@ namespace ProjetoGrupo1
                             Console.ReadKey();
                         }
                     } while (aux == 0);
-                    ProduceItem produceItem = new ProduceItem(id, idIngredient, quantidade);
+
+                    int idProduceItem;
+                    do
+                    {
+                        idProduceItem = new Random().Next(10000, 100000);
+
+                    } while (ExisteProduceItem(id));
+                    ProduceItem produceItem = new ProduceItem(id, idIngredient, quantidade, idProduceItem);
                     this.ListaProducesItems.Add(produceItem);
                     Console.Clear();
                     Console.WriteLine("Item de produção Incluído com sucesso!");
@@ -595,14 +618,12 @@ namespace ProjetoGrupo1
                     string prefixo = id.Substring(2);
                     if (BuscarIngridientId(id))
                         Console.WriteLine("Erro! Esse Id já é cadastrado!");
-                    else if ((!sufixo.Equals("AI", StringComparison.OrdinalIgnoreCase)) || (!prefixo.All(c => char.IsDigit(c))))
+                    else if ((!sufixo.Equals("AI")) )
+                        Console.WriteLine("Erro! O formato do Id está incorreto! AI necessita ser maiúsculo!");
+                    else if((!prefixo.All(c => char.IsDigit(c))))
                         Console.WriteLine("Erro! O formato do Id está incorreto!\nEle precisa ser composto por AI + 4 dígitos, exemplo: AI0000");
                     else
                     {
-                        if(sufixo == "ai")
-                        {
-                            sufixo = "AI";
-                        }
                         auxId = 1;
                     }
                 }
@@ -1132,7 +1153,7 @@ namespace ProjetoGrupo1
                     char novaSituacao = char.Parse(Console.ReadLine());
 
                     cliente.SetSituacao(novaSituacao);
-                    Console.WriteLine("Nova situação" + novaSituacao);
+                    Console.WriteLine("Nova situação - " + novaSituacao);
                 }
                 else
                 {
@@ -1275,7 +1296,7 @@ namespace ProjetoGrupo1
 
             if (fornecedor == null)
             {
-                Console.WriteLine("Empresa não encontrada.");
+       
                 return null;
             }
 
@@ -1343,7 +1364,7 @@ namespace ProjetoGrupo1
                     char novaSituacao = char.Parse(Console.ReadLine());
 
                     fornecedor.SetSituacao(novaSituacao);
-                    Console.WriteLine("Nova situação" + novaSituacao);
+                    Console.WriteLine("Nova situação - " + novaSituacao);
                 }
                 else
                 {
@@ -1420,6 +1441,23 @@ namespace ProjetoGrupo1
             return false;
 
         }
+
+        public Customer LocalizarClienteRestrito(string cpf)
+        {
+            
+        
+            var cliente = ListaRestrictedCustomers.Find(c => c.CPF == cpf);
+
+            if (cliente == null)
+            {
+
+                return null;
+            }
+
+            return cliente;
+
+        }
+        
         //Alterar clientes restritos
         public void AlterarClientesRestritos()
         {
@@ -1530,6 +1568,20 @@ namespace ProjetoGrupo1
 
             }
             return false;
+        }
+
+        public Suppliers LocalizarFornecedorRestrito(string cnpj)
+        {
+            var fornecedor = ListaRestrictedSuppliers.Find(f => f.CNPJ == cnpj);
+
+            if (fornecedor == null)
+            {
+
+                return null;
+            }
+
+            return fornecedor;
+
         }
         //Alterar informações fornecedores restritos
         public void AlterarFornecedoresRestritos()
