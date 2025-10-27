@@ -1703,7 +1703,8 @@ namespace ProjetoGrupo1
 
             Console.WriteLine("Digite o CNPJ do fornecedor:");
             string fornecedorCnpj = Console.ReadLine()!.Trim().PadLeft(14, '0');
-            Suppliers fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+            Suppliers fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == 
+            fornecedorCnpj);
             if (fornecedor == null)
             {
                 Console.WriteLine("Fornecedor não encontrado. Operação cancelada.");
