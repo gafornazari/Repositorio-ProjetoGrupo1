@@ -963,6 +963,16 @@ namespace ProjetoGrupo1
             }
         }
 
+        public void AlterarMedicineUltimaVenda(DateOnly ultimavenda, string cdb)
+        {
+            foreach (var med in ListaMedicines)
+            {
+                if (med.CDB == cdb)
+                {
+                    med.SetUltimaVenda(ultimavenda);
+                }
+            }
+        }
 
         public void ImprimirMedicines()
         {
@@ -2128,53 +2138,66 @@ namespace ProjetoGrupo1
                         Console.WriteLine("Digite: 2- Voltar no menu!");
                         aux = int.Parse(Console.ReadLine()!);
                     }
-                } while (aux == 0);
-                aux = 0;
-                int quantidade = 0;
-                do
+                } while (aux == 1);
+                Medicine medicine = LocalizarMedicine(cdb);
+                if (medicine != null)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Digite a quantidade vendida: ");
-                    string stringQuantidade = Console.ReadLine()!;
-                    if (stringQuantidade.Length <= 3 && stringQuantidade.All(char.IsDigit))
-                    {
-                        quantidade = int.Parse(stringQuantidade);
-                        aux = 1;
-                    }
-                    else
+                    aux = 0;
+                    int quantidade = 0;
+                    do
                     {
                         Console.Clear();
-                        Console.WriteLine("Número inválido!");
-                        Console.ReadKey();
-                    }
-                } while (aux == 0);
-                aux = 0;
-                decimal valorUnit = 0.0m;
-                do
-                {
-                    Console.Clear();
-                    Console.WriteLine("Digite o valor unitario: ");
-                    string stringvalorUnit = Console.ReadLine()!;
-                    if (stringvalorUnit.Length <= 6 && stringvalorUnit.All(char.IsDigit))
-                    {
-                        valorUnit = decimal.Parse(stringvalorUnit);
-                        aux = 1;
-                    }
-                    else
+                        Console.WriteLine("Digite a quantidade vendida: ");
+                        string stringQuantidade = Console.ReadLine()!;
+                        if (stringQuantidade.Length <= 3 && stringQuantidade.All(char.IsDigit))
+                        {
+                            quantidade = int.Parse(stringQuantidade);
+                            aux = 1;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Número inválido!");
+                            Console.ReadKey();
+                        }
+                    } while (aux == 0);
+                    aux = 0;
+                    decimal valorUnit = 0.0m;
+                    do
                     {
                         Console.Clear();
-                        Console.WriteLine("Número inválido!");
-                        Console.ReadKey();
-                    }
-                } while (aux == 0);
-                var salesItems = new SalesItems(id, cdb, quantidade, valorUnit);
-                this.ListaSalesItems.Add(salesItems);
-                sales.IncluirListaSalesItems(salesItems);
-                Console.Clear();
-                Console.WriteLine("Item de venda inserido com sucesso!");
-                Console.ReadKey();
+                        Console.WriteLine("Digite o valor unitario: ");
+                        string stringvalorUnit = Console.ReadLine()!;
+                        if (stringvalorUnit.Length <= 6 && stringvalorUnit.All(char.IsDigit))
+                        {
+                            valorUnit = decimal.Parse(stringvalorUnit);
+                            aux = 1;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Número inválido!");
+                            Console.ReadKey();
+                        }
+                    } while (aux == 0);
+                    var salesItems = new SalesItems(id, cdb, quantidade, valorUnit);
+                    this.ListaSalesItems.Add(salesItems);
+                    sales.IncluirListaSalesItems(salesItems);
+                    Console.Clear();
+                    Console.WriteLine("Item de venda inserido com sucesso!");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("Medicamento não encontrado!");
+                    Console.ReadKey();
+                }
             }
         }
+
+
+
+
         public void ImprimirListaSalesItems()
         {
             if (ListaIngredients == null || !ListaIngredients.Any())
@@ -2392,34 +2415,38 @@ namespace ProjetoGrupo1
 
         public void RelatorioMedicamentosMaisVendidos()
         {
-            if (this.ListaSales.Count == 0)
+            if (this.ListaSales == null || this.ListaSales.Count == 0)
             {
                 Console.Clear();
                 Console.WriteLine("Nenhuma venda registrada.");
                 Console.ReadKey();
+                return;
             }
-            else
+
+
+            var todosItens = this.ListaSales.Where(venda => venda?.ListaSalesItems != null)
+                .SelectMany(venda => venda.ListaSalesItems).ToList();
+
+            var top10 = todosItens.GroupBy(item => new { item.Medicamento })
+                .Select(g => new { Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade) })
+                .OrderByDescending(x => x.TotalVendido).Take(10).ToList();
+
+            Console.Clear();
+            Console.WriteLine("###### TOP 10 MEDICAMENTOS MAIS VENDIDOS ######");
+            Console.WriteLine($"Gerado em: {DateTime.Now}");
+            Console.WriteLine("--------------------------------------");
+
+            int pos = 1;
+            foreach (var item in top10)
             {
-                var todosItens = this.ListaSales.SelectMany(venda => venda.ListaSalesItems).ToList();
-                var top10 = todosItens.GroupBy(item => new { item.Medicamento }).Select(g => new { Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade) })
-                    .OrderByDescending(x => x.TotalVendido).Take(10).ToList();
-
-                Console.Clear();
-                Console.WriteLine("###### TOP 10 MEDICAMENTOS MAIS VENDIDOS ######");
-                Console.WriteLine($"Gerado em: {DateTime.Now}");
-                Console.WriteLine("--------------------------------------");
-
-                int pos = 1;
-                foreach (var item in top10)
-                {
-                    Console.WriteLine($"{pos,2}. Código de Barra: {item.Medicamento,-6} | Quantidade Vendida: {item.TotalVendido}");
-                    pos++;
-                }
-
-                Console.WriteLine("--------------------------------------\n");
-                Console.ReadKey();
-
+                Console.WriteLine($"{pos,2}. Código de Barra: {item.Medicamento,-6} | Quantidade Vendida: {item.TotalVendido}");
+                pos++;
             }
+
+            Console.WriteLine("--------------------------------------\n");
+            Console.ReadKey();
+
+
 
 
         }
