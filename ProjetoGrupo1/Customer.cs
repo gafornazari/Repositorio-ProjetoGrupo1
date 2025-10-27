@@ -79,7 +79,7 @@ public class Customer
     }
     public override string ToString()
     {
-        return $"CPF: {this.CPF}\n Nome: {this.Nome}\n Data Nascimento: {this.DataNascimento}\n " +
+        return $"CPF: {FormatCpf(this.CPF)}\n Nome: {this.Nome}\n Data Nascimento: {this.DataNascimento}\n " +
             $"Telefone: {this.Telefone}\n Ultima compra: {this.UltimaCompra}\n " +
             $"Data Cadastro: {this.DataCadastro}\n Situação: {this.Situacao}";
     }

@@ -1046,6 +1046,7 @@ namespace ProjetoGrupo1
         {
             Console.Write("Informe CPF do cliente: ");
             string cpf = Console.ReadLine()!;
+            cpf = Regex.Replace(cpf, @"\D", "");
             if (!VerificarCpf(cpf))
             {
                 Console.WriteLine("CPF inválido! Cadastro cancelado.");
@@ -1249,6 +1250,7 @@ namespace ProjetoGrupo1
         {
             Console.Write("Informe CNPJ: ");
             string cnpj = Console.ReadLine()!;
+            cnpj = Regex.Replace(cnpj, @"\D", "");
             if (!VerificarCnpj(cnpj))
             {
                 Console.WriteLine("CNPJ inválido! Cadastro cancelado.");

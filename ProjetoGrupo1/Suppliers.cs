@@ -70,7 +70,7 @@ public class Suppliers
 
     public override string ToString()
     {
-        return $"CNPJ: {this.GetCNPJ()}\n Razão social: {this.RazaoSocial}\n País: {this.Pais}\n " +
+        return $"CNPJ: {FormatCnpj(this.CNPJ)}\n Razão social: {this.RazaoSocial}\n País: {this.Pais}\n " +
             $"Data Abertura: {this.DataAbertura}\n Ultimo fornecimento: {this.UltimoFornecimento}\n " +
             $"Data Cadastro: {this.DataCadastro}\n Situação: {this.Situacao}";
     }
