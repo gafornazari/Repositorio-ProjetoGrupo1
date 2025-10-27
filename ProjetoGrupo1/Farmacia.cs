@@ -302,6 +302,17 @@ namespace ProjetoGrupo1
 
         }
 
+        public bool ExisteProduceItem(int id)
+        {
+            foreach(var item in this.ListaProducesItems)
+            {
+                if(item.IdProduceItem == id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public void IncluirProduceItem()
         {
@@ -377,7 +388,14 @@ namespace ProjetoGrupo1
                             Console.ReadKey();
                         }
                     } while (aux == 0);
-                    ProduceItem produceItem = new ProduceItem(id, idIngredient, quantidade);
+
+                    int idProduceItem;
+                    do
+                    {
+                        idProduceItem = new Random().Next(10000, 100000);
+
+                    } while (ExisteProduceItem(id));
+                    ProduceItem produceItem = new ProduceItem(id, idIngredient, quantidade, idProduceItem);
                     this.ListaProducesItems.Add(produceItem);
                     Console.Clear();
                     Console.WriteLine("Item de produção Incluído com sucesso!");
