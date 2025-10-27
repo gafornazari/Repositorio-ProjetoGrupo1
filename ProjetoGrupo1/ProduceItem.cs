@@ -32,10 +32,11 @@ namespace ProjetoGrupo1
         (
             int idProducao,
             string idPrincipio,
-            int quantidadePrincipio
+            int quantidadePrincipio,
+            int idProduceItem
         )
         {
-            this.IdProduceItem = new Random().Next(10000, 100000);
+            this.IdProduceItem = idProduceItem;
             this.IdProducao = idProducao;
             this.IdPrincipio = idPrincipio;
             this.QuantidadePrincipio = quantidadePrincipio;
