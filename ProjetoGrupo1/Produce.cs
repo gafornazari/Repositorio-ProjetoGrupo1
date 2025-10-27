@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,33 +10,33 @@ namespace ProjetoGrupo1
 {
     public class Produce
     {
-        public int Id {  get; private set; }
+        public int Id { get; private set; }
         public DateOnly DataProducao { get; private set; }
-        public double IdMedicamento { get; private set; }
+        public string CdbMedicamento { get; private set; }
         public int Quantidade { get; private set; }
 
 
         public Produce(
-           int id,
-           DateOnly dataProducao,
-           double idMedicamento,
-           int quantidade
-       )
-        {
-            this.Id = id;
-            this.DataProducao = dataProducao;
-            this.IdMedicamento = idMedicamento;
-            this.Quantidade = quantidade;
-        }
-        public Produce( 
-            int id, 
-            double idMedicamento, 
-            int quantidade
+           string cdbMedicamento,
+           int quantidade,
+           int id
         )
         {
             this.Id = id;
             this.DataProducao = DateOnly.FromDateTime(DateTime.Now);
-            this.IdMedicamento = idMedicamento;
+            this.CdbMedicamento = cdbMedicamento;
+            this.Quantidade = quantidade;
+        }
+        public Produce(
+            int id,
+            DateOnly data,
+            string cdbMedicamento,
+            int quantidade
+        )
+        {
+            this.Id = id;
+            this.DataProducao = data;
+            this.CdbMedicamento = cdbMedicamento;
             this.Quantidade = quantidade;
         }
 
@@ -43,30 +45,70 @@ namespace ProjetoGrupo1
             this.Quantidade = quantidade;
         }
 
-        public void SetMedicamento(double idMedicamento)
+        public void SetMedicamento(string cdbMedicamento)
         {
-            this.IdMedicamento = idMedicamento;
+            this.CdbMedicamento = cdbMedicamento;
         }
 
         public override string ToString()
         {
             return $"Id: {this.Id}\n" +
                 $"Data de Produção: {this.DataProducao}\n" +
-                $"Código de Barras do Medicamento: {this.IdMedicamento}\n" +
+                $"Código de Barras do Medicamento: {this.CdbMedicamento}\n" +
                 $"Quantidade: {this.Quantidade}\n";
         }
 
         private string FormatarInt()
         {
-            string resultado = this.Quantidade.ToString().PadLeft( 3, '0' );
+            string resultado = this.Quantidade.ToString().PadLeft(3, '0');
             return resultado;
         }
 
-        
+        public static List<Produce> LerArquivoProduce(string diretorio, string nomeArquivo)
+        {
+            var fullProduce = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
+            StreamReader produceSR = new StreamReader(fullProduce);
+            using (produceSR)
+            {
+                List<Produce> produces = new List<Produce>();
+                string line;
+                while ((line = produceSR.ReadLine()) != null)
+                {
+                    if (line.Length == 29)
+                    {
+                        int id = int.Parse(line.Substring(0, 5));
+                        DateOnly data = DateOnly.ParseExact(line.Substring(5, 8), "ddMMyyyy");
+                        string idMedicamento = line.Substring(13, 13);
+                        int quantidade = int.Parse(line.Substring(26, 3));
+                        Produce produce = new Produce(id, data, idMedicamento, quantidade);
+                        produces.Add(produce);
+                    }
+                }
+                return produces;
+            }
+        }
+
+        public static void GravarProduce(List<Produce> lista, string fullPath)
+        {
+            StreamWriter writer = new StreamWriter(fullPath);
+            using (writer)
+            {
+                foreach (var produce in lista)
+                {
+                    writer.WriteLine(produce.ToFile());
+                }
+            }
+        }
+
+        public string FormatarData(DateOnly data)
+        {
+            string dataFormatada = data.ToString("ddMMyyyy");
+            return dataFormatada;
+        }
 
         public string ToFile()
         {
-            return $"{this.Id}{this.DataProducao}{this.IdMedicamento}{FormatarInt()}";
+            return $"{this.Id}{FormatarData(this.DataProducao)}{this.CdbMedicamento}{FormatarInt()}";
         }
     }
 }
