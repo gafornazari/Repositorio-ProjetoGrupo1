@@ -2200,26 +2200,8 @@ namespace ProjetoGrupo1
                                 Console.ReadKey();
                             }
                         } while (aux == 0);
-                        aux = 0;
-                        decimal valorUnit = 0.0m;
-                        do
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Digite o valor unitario: ");
-                            string stringvalorUnit = Console.ReadLine()!;
-                            if (stringvalorUnit.Length <= 6 && stringvalorUnit.All(char.IsDigit))
-                            {
-                                valorUnit = decimal.Parse(stringvalorUnit);
-                                aux = 1;
-                            }
-                            else
-                            {
-                                Console.Clear();
-                                Console.WriteLine("Número inválido!");
-                                Console.ReadKey();
-                            }
-                        } while (aux == 0);
-                        var salesItems = new SalesItems(id, cdb, quantidade, valorUnit);
+                       
+                        var salesItems = new SalesItems(id, cdb, quantidade, medicine.ValorVenda);
                         this.ListaSalesItems.Add(salesItems);
                         sales.IncluirListaSalesItems(salesItems);
                         Console.Clear();
