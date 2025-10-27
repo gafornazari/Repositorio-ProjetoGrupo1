@@ -51,6 +51,11 @@ namespace ProjetoGrupo1
             ValorVenda = valor;
         }
 
+        public void SetUltimaVenda(DateOnly ultimavenda)
+        {
+            UltimaVenda = ultimavenda;
+        }
+
         public void SetSituacao(char sit)
         {
             Situacao = sit;

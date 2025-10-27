@@ -82,7 +82,7 @@ namespace ProjetoGrupo1
             return $"Id: {this.Id}\n" +
                 $"Data: {this.DataVenda}\n" +
                 $"CPF do Cliente: {this.ClienteCPF}\n" +
-                $"Valor Total: {this.ValorTotal}\n";
+                $"Valor Total: {FormatarDecimal(ValorTotal)}\n";
         }
 
         public static List<Sales> LerArquivoSales(string diretorio, string salesArquivo)
