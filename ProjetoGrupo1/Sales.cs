@@ -23,7 +23,7 @@ namespace ProjetoGrupo1
             DataVenda = DateOnly.FromDateTime(DateTime.Now);
             ClienteCPF = cliente;
             ValorTotal = 0;
-            ListaSalesItems = new List<SalesItems>();
+            this.ListaSalesItems = new List<SalesItems>();
         }
 
         public Sales(int id, DateOnly dataVenda, string clienteCPF, decimal valorTotal)
@@ -32,6 +32,7 @@ namespace ProjetoGrupo1
             DataVenda = dataVenda;
             ClienteCPF = clienteCPF;
             ValorTotal = valorTotal;
+            this.ListaSalesItems = new List<SalesItems>();
         }
 
         public void SetId(int id)
@@ -53,13 +54,17 @@ namespace ProjetoGrupo1
 
         public bool ItemsFull()
         {
-            return this.ListaSalesItems.Count == 3;
+            if(this.ListaSalesItems == null || this.ListaSalesItems.Count < 3)
+            {
+                return false;
+            }
+            return true;
         }
 
         private void CalcularValorTotal()
         {
             this.ValorTotal = 0;
-            foreach (SalesItems item in ListaSalesItems)
+            foreach (SalesItems item in this.ListaSalesItems)
             {
                 this.ValorTotal += item.TotalItem;
             }
