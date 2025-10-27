@@ -1616,14 +1616,15 @@ namespace ProjetoGrupo1
                 Console.WriteLine("Digite o CNPJ do fornecedor: ");
                 fornecedorCnpj = Console.ReadLine()!;
                 string formatadoCnpj = fornecedorCnpj.PadLeft(14);
-                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj)!;
 
                 if (fornecedor == null)
                 {
                     Console.WriteLine("Fornecedor não encontrado. Tente novamente.");
                     continue;
                 }
-                var fornecedorBloqueado = ListaRestrictedSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+                var fornecedorBloqueado = ListaRestrictedSuppliers.FirstOrDefault(f => 
+                f.CNPJ == fornecedorCnpj);
                 if (fornecedorBloqueado != null)
                 {
                     Console.WriteLine("Fornecedor está bloqueado e não pode ser selecionado.");
