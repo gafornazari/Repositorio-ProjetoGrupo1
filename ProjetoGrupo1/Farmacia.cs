@@ -1616,19 +1616,21 @@ namespace ProjetoGrupo1
             {
                 Console.WriteLine("Digite o CNPJ do fornecedor: ");
                 fornecedorCnpj = Console.ReadLine()!;
-                string formatadoCnpj = fornecedorCnpj.ToString().PadLeft(14);
-                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj)!;
+                string formatadoCnpj = fornecedorCnpj.PadLeft(14);
+                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+
                 if (fornecedor == null)
                 {
                     Console.WriteLine("Fornecedor não encontrado. Tente novamente.");
                     continue;
                 }
-                if (ListaRestrictedSuppliers.Any(f => f.CNPJ == fornecedorCnpj))
+                var fornecedorBloqueado = ListaRestrictedSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+                if (fornecedorBloqueado != null)
                 {
-                    Console.WriteLine("Fornecedor está bloqueado e " +
-                        "não pode ser selecionado.");
+                    Console.WriteLine("Fornecedor está bloqueado e não pode ser selecionado.");
                     continue;
                 }
+                Console.WriteLine($"Fornecedor {fornecedor.RazaoSocial} selecionado com sucesso.");
                 break;
             }
             Purchases purchases = new Purchases(id, data, fornecedor.CNPJ, valorTotal);
@@ -1768,12 +1770,12 @@ namespace ProjetoGrupo1
             int auxItems = 0;
             PurchaseItem purchaseItem = null;
             Purchases purchases;
-            while (purchaseItem == null);      
+            while (purchaseItem == null) ;
             {
                 Console.WriteLine("O Id da compra está incorreto");
                 var aux = int.Parse(Console.ReadLine()!);
                 purchaseItem = RetornarPurchaseItem(aux);
-            } 
+            }
 
             purchases = RetornarPurchases(IdCompra);
 
@@ -2226,9 +2228,9 @@ namespace ProjetoGrupo1
                 Console.Clear();
                 Console.WriteLine("Digite a data de início do período(Formato dd/mm/yyyy): ");
                 string data = Console.ReadLine()!;
-                if(DateOnly.TryParseExact(data, formato,System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out dataInicio))
+                if (DateOnly.TryParseExact(data, formato, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dataInicio))
                 {
-                    if(dataInicio > DateOnly.FromDateTime(DateTime.Today))
+                    if (dataInicio > DateOnly.FromDateTime(DateTime.Today))
                     {
                         Console.Clear();
                         Console.WriteLine("A data não pode ser posterior a data de hoje.");
@@ -2320,7 +2322,7 @@ namespace ProjetoGrupo1
 
             }
 
-               
+
         }
 
         public void RelatorioCompraPorFornecedor()
