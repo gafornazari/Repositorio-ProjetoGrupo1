@@ -149,7 +149,7 @@ public class Customer
 
     public string ToFile()
     {
-        return $"{this.CPF}{FormatString(this.Nome)}{FormatarData(this.DataNascimento)}{this.Telefone}" +
+        return $"{FormatCpf(this.CPF)}{FormatString(this.Nome)}{FormatarData(this.DataNascimento)}{this.Telefone}" +
             $"{FormatarData(this.UltimaCompra)}{FormatarData(this.DataCadastro)}{this.Situacao}";
     }
 
