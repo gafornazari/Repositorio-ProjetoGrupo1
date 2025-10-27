@@ -49,7 +49,8 @@ namespace ProjetoGrupo1
                 $"Total do Item: {TotalItem}\n";
         }
 
-        public static List<PurchaseItem> LerArquivoPurchasesItem(string diretorio, string nomeArquivo)
+        public static List<PurchaseItem> LerArquivoPurchasesItem(string 
+            diretorio, string nomeArquivo)
         {
             var fullPath = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
             StreamReader purchaseItensSR = new StreamReader(fullPath);
@@ -65,8 +66,10 @@ namespace ProjetoGrupo1
                         var idCompra = line.Substring(0, 5);
                         var ingredient = line.Substring(5, 6);
                         var quantity = line.Substring(11, 4);
-                        double ValorUnitario = double.Parse(line.Substring(15, 6).Trim(), CultureInfo.InvariantCulture);
-                        double TotalItem = double.Parse(line.Substring(21, 10).Trim(), CultureInfo.InvariantCulture);
+                        double ValorUnitario = double.Parse(line.Substring(15, 6).
+                            Trim(), CultureInfo.InvariantCulture);
+                        double TotalItem = double.Parse(line.Substring(21, 10).Trim(), 
+                            CultureInfo.InvariantCulture);
                         PurchaseItem purchaseItem = new PurchaseItem(int.Parse(idCompra),
                             ingredient, int.Parse(quantity),
                             ValorUnitario, TotalItem);
@@ -77,7 +80,8 @@ namespace ProjetoGrupo1
             }
         }
 
-        public static void GravarPurchaseItem(List<PurchaseItem> lista, string fullPath)
+        public static void GravarPurchaseItem(List<PurchaseItem> lista, 
+            string fullPath)
         {
             StreamWriter writer = new StreamWriter(fullPath);
             using (writer)
