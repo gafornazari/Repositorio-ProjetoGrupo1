@@ -1690,7 +1690,8 @@ namespace ProjetoGrupo1
                 return;
             }
 
-            Console.WriteLine($"Digite a data da compra (ddMMyyyy) ou vazio para hoje ({DateOnly.FromDateTime(DateTime.Now):ddMMyyyy}):");
+            Console.WriteLine($"Digite a data da compra (ddMMyyyy) ou vazio para hoje " +
+                $"({DateOnly.FromDateTime(DateTime.Now):ddMMyyyy}):");
             string inputData = Console.ReadLine()!;
             DateOnly data;
             if (string.IsNullOrWhiteSpace(inputData))
@@ -1718,6 +1719,7 @@ namespace ProjetoGrupo1
                     {
                         Console.WriteLine("Digite o CNPJ do fornecedor: ");
                         cnpj = Console.ReadLine()!;
+                        
                     }
                 }
                 else if (LocalizarFornecedoresRestritos(cnpj))
@@ -1725,19 +1727,11 @@ namespace ProjetoGrupo1
                     Console.WriteLine("Fornecedor restrito!");
                     Console.WriteLine("Não é possivel finalizar a compra!");
                     aux = 2;
+                    return;
                 }
-                else
-                {
-                    Sales sal = new Sales(cnpj);
-                    this.ListaSales.Add(sal);
-                    AlterarCustomerUltimaCompra(DateOnly.FromDateTime(DateTime.Now), cnpj);
-                    Console.Clear();
-                    Console.WriteLine("Venda realizada com Sucesso!");
-                    Console.WriteLine("Id de compra do cliente: " + sal.Id);
-                    Console.ReadKey();
-                    aux = 2;
-                }
-                return;
+                aux = 2;
+                continue;
+                
             }
 
             Purchases purchases = new Purchases(id, data, cnpj, valorTotal);
