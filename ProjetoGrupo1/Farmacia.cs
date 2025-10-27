@@ -1701,23 +1701,46 @@ namespace ProjetoGrupo1
                 return;
             }
 
-            Console.WriteLine("Digite o CNPJ do fornecedor:");
-            string fornecedorCnpj = Console.ReadLine()!.Trim().PadLeft(14, '0');
-            Suppliers fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == 
-            fornecedorCnpj);
-            if (fornecedor == null)
+            Console.WriteLine("Digite o CNPJ do fornecedor: ");
+            string cnpj = Console.ReadLine()!;
+            Suppliers suppliers = LocalizarFornecedor(cnpj);
+            int aux = 1;
+            while (aux == 1)
             {
-                Console.WriteLine("Fornecedor não encontrado. Operação cancelada.");
-                return;
-            }
-            var fornecedorBloqueado = ListaRestrictedSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
-            if (fornecedorBloqueado != null)
-            {
-                Console.WriteLine("Fornecedor bloqueado. Operação cancelada.");
+                if (suppliers == null)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Fornecedor não Encontrado!");
+                    Console.WriteLine("Digite: 1- Tentar Novamente! ");
+                    Console.WriteLine("Digite: 2- Voltar no Menu!");
+                    aux = int.Parse(Console.ReadLine());
+                    if (aux == 1)
+                    {
+                        Console.WriteLine("Digite o CNPJ do fornecedor: ");
+                        cnpj = Console.ReadLine()!;
+                    }
+                }
+                else if (LocalizarFornecedoresRestritos(cnpj))
+                {
+                    Console.WriteLine("Fornecedor restrito!");
+                    Console.WriteLine("Não é possivel finalizar a compra!");
+                    aux = 2;
+                }
+                else
+                {
+                    Sales sal = new Sales(cnpj);
+                    this.ListaSales.Add(sal);
+                    AlterarCustomerUltimaCompra(DateOnly.FromDateTime(DateTime.Now), cnpj);
+                    Console.Clear();
+                    Console.WriteLine("Venda realizada com Sucesso!");
+                    Console.WriteLine("Id de compra do cliente: " + sal.Id);
+                    Console.ReadKey();
+                    aux = 2;
+                }
                 return;
             }
 
-            Purchases purchases = new Purchases(id, data, fornecedor.CNPJ, 0);
+            Purchases purchases = new Purchases(id, data, cnpj, valorTotal);
 
             int contadorItens = 0;
             while (contadorItens < 3)
@@ -1766,7 +1789,8 @@ namespace ProjetoGrupo1
 
                 valorTotal += totalItem;
 
-                var item = new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario, totalItem);
+                var item = new PurchaseItem(idCompra, ingredient.Id, quantidade, 
+                    valorUnitario, totalItem);
                 ListaPurchaseItems.Add(item);
                 purchases.purchaseItems.Add(item);
 
@@ -1782,7 +1806,7 @@ namespace ProjetoGrupo1
                         break;
                 }
 
-                AlterarSuppliersUltimoFornecimento(data, fornecedorCnpj);
+                AlterarSuppliersUltimoFornecimento(data, cnpj);
                 AlterarIngredientUltimaCompra(data, ingredienteId);
             }
 
