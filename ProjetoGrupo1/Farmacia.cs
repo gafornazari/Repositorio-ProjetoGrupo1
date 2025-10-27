@@ -2413,41 +2413,39 @@ namespace ProjetoGrupo1
 
         public void RelatorioMedicamentosMaisVendidos()
         {
-            if (this.ListaSales == null || this.ListaSales.Count == 0)
-            {
-                Console.Clear();
-                Console.WriteLine("Nenhuma venda registrada.");
-                Console.ReadKey();
-                return;
-            }
-
-
-            var todosItens = this.ListaSales.Where(venda => venda?.ListaSalesItems != null)
-                .SelectMany(venda => venda.ListaSalesItems).ToList();
-
-            var top10 = todosItens.GroupBy(item => new { item.Medicamento })
-                .Select(g => new { Medicamento = g.Key.Medicamento, TotalVendido = g.Sum(total => total.Quantidade) })
-                .OrderByDescending(x => x.TotalVendido).Take(10).ToList();
-
             Console.Clear();
-            Console.WriteLine("###### TOP 10 MEDICAMENTOS MAIS VENDIDOS ######");
-            Console.WriteLine($"Gerado em: {DateTime.Now}");
-            Console.WriteLine("--------------------------------------");
+            Console.WriteLine("###### RELATÓRIO DOS 5 MEDICAMENTOS MAIS VENDIDOS ######");
 
-            int pos = 1;
-            foreach (var item in top10)
+            // Agrupa os itens vendidos por código de barras, soma a quantidade e calcula valor total por medicamento
+            var top5Medicamentos = ListaSalesItems
+                .GroupBy(item => item.Medicamento)
+                .Select(grupo => new
+                {
+                    CodigoBarras = grupo.Key,
+                    QuantidadeTotal = grupo.Sum(i => i.Quantidade),
+                    ValorTotal = grupo.Sum(i => i.Quantidade * i.ValorUnitario)
+                })
+                .OrderByDescending(x => x.QuantidadeTotal)
+                .Take(5)
+                .ToList();
+
+            if (top5Medicamentos.Count == 0)
             {
-                Console.WriteLine($"{pos,2}. Código de Barra: {item.Medicamento,-6} | Quantidade Vendida: {item.TotalVendido}");
-                pos++;
+                Console.WriteLine("Nenhum medicamento vendido.");
             }
-
-            Console.WriteLine("--------------------------------------\n");
+            else
+            {
+                Console.WriteLine("Código de Barras | Quantidade Vendida | Valor Total");
+                Console.WriteLine("-------------------------------------------------");
+                foreach (var med in top5Medicamentos)
+                {
+                    Console.WriteLine($"{med.CodigoBarras} | {med.QuantidadeTotal} | R$ {med.ValorTotal:F2}");
+                }
+            }
             Console.ReadKey();
-
-
-
-
         }
+
+
 
         public void RelatorioCompraPorFornecedor()
         {
