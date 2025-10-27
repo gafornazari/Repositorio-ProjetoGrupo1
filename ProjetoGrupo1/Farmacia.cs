@@ -188,8 +188,13 @@ namespace ProjetoGrupo1
                     }
                 } while (aux == 0);
 
+                int id;
+                do
+                {
+                    id = new Random().Next(10000, 100000);
 
-                Produce produce = new Produce(cdb, quantidade);
+                } while (ExisteProduce(id));
+                Produce produce = new Produce(cdb, quantidade, id);
                 this.ListaProduces.Add(produce);
 
                 Console.Clear();

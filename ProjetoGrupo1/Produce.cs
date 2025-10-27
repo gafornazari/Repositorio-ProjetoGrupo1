@@ -18,10 +18,11 @@ namespace ProjetoGrupo1
 
         public Produce(
            string cdbMedicamento,
-           int quantidade
+           int quantidade, 
+           int id
         )
         {
-            this.Id = new Random().Next(10000, 100000);
+            this.Id = id;
             this.DataProducao = DateOnly.FromDateTime(DateTime.Now);
             this.CdbMedicamento = cdbMedicamento;
             this.Quantidade = quantidade;
