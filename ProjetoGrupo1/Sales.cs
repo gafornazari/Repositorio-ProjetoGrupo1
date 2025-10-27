@@ -33,6 +33,7 @@ namespace ProjetoGrupo1
             ClienteCPF = clienteCPF;
             ValorTotal = valorTotal;
             this.ListaSalesItems = new List<SalesItems>();
+            CalcularValorTotal();
         }
 
         public void SetId(int id)
