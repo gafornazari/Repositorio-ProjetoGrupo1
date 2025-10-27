@@ -2004,6 +2004,7 @@ namespace ProjetoGrupo1
                 {
                     Sales sal = new Sales(cpf);
                     this.ListaSales.Add(sal);
+                    AlterarCustomerUltimaCompra(DateOnly.FromDateTime(DateTime.Now), cpf);
                     Console.Clear();
                     Console.WriteLine("Venda realizada com Sucesso!");
                     Console.WriteLine("Id de compra do cliente: " + sal.Id);
