@@ -86,7 +86,8 @@ void CadastrosBasicos()
                         case 4:
                             Console.WriteLine("Qual o cpf do cliente que deseja buscar?");
                             string cpf = Console.ReadLine();
-                            farmacia.LocalizarCliente(cpf);
+                            Customer customer =farmacia.LocalizarCliente(cpf);
+                            Console.WriteLine(customer);
                             Console.ReadKey();
                             break;
 

@@ -73,12 +73,12 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = produceSR.ReadLine()) != null)
                 {
-                    if (line.Length == 31)
+                    if (line.Length == 29)
                     {
                         int id = int.Parse(line.Substring(0, 5));
-                        DateOnly data = DateOnly.ParseExact(line.Substring(5, 10), "ddMMyyyy");
-                        string idMedicamento = line.Substring(15, 13);
-                        int quantidade = int.Parse(line.Substring(28, 3));
+                        DateOnly data = DateOnly.ParseExact(line.Substring(5, 8), "ddMMyyyy");
+                        string idMedicamento = line.Substring(13, 13);
+                        int quantidade = int.Parse(line.Substring(26, 3));
                         Produce produce = new Produce(id, data, idMedicamento, quantidade);
                         produces.Add(produce);
                     }
