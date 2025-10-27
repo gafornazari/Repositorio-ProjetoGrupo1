@@ -40,9 +40,13 @@ public class Suppliers
     public Suppliers(string cnpj, string razaoSocial, string pais, DateOnly dataAbertura,
                         DateOnly ultimaFornecimento, DateOnly dataCadastro, char situacao)
     {
+        CNPJ = cnpj;
         RazaoSocial = razaoSocial;
         Pais = pais;
         DataAbertura = dataAbertura;
+        UltimoFornecimento = ultimaFornecimento;
+        DataCadastro = dataCadastro;
+        Situacao = situacao;
     }
 
     public void SetSituacao(char situacao)
@@ -70,7 +74,7 @@ public class Suppliers
 
     public override string ToString()
     {
-        return $"CNPJ: {FormatCnpj(this.CNPJ)}\n Razão social: {this.RazaoSocial}\n País: {this.Pais}\n " +
+        return $"CNPJ: {this.CNPJ}\n Razão social: {this.RazaoSocial}\n País: {this.Pais}\n " +
             $"Data Abertura: {this.DataAbertura}\n Ultimo fornecimento: {this.UltimoFornecimento}\n " +
             $"Data Cadastro: {this.DataCadastro}\n Situação: {this.Situacao}";
     }
@@ -92,10 +96,6 @@ public class Suppliers
         return dataFormatada;
     }
 
-    public string FormatCnpj(string cnpj)
-    {
-        return CNPJ.Replace(".", "").Replace("/", "").Replace("-", "").Trim();
-    }
 
     public static List<Suppliers> LerArquivoSuppliers(string diretorio, string nomeArquivo)
     {
@@ -139,7 +139,7 @@ public class Suppliers
 
     public string ToFile()
     {
-        return $"{FormatCnpj(this.CNPJ)}{FormatString(this.RazaoSocial)}{FormatStringPais(this.Pais)}{FormatarData(this.DataAbertura)}{FormatarData(this.UltimoFornecimento)}{FormatarData(this.DataCadastro)}{this.Situacao}";
+        return $"{this.CNPJ}{FormatString(this.RazaoSocial)}{FormatStringPais(this.Pais)}{FormatarData(this.DataAbertura)}{FormatarData(this.UltimoFornecimento)}{FormatarData(this.DataCadastro)}{this.Situacao}";
     }
 
 
@@ -178,7 +178,7 @@ public class Suppliers
     public string ToFileRest()
     {
 
-        return $"{FormatCnpj(this.CNPJ)}";
+        return $"{this.CNPJ}";
     }
 
 }
