@@ -95,7 +95,7 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = SalesSR.ReadLine()) != null)
                 {
-                    if (line.Length == 31)
+                    if (line.Length == 35)
                     {
                         var id = int.Parse(line.Substring(0, 5));
                         var date = DateOnly.ParseExact(line.Substring(5, 8), "ddMMyyyy");
