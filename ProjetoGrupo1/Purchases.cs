@@ -87,9 +87,13 @@ namespace ProjetoGrupo1
             }
         }
 
+        private string FormatarDouble(double valor)
+        {
+            return valor.ToString("0000.00", CultureInfo.InvariantCulture);
+        }
         public string ToFile()
         {
-            return $"{Id}{DataFormatada()}{Fornecedor}{ValorTotal}";
+            return $"{Id}{DataFormatada()}{Fornecedor}{FormatarDouble(ValorTotal)}";
         }
     }
 }
