@@ -33,7 +33,6 @@ namespace ProjetoGrupo1
             ClienteCPF = clienteCPF;
             ValorTotal = valorTotal;
             this.ListaSalesItems = new List<SalesItems>();
-            CalcularValorTotal();
         }
 
         public void SetId(int id)
@@ -88,7 +87,7 @@ namespace ProjetoGrupo1
             return $"Id: {this.Id}\n" +
                 $"Data: {this.DataVenda}\n" +
                 $"CPF do Cliente: {this.ClienteCPF}\n" +
-                $"Valor Total: {FormatarDecimal(ValorTotal)}\n";
+                $"Valor Total: {ValorTotal}\n";
         }
 
         public static List<Sales> LerArquivoSales(string diretorio, string salesArquivo)
@@ -106,7 +105,7 @@ namespace ProjetoGrupo1
                         var id = int.Parse(line.Substring(0, 5));
                         var date = DateOnly.ParseExact(line.Substring(5, 8), "ddMMyyyy");
                         var cpf = line.Substring(13, 11);
-                        var totalValue = decimal.Parse(line.Substring(24, 7));
+                        var totalValue = decimal.Parse(line.Substring(24, 11), CultureInfo.InvariantCulture);
                         Sales sale = new Sales(id, date, cpf, totalValue);
                         sales.Add(sale);
                     }
