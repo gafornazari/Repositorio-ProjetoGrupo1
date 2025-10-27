@@ -94,7 +94,7 @@ namespace ProjetoGrupo1
         }
         private string FormatarDouble(double valor)
         {
-            return valor.ToString("0000.00", CultureInfo.InvariantCulture);
+            return valor.ToString("00000000.00", CultureInfo.InvariantCulture);
         }
         public string ToFile()
         {
