@@ -84,10 +84,14 @@ void CadastrosBasicos()
                             Console.ReadKey();
                             break;
                         case 4:
-                            Console.WriteLine("Qual o cpf do cliente que deseja buscar?");
+                            Console.WriteLine("Qual o CPF do cliente que deseja buscar?");
                             string cpf = Console.ReadLine();
-                            farmacia.LocalizarCliente(cpf);
-                            Console.ReadKey();
+                            Customer customer = farmacia.LocalizarCliente(cpf);
+                            if(customer != null)
+                                Console.WriteLine(customer.ToString());
+                            else
+                                Console.WriteLine("Cliente não encontrado!");
+                                Console.ReadKey();
                             break;
 
                             case 5:
@@ -122,9 +126,13 @@ void CadastrosBasicos()
                                         Console.ReadKey();
                                         break;
                                         case 4:
-                                        Console.WriteLine("Qual o cpf do cliente que deseja localizar?");
+                                        Console.WriteLine("Qual o CPF do cliente que deseja localizar?");
                                         string cpfCliente = Console.ReadLine();
-                                            farmacia.LocalizarClientesRestritos(cpfCliente);
+                                        Customer customerRestrito = farmacia.LocalizarClienteRestrito(cpfCliente);
+                                        if (customerRestrito != null)
+                                            Console.WriteLine(customerRestrito.ToString());
+                                        else
+                                            Console.WriteLine("Cliente não encontrado!");
                                         Console.ReadKey();
                                         break;
                                         case 5:
@@ -178,12 +186,16 @@ void CadastrosBasicos()
                             Console.ReadKey();
                             break;
                         case 4:
-                            Console.WriteLine("Qual o cnpj da empresa que deseja buscar?");
+                            Console.WriteLine("Qual o CNPJ da empresa que deseja buscar?");
                             string cnpj = Console.ReadLine();
-                            farmacia.LocalizarFornecedor(cnpj);
+                            Suppliers supplier = farmacia.LocalizarFornecedor(cnpj);
+                            if (supplier != null)
+                                Console.WriteLine(supplier.ToString());
+                            else
+                                Console.WriteLine("Fornecedor não encontrado!");
                             Console.ReadKey();
                             break;
-                            case 5:
+                        case 5:
                             int opcao;
                             do
                             {
@@ -216,9 +228,13 @@ void CadastrosBasicos()
                                     case 4:
                                         Console.WriteLine("Qual o cnpj do fornecedor que deseja localizar?");
                                         string cnpjFornecedor = Console.ReadLine();
-                                        farmacia.LocalizarFornecedoresRestritos(cnpjFornecedor);
+                                        Suppliers supplierRestrito = farmacia.LocalizarFornecedorRestrito(cnpjFornecedor);
+                                        if (supplierRestrito != null)
+                                            Console.WriteLine(supplierRestrito.ToString());
+                                        else
+                                            Console.WriteLine("Fornecedor não encontrado!");
                                         Console.ReadKey();
-                                        break;
+                                        break;                               
                                     case 5:
                                         Suppliers.GravarSupplierRestricted(farmacia.ListaRestrictedSuppliers, Path.Combine(diretorio, pathRestrictedSupplies));
                                         Console.WriteLine("Saindo");

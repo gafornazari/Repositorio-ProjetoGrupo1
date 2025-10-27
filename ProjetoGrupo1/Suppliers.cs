@@ -92,6 +92,11 @@ public class Suppliers
         return dataFormatada;
     }
 
+    public string FormatCnpj(string cnpj)
+    {
+        return CNPJ.Replace(".", "").Replace("/", "").Replace("-", "").Trim();
+    }
+
     public static List<Suppliers> LerArquivoSuppliers(string diretorio, string nomeArquivo)
     {
         var fullSuppliers = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
@@ -134,7 +139,7 @@ public class Suppliers
 
     public string ToFile()
     {
-        return $"{this.CNPJ}{FormatString(this.RazaoSocial)}{FormatStringPais(this.Pais)}{FormatarData(this.DataAbertura)}{FormatarData(this.UltimoFornecimento)}{FormatarData(this.DataCadastro)}{this.Situacao}";
+        return $"{FormatCnpj(this.CNPJ)}{FormatString(this.RazaoSocial)}{FormatStringPais(this.Pais)}{FormatarData(this.DataAbertura)}{FormatarData(this.UltimoFornecimento)}{FormatarData(this.DataCadastro)}{this.Situacao}";
     }
 
 
@@ -173,7 +178,7 @@ public class Suppliers
     public string ToFileRest()
     {
 
-        return $"{this.CNPJ}";
+        return $"{FormatCnpj(this.CNPJ)}";
     }
 
 }

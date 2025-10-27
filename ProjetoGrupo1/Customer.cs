@@ -73,6 +73,10 @@ public class Customer
         return DataNascimento;
     }
 
+    public string GetCPF()
+    {
+        return CPF;
+    }
     public override string ToString()
     {
         return $"CPF: {this.CPF}\n Nome: {this.Nome}\n Data Nascimento: {this.DataNascimento}\n " +
@@ -98,6 +102,10 @@ public class Customer
         return nome.PadRight(50, ' ');
     }
 
+    public string FormatCpf(string cpf)
+    {
+        return CPF.Replace(".", "").Replace("/", "").Replace("-", "").Trim();
+    }
     public static List<Customer> LerArquivoCustomer(string diretorio, string nomeArquivo)
     {
         var fullNomeArquivo = Arquivo.CarregarArquivo(diretorio, nomeArquivo);
@@ -141,7 +149,7 @@ public class Customer
 
     public string ToFile()
     {
-        return $"{this.CPF}{FormatString(this.Nome)}{FormatarData(this.DataNascimento)}{this.Telefone}" +
+        return $"{FormatCpf(this.CPF)}{FormatString(this.Nome)}{FormatarData(this.DataNascimento)}{this.Telefone}" +
             $"{FormatarData(this.UltimaCompra)}{FormatarData(this.DataCadastro)}{this.Situacao}";
     }
 
@@ -177,10 +185,11 @@ public class Customer
         }
     }
 
+
     public string ToFileRest()
     {
 
-        return $"{this.CPF}";
+        return $"{FormatCpf(this.CPF)}";
     }
 
 }

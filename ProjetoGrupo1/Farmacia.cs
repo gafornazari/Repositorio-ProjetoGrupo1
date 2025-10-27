@@ -188,8 +188,13 @@ namespace ProjetoGrupo1
                     }
                 } while (aux == 0);
 
+                int id;
+                do
+                {
+                    id = new Random().Next(10000, 100000);
 
-                Produce produce = new Produce(cdb, quantidade);
+                } while (ExisteProduce(id));
+                Produce produce = new Produce(cdb, quantidade, id);
                 this.ListaProduces.Add(produce);
 
                 Console.Clear();
@@ -297,6 +302,17 @@ namespace ProjetoGrupo1
 
         }
 
+        public bool ExisteProduceItem(int id)
+        {
+            foreach(var item in this.ListaProducesItems)
+            {
+                if(item.IdProduceItem == id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public void IncluirProduceItem()
         {
@@ -372,7 +388,14 @@ namespace ProjetoGrupo1
                             Console.ReadKey();
                         }
                     } while (aux == 0);
-                    ProduceItem produceItem = new ProduceItem(id, idIngredient, quantidade);
+
+                    int idProduceItem;
+                    do
+                    {
+                        idProduceItem = new Random().Next(10000, 100000);
+
+                    } while (ExisteProduceItem(id));
+                    ProduceItem produceItem = new ProduceItem(id, idIngredient, quantidade, idProduceItem);
                     this.ListaProducesItems.Add(produceItem);
                     Console.Clear();
                     Console.WriteLine("Item de produção Incluído com sucesso!");
@@ -595,10 +618,14 @@ namespace ProjetoGrupo1
                     string prefixo = id.Substring(2);
                     if (BuscarIngridientId(id))
                         Console.WriteLine("Erro! Esse Id já é cadastrado!");
-                    else if ((!sufixo.Equals("AI", StringComparison.OrdinalIgnoreCase)) || (!prefixo.All(c => char.IsDigit(c))))
+                    else if ((!sufixo.Equals("AI")) )
+                        Console.WriteLine("Erro! O formato do Id está incorreto! AI necessita ser maiúsculo!");
+                    else if((!prefixo.All(c => char.IsDigit(c))))
                         Console.WriteLine("Erro! O formato do Id está incorreto!\nEle precisa ser composto por AI + 4 dígitos, exemplo: AI0000");
                     else
+                    {
                         auxId = 1;
+                    }
                 }
                 else
                 {
@@ -1090,7 +1117,6 @@ namespace ProjetoGrupo1
 
             if (cliente == null)
             {
-                Console.WriteLine("Cliente não encontrado.");
                 return null;
             }
 
@@ -1127,7 +1153,7 @@ namespace ProjetoGrupo1
                     char novaSituacao = char.Parse(Console.ReadLine());
 
                     cliente.SetSituacao(novaSituacao);
-                    Console.WriteLine("Nova situação" + novaSituacao);
+                    Console.WriteLine("Nova situação - " + novaSituacao);
                 }
                 else
                 {
@@ -1270,7 +1296,7 @@ namespace ProjetoGrupo1
 
             if (fornecedor == null)
             {
-                Console.WriteLine("Empresa não encontrada.");
+       
                 return null;
             }
 
@@ -1338,7 +1364,7 @@ namespace ProjetoGrupo1
                     char novaSituacao = char.Parse(Console.ReadLine());
 
                     fornecedor.SetSituacao(novaSituacao);
-                    Console.WriteLine("Nova situação" + novaSituacao);
+                    Console.WriteLine("Nova situação - " + novaSituacao);
                 }
                 else
                 {
@@ -1415,6 +1441,23 @@ namespace ProjetoGrupo1
             return false;
 
         }
+
+        public Customer LocalizarClienteRestrito(string cpf)
+        {
+            
+        
+            var cliente = ListaRestrictedCustomers.Find(c => c.CPF == cpf);
+
+            if (cliente == null)
+            {
+
+                return null;
+            }
+
+            return cliente;
+
+        }
+        
         //Alterar clientes restritos
         public void AlterarClientesRestritos()
         {
@@ -1526,6 +1569,20 @@ namespace ProjetoGrupo1
             }
             return false;
         }
+
+        public Suppliers LocalizarFornecedorRestrito(string cnpj)
+        {
+            var fornecedor = ListaRestrictedSuppliers.Find(f => f.CNPJ == cnpj);
+
+            if (fornecedor == null)
+            {
+
+                return null;
+            }
+
+            return fornecedor;
+
+        }
         //Alterar informações fornecedores restritos
         public void AlterarFornecedoresRestritos()
         {
@@ -1580,7 +1637,7 @@ namespace ProjetoGrupo1
             int id;
             while (true)
             {
-                Console.WriteLine("Digite o Id da compra: ");
+                Console.WriteLine("Digite o Id da compra(máximo de 5 números): ");
                 if (int.TryParse(Console.ReadLine(), out id))
                     break;
                 string formatadoId = id.ToString().PadLeft(5, '0');
@@ -1609,30 +1666,39 @@ namespace ProjetoGrupo1
             while (true)
             {
                 Console.WriteLine("Digite o CNPJ do fornecedor: ");
-                fornecedorCnpj = Console.ReadLine()!;
-                string formatadoCnpj = fornecedorCnpj.ToString().PadLeft(14);
-                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj)!;
+                fornecedorCnpj = Console.ReadLine()!.Trim();
+
+                if (fornecedorCnpj.Length < 14)
+                    fornecedorCnpj = fornecedorCnpj.PadLeft(14, '0');
+
+                fornecedor = ListaSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+
                 if (fornecedor == null)
                 {
                     Console.WriteLine("Fornecedor não encontrado. Tente novamente.");
                     continue;
                 }
-                if (ListaRestrictedSuppliers.Any(f => f.CNPJ == fornecedorCnpj))
+
+                var fornecedorBloqueado = ListaRestrictedSuppliers.FirstOrDefault(f => f.CNPJ == fornecedorCnpj);
+                if (fornecedorBloqueado != null)
                 {
-                    Console.WriteLine("Fornecedor está bloqueado e " +
-                        "não pode ser selecionado.");
+                    Console.WriteLine("Fornecedor está bloqueado e não pode ser selecionado.");
                     continue;
                 }
+
+                Console.WriteLine($"Fornecedor {fornecedor.RazaoSocial} selecionado com sucesso.");
                 break;
             }
-            Purchases purchases = new Purchases(id, data, fornecedor.CNPJ, valorTotal);
+
+            Purchases purchases = new Purchases(id, data, fornecedor.CNPJ, 0);
             int contadorItens = 0;
+
             while (contadorItens <= 3)
             {
                 int idCompra;
                 while (true)
                 {
-                    Console.WriteLine("Digite o Id do item comprado: ");
+                    Console.WriteLine("Digite o Id do item comprado(máximo de 5 números): ");
                     if (int.TryParse(Console.ReadLine(), out idCompra))
                         break;
                     Console.WriteLine("Id inválido. Digite um número inteiro.");
@@ -1641,7 +1707,7 @@ namespace ProjetoGrupo1
                 Ingredient ingredient = null;
                 while (true)
                 {
-                    Console.WriteLine("Digite o Id do princípio ativo: ");
+                    Console.WriteLine("Digite o Id do princípio ativo(AI+4 dígitos): ");
                     ingredienteId = Console.ReadLine()!;
                     ingredient = ListaIngredients.FirstOrDefault(i => i.Id ==
                     ingredienteId && i.Situacao == 'A')!;
@@ -1676,9 +1742,12 @@ namespace ProjetoGrupo1
 
                 valorTotal += totalItem;
 
-                this.ListaPurchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario, totalItem));
-                purchases.purchaseItems.Add(new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario, totalItem));
+                var item = new PurchaseItem(idCompra, ingredient.Id, quantidade, valorUnitario, totalItem);
+                this.ListaPurchaseItems.Add(item);
+                purchases.purchaseItems.Add(item);
+
                 purchases.setValorTotal();
+
                 contadorItens++;
 
                 if (contadorItens < 3)
@@ -1688,9 +1757,11 @@ namespace ProjetoGrupo1
                     if (resposta == null || !resposta.Trim().ToUpper().StartsWith("S"))
                         break;
                 }
+
                 AlterarSuppliersUltimoFornecimento(data, fornecedorCnpj);
                 AlterarIngredientUltimaCompra(data, ingredienteId);
             }
+
             Console.WriteLine($"Valor total dos itens: {valorTotal:F2}");
             this.ListaPurchases.Add(purchases);
         }
@@ -1719,7 +1790,7 @@ namespace ProjetoGrupo1
         }
         public void LocalizarPurchases()
         {
-            Console.WriteLine("Digite o id da compra: ");
+            Console.WriteLine("Digite o id da compra(máximo de 5 dígitos): ");
             int id = int.Parse(Console.ReadLine()!);
             Purchases purchase = RetornarPurchases(id);
             if (purchase != null)
@@ -1738,7 +1809,7 @@ namespace ProjetoGrupo1
         }
         public void LocalizarPurchaseItem()
         {
-            Console.WriteLine("Digite o id do item da compra: ");
+            Console.WriteLine("Digite o id do item da compra(máximo de 5 dígitos): ");
             int id = int.Parse(Console.ReadLine()!);
             PurchaseItem item = RetornarPurchaseItem(id);
             if (item != null)
@@ -1762,12 +1833,12 @@ namespace ProjetoGrupo1
             int auxItems = 0;
             PurchaseItem purchaseItem = null;
             Purchases purchases;
-            while (purchaseItem == null);      
+            while (purchaseItem == null) ;
             {
                 Console.WriteLine("O Id da compra está incorreto");
                 var aux = int.Parse(Console.ReadLine()!);
                 purchaseItem = RetornarPurchaseItem(aux);
-            } 
+            }
 
             purchases = RetornarPurchases(IdCompra);
 
@@ -1781,7 +1852,8 @@ namespace ProjetoGrupo1
                     auxItems = 0;
                     do
                     {
-                        Console.WriteLine("Digite a nova quantidade em gramas do item:");
+                        Console.WriteLine("Digite a nova quantidade em gramas do item" +
+                            "(entre 0 e 10.000):");
                         quantidade = int.Parse(Console.ReadLine()!);
                         string formatadoQuantidade =
                             quantidade.ToString().PadLeft(4, '0');
@@ -1807,7 +1879,7 @@ namespace ProjetoGrupo1
                     do
                     {
                         Console.WriteLine("Digite o novo Valor Unitário" +
-                            " por gramas do item: ");
+                            " por gramas do item(entre 0 e 1.000): ");
                         valorUnitario = double.Parse(Console.ReadLine()!);
                         string formatadoValorUnitario = valorUnitario.
                             ToString("F2").PadLeft(6, '0');
@@ -1834,7 +1906,7 @@ namespace ProjetoGrupo1
                     auxItems = 0;
                     do
                     {
-                        Console.WriteLine("Digite a nova quantidade em gramas do item:");
+                        Console.WriteLine("Digite a nova quantidade em gramas do item(0 e 10.000):");
                         quantidade = int.Parse(Console.ReadLine()!);
                         string formatadoQuantidade =
                             quantidade.ToString().PadLeft(4, '0');
@@ -1846,7 +1918,7 @@ namespace ProjetoGrupo1
                             continue;
                         }
                         Console.WriteLine("Digite o novo Valor Unitário" +
-                            " por gramas do item: ");
+                            " por gramas do item(entre 0 e 1.000): ");
                         valorUnitario = double.Parse(Console.ReadLine()!);
                         string formatadoValorUnitario = valorUnitario.
                             ToString("F2").PadLeft(6, '0');
@@ -1918,51 +1990,11 @@ namespace ProjetoGrupo1
             
             Console.WriteLine("Digite o CPF do cliente: ");
             string cpf = Console.ReadLine()!;
-            Customer customer = LocalizarCliente(cpf);
-
-            int aux = 1;
-
-            while (aux == 1)
-            {
-
-
-                if (customer == null)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Cliente não Encontrado!");
-
-                    Console.WriteLine("Digite: 1- Tentar Novamente! ");
-                    Console.WriteLine("Digite: 2- Voltar no Menu!");
-                    aux = int.Parse(Console.ReadLine());
-                    if(aux == 1)
-                    {
-                        Console.WriteLine("Digite o CPF do cliente: ");
-                        cpf = Console.ReadLine()!;
-                       
-                    }
-                    
-                    
-                }
-                else if (LocalizarClientesRestritos(cpf))
-                {
-                    Console.WriteLine("Cliente restrito!");
-                    Console.WriteLine("Não é possivel finalizar a compra!");
-                    aux = 2;
-                }
-                else 
-                {
-
-
-                    Sales sal = new Sales(cpf);
-                    this.ListaSales.Add(sal);
-                    Console.Clear();
-                    Console.WriteLine("Venda realizada com Sucesso!");
-                    Console.WriteLine("Id de compra do cliente: " + sal.Id );
-                    Console.ReadKey();
-                    aux = 2;
-
-                }
-            }
+            Sales sal = new Sales(cpf);
+            this.ListaSales.Add(sal);
+            Console.Clear();
+            Console.WriteLine("Venda realizada com Sucesso!");
+            Console.ReadKey();
         }
         public Sales RetornarSales(int id)
         {
@@ -2028,10 +2060,7 @@ namespace ProjetoGrupo1
                 else
                 {
                     Console.WriteLine("Id no formato inválido!");
-                    Console.WriteLine("Digite: 1- Tentar Novamente:");
-                    Console.WriteLine("Digite: 2- Voltar no Menu!");
-                    aux = int.Parse(Console.ReadLine());
-                    
+                    Console.ReadKey();
                 }
             } while (aux == 1);
             var sales = RetornarSales(id);
@@ -2067,67 +2096,52 @@ namespace ProjetoGrupo1
                         Console.WriteLine("Digite: 2- Voltar no menu!");
                         aux = int.Parse(Console.ReadLine()!);
                     }
-                } while (aux == 1);
-                Medicine medicine = LocalizarMedicine(cdb);
-
-                if(medicine != null)
+                } while (aux == 0);
+                aux = 0;
+                int quantidade = 0;
+                do
                 {
-                    aux = 0;
-                    int quantidade = 0;
-                    do
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Digite a quantidade vendida: ");
-                        string stringQuantidade = Console.ReadLine()!;
-                        if (stringQuantidade.Length <= 3 && stringQuantidade.All(char.IsDigit))
-                        {
-                            quantidade = int.Parse(stringQuantidade);
-                            aux = 1;
-                        }
-                        else
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Número inválido!");
-                            Console.ReadKey();
-                        }
-                    } while (aux == 0);
-                    aux = 0;
-                    decimal valorUnit = 0.0m;
-                    do
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Digite o valor unitario: ");
-                        string stringvalorUnit = Console.ReadLine()!;
-                        if (stringvalorUnit.Length <= 6 && stringvalorUnit.All(char.IsDigit))
-                        {
-                            valorUnit = decimal.Parse(stringvalorUnit);
-                            aux = 1;
-                        }
-                        else
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Número inválido!");
-                            Console.ReadKey();
-                        }
-                    } while (aux == 0);
-                    var salesItems = new SalesItems(id, cdb, quantidade, valorUnit);
-                    this.ListaSalesItems.Add(salesItems);
-                    sales.IncluirListaSalesItems(salesItems);
                     Console.Clear();
-                    Console.WriteLine("Item de venda inserido com sucesso!");
-                    Console.ReadKey();
-
-                }
-                else
+                    Console.WriteLine("Digite a quantidade vendida: ");
+                    string stringQuantidade = Console.ReadLine()!;
+                    if (stringQuantidade.Length <= 3 && stringQuantidade.All(char.IsDigit))
+                    {
+                        quantidade = int.Parse(stringQuantidade);
+                        aux = 1;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Número inválido!");
+                        Console.ReadKey();
+                    }
+                } while (aux == 0);
+                aux = 0;
+                decimal valorUnit = 0.0m;
+                do
                 {
-                   
-                    Console.WriteLine("Medicamento não encontrado!");
-                    Console.ReadKey();
-                }
+                    Console.Clear();
+                    Console.WriteLine("Digite o valor unitario: ");
+                    string stringvalorUnit = Console.ReadLine()!;
+                    if (stringvalorUnit.Length <= 6 && stringvalorUnit.All(char.IsDigit))
+                    {
+                        valorUnit = decimal.Parse(stringvalorUnit);
+                        aux = 1;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Número inválido!");
+                        Console.ReadKey();
+                    }
+                } while (aux == 0);
+                var salesItems = new SalesItems(id, cdb, quantidade, valorUnit);
+                this.ListaSalesItems.Add(salesItems);
+                sales.IncluirListaSalesItems(salesItems);
+                Console.Clear();
+                Console.WriteLine("Item de venda inserido com sucesso!");
+                Console.ReadKey();
             }
-            
-
-                
         }
         public void ImprimirListaSalesItems()
         {
@@ -2281,9 +2295,9 @@ namespace ProjetoGrupo1
                 Console.Clear();
                 Console.WriteLine("Digite a data de início do período(Formato dd/mm/yyyy): ");
                 string data = Console.ReadLine()!;
-                if(DateOnly.TryParseExact(data, formato,System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out dataInicio))
+                if (DateOnly.TryParseExact(data, formato, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dataInicio))
                 {
-                    if(dataInicio > DateOnly.FromDateTime(DateTime.Today))
+                    if (dataInicio > DateOnly.FromDateTime(DateTime.Today))
                     {
                         Console.Clear();
                         Console.WriteLine("A data não pode ser posterior a data de hoje.");
@@ -2375,7 +2389,7 @@ namespace ProjetoGrupo1
 
             }
 
-               
+
         }
 
         public void RelatorioCompraPorFornecedor()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,7 +95,7 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = SalesSR.ReadLine()) != null)
                 {
-                    if (line.Length == 31)
+                    if (line.Length == 35)
                     {
                         var id = int.Parse(line.Substring(0, 5));
                         var date = DateOnly.ParseExact(line.Substring(5, 8), "ddMMyyyy");
@@ -120,6 +121,10 @@ namespace ProjetoGrupo1
             }
         }
 
+        private string FormatarDecimal(decimal valor)
+        {
+            return valor.ToString("00000000.00", CultureInfo.InvariantCulture);
+        }
 
         public string FormatarData(DateOnly data)
         {
@@ -129,7 +134,7 @@ namespace ProjetoGrupo1
 
         public string ToFile()
         {
-            return $"{this.Id}{FormatarData(this.DataVenda)}{this.ClienteCPF}{this.ValorTotal}";
+            return $"{this.Id}{FormatarData(this.DataVenda)}{this.ClienteCPF}{FormatarDecimal(ValorTotal)}";
         }
     }
 }

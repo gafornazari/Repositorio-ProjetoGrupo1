@@ -18,10 +18,11 @@ namespace ProjetoGrupo1
 
         public Produce(
            string cdbMedicamento,
-           int quantidade
+           int quantidade, 
+           int id
         )
         {
-            this.Id = new Random().Next(10000, 100000);
+            this.Id = id;
             this.DataProducao = DateOnly.FromDateTime(DateTime.Now);
             this.CdbMedicamento = cdbMedicamento;
             this.Quantidade = quantidade;
@@ -73,12 +74,12 @@ namespace ProjetoGrupo1
                 string line;
                 while ((line = produceSR.ReadLine()) != null)
                 {
-                    if (line.Length == 31)
+                    if (line.Length == 29)
                     {
                         int id = int.Parse(line.Substring(0, 5));
-                        DateOnly data = DateOnly.ParseExact(line.Substring(5, 10), "ddMMyyyy");
-                        string idMedicamento = line.Substring(15, 13);
-                        int quantidade = int.Parse(line.Substring(28, 3));
+                        DateOnly data = DateOnly.ParseExact(line.Substring(5, 8), "ddMMyyyy");
+                        string idMedicamento = line.Substring(13, 13);
+                        int quantidade = int.Parse(line.Substring(26, 3));
                         Produce produce = new Produce(id, data, idMedicamento, quantidade);
                         produces.Add(produce);
                     }
@@ -101,7 +102,7 @@ namespace ProjetoGrupo1
 
         public string FormatarData(DateOnly data)
         {
-            string dataFormatada = data.ToString("ddmmyyyy");
+            string dataFormatada = data.ToString("ddMMyyyy");
             return dataFormatada;
         }
 
