@@ -598,7 +598,13 @@ namespace ProjetoGrupo1
                     else if ((!sufixo.Equals("AI", StringComparison.OrdinalIgnoreCase)) || (!prefixo.All(c => char.IsDigit(c))))
                         Console.WriteLine("Erro! O formato do Id está incorreto!\nEle precisa ser composto por AI + 4 dígitos, exemplo: AI0000");
                     else
+                    {
+                        if(sufixo == "ai")
+                        {
+                            sufixo = "AI";
+                        }
                         auxId = 1;
+                    }
                 }
                 else
                 {
